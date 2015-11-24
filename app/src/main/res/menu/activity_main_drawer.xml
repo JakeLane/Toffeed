@@ -3,34 +3,36 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_news"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="News Feed" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_friendreq"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Friend Requests" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_messages"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="Messages" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_notifications"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Notifications" />
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Search" />
+        <item
+            android:id="@+id/nav_mainmenu"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Main Menu" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_reload"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Reload" />
+    </group>
 
 </menu>
