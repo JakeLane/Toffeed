@@ -9,7 +9,7 @@
     tools:showIn="@layout/app_bar_main"
     android:padding="0dp">
 
-    <WebView  xmlns:android="http://schemas.android.com/apk/res/android"
+    <WebView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/webview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

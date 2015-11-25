@@ -1,6 +1,7 @@
 package me.jakelane.wrapperforfacebook;
 
 import android.webkit.JavascriptInterface;
+import android.widget.Toast;
 
 public class JavaScriptInterfaces {
     MainActivity mContext;
@@ -26,7 +27,6 @@ public class JavaScriptInterfaces {
                         mContext.navigationView.setCheckedItem(R.id.nav_messages);
                         break;
                     case "notifications_jewel":
-                        mContext.navigationView.setCheckedItem(R.id.nav_notifications);
                         break;
                     case "search_jewel":
                         mContext.navigationView.setCheckedItem(R.id.nav_search);
@@ -39,5 +39,23 @@ public class JavaScriptInterfaces {
                 }
             }
         });
+    }
+
+    @JavascriptInterface
+    public void getNotifications(final boolean value) {
+        if (value) {
+            mContext.wrapperWebView.loadUrl("javascript:android.getNotificationsNum(document.querySelector('#notifications_jewel > a > div > span[data-sigil=count]').innerHTML)");
+        } else {
+            Toast.makeText(mContext, "FALSE", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @JavascriptInterface
+    public void getNotificationsNum(final String number) {
+        if (!number.equals("undefined")) {
+            Toast.makeText(mContext, number, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(mContext, "FALSE", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -20,7 +20,15 @@ public abstract class WrapperWebViewClient extends WebViewClient {
     public abstract void launchExternalBrowser(String url);
 
     public void onPageFinished(WebView view, String url) {
+        // Hide the menu bar
         view.loadUrl("javascript:(function(){document.getElementById('page').style.top = '-45px';})();");
+
+        // Get the currently open tab and check on the navigation menu
         view.loadUrl("javascript:android.getCurrent(document.querySelector('.popoverOpen').id)");
+
+        // Get the notifications
+        view.loadUrl("javascript:android.getNotifications(document.querySelector('#notifications_jewel').classList.contains('hasCount'))");
+
+        // Get logged in info
     }
 }

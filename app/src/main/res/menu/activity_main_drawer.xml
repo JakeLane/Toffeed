@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/group_fbnav" android:checkableBehavior="single">
         <item
             android:id="@+id/nav_news"
             android:icon="@drawable/ic_menu_news"
@@ -14,10 +14,6 @@
             android:id="@+id/nav_messages"
             android:icon="@drawable/ic_menu_messages"
             android:title="Messages" />
-        <item
-            android:id="@+id/nav_notifications"
-            android:icon="@drawable/ic_menu_notifications"
-            android:title="Notifications" />
         <item
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_menu_search"
