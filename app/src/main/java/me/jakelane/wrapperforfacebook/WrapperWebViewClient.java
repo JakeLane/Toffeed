@@ -30,5 +30,7 @@ public abstract class WrapperWebViewClient extends WebViewClient {
         view.loadUrl("javascript:android.getNotifications(document.querySelector('#notifications_jewel').classList.contains('hasCount'))");
 
         // Get logged in info
+//        view.loadUrl("javascript:android.getUserInfo(document.querySelector('form#mbasic_inline_feed_composer').getElementsByClassName('profpic')[0])");
+        view.loadUrl("javascript:android.getUserInfo(document.querySelector('form#mbasic_inline_feed_composer').getElementsByClassName('profpic')[0].outerHTML)");
     }
 }
