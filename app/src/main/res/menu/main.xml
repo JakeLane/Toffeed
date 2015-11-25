@@ -5,6 +5,7 @@
         android:id="@+id/action_notifications"
         android:icon="@drawable/ic_menu_notifications"
         android:title="Notifications"
-        app:showAsAction="ifRoom"/>
+        app:actionLayout="@layout/menu_badge"
+        app:showAsAction="always"/>
 
 </menu>

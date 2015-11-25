@@ -6,10 +6,8 @@ android {
 
     defaultConfig {
         applicationId "me.jakelane.wrapperforfacebook"
-//        minSdkVersion 15
-        minSdkVersion 7
-//        targetSdkVersion 23
-        targetSdkVersion 17
+        minSdkVersion 15
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -26,4 +24,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
+    compile('com.mikepenz:actionitembadge:3.1.9@aar') {
+        transitive = true
+    }
 }

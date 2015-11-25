@@ -1,6 +1,7 @@
 package me.jakelane.wrapperforfacebook;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.webkit.JavascriptInterface;
 
 import java.util.regex.Matcher;
@@ -54,15 +55,34 @@ public class JavaScriptInterfaces {
                 }
             });
         } else {
+            mContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mContext.setNotificationNum(0);
+                }
+            });
             Log.v("FBWrapper", 0 + " notifications");
         }
     }
 
     @JavascriptInterface
     public void getNotificationsNum(final String number) {
-        if (!number.equals("undefined")) {
+        try {
+            final int num = Integer.parseInt(number);
+            mContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mContext.setNotificationNum(num);
+                }
+            });
             Log.v("FBWrapper", number + " notifications");
-        } else {
+        } catch (NumberFormatException e) {
+            mContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mContext.setNotificationNum(0);
+                }
+            });
             Log.v("FBWrapper", 0 + " notifications");
         }
     }

@@ -15,12 +15,15 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     // Members
     WebView wrapperWebView;
     NavigationView navigationView;
+    MenuItem notificationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,19 +76,20 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        notificationButton = menu.findItem(R.id.action_notifications);
+        // TODO Fix this
+        ActionItemBadge.update(this, notificationButton, getDrawable(R.drawable.ic_menu_notifications), ActionItemBadge.BadgeStyles.RED, Integer.MIN_VALUE);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here
         int id = item.getItemId();
         if (id == R.id.action_notifications) {
             wrapperWebView.loadUrl("javascript:(function(){document.querySelector('#notifications_jewel > a').click();})();");
 
-            // Sorry
+            // Uncheck other menu items (sorry)
             for (int i = 0; i < navigationView.getMenu().size(); i++) {
                 if (navigationView.getMenu().getItem(i).isChecked()) {
                     navigationView.getMenu().getItem(i).setChecked(false);
@@ -122,5 +126,14 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void setNotificationNum(int num) {
+        if (num > 0) {
+            notificationButton.setIcon(R.drawable.ic_menu_notifications_active);
+            ActionItemBadge.update(notificationButton, getDrawable(R.drawable.ic_menu_notifications_active), num);
+        } else {
+            ActionItemBadge.update(notificationButton, getDrawable(R.drawable.ic_menu_notifications), Integer.MIN_VALUE);
+        }
     }
 }
