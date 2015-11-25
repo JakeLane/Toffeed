@@ -11,11 +11,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -55,38 +53,12 @@ public class MainActivity extends AppCompatActivity
             }
         };
         wrapperWebView.setWebViewClient(client);
-        wrapperWebView.addJavascriptInterface(this, "android");
+        wrapperWebView.addJavascriptInterface(new JavaScriptInterfaces(this), "android");
 
         // Settings
         WebSettings webSettings = wrapperWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         wrapperWebView.loadUrl("http://m.facebook.com/");
-    }
-
-    @JavascriptInterface
-    public void getCurrent(final String value) {
-        switch (value) {
-            case "feed_jewel":
-                navigationView.setCheckedItem(R.id.nav_news);
-                break;
-            case "requests_jewel":
-                navigationView.setCheckedItem(R.id.nav_friendreq);
-                break;
-            case "messages_jewel":
-                navigationView.setCheckedItem(R.id.nav_messages);
-                break;
-            case "notifications_jewel":
-                navigationView.setCheckedItem(R.id.nav_notifications);
-                break;
-            case "search_jewel":
-                navigationView.setCheckedItem(R.id.nav_search);
-                break;
-            case "bookmarks_jewel":
-                navigationView.setCheckedItem(R.id.nav_mainmenu);
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
