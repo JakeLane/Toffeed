@@ -26,9 +26,17 @@
 
     <group android:checkableBehavior="none">
         <item
+            android:id="@+id/nav_back"
+            android:icon="@drawable/ic_menu_back"
+            android:title="@string/menu_back" />
+        <item
             android:id="@+id/nav_reload"
             android:icon="@drawable/ic_menu_refresh"
             android:title="@string/menu_refresh" />
+        <item
+            android:id="@+id/nav_forward"
+            android:icon="@drawable/ic_menu_forward"
+            android:title="@string/menu_forward" />
     </group>
 
 </menu>

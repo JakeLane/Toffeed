@@ -126,7 +126,7 @@ class JavaScriptInterfaces {
             mContext.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Picasso.with(mContext).load(finalProfile_url).into((ImageView) mContext.findViewById(R.id.profile_picture));
+                    Picasso.with(mContext).load(finalProfile_url).error(R.mipmap.ic_launcher).into((ImageView) mContext.findViewById(R.id.profile_picture));
                 }
             });
         }

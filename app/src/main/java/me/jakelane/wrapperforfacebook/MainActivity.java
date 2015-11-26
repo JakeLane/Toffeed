@@ -125,8 +125,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_mainmenu) {
             wrapperWebView.loadUrl("javascript:(function(){document.querySelector('#bookmarks_jewel > a').click();})();");
             item.setChecked(true);
+        } else if (id == R.id.nav_back) {
+            wrapperWebView.goBack();
         } else if (id == R.id.nav_reload) {
             wrapperWebView.reload();
+        } else if (id == R.id.nav_forward) {
+            wrapperWebView.goForward();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
