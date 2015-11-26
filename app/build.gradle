@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "me.jakelane.wrapperforfacebook"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -27,4 +27,5 @@ dependencies {
     compile('com.mikepenz:actionitembadge:3.1.9@aar') {
         transitive = true
     }
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

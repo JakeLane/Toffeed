@@ -1,11 +1,10 @@
 package me.jakelane.wrapperforfacebook;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public abstract class WrapperWebViewClient extends WebViewClient {
+abstract class WrapperWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         if (Uri.parse(url).getHost().contains("facebook.com")) {
@@ -21,16 +20,15 @@ public abstract class WrapperWebViewClient extends WebViewClient {
 
     public void onPageFinished(WebView view, String url) {
         // Hide the menu bar
-        view.loadUrl("javascript:(function(){document.getElementById('page').style.top = '-45px';})();");
+        JavaScriptHelpers.hideMenuBar(view);
 
         // Get the currently open tab and check on the navigation menu
-        view.loadUrl("javascript:android.getCurrent(document.querySelector('.popoverOpen').id)");
+        JavaScriptHelpers.updateCurrentTab(view);
 
         // Get the notifications
-        view.loadUrl("javascript:android.getNotifications(document.querySelector('#notifications_jewel').classList.contains('hasCount'))");
+        JavaScriptHelpers.updateNotifications(view);
 
         // Get logged in info
-//        view.loadUrl("javascript:android.getUserInfo(document.querySelector('form#mbasic_inline_feed_composer').getElementsByClassName('profpic')[0])");
-        view.loadUrl("javascript:android.getUserInfo(document.querySelector('form#mbasic_inline_feed_composer').getElementsByClassName('profpic')[0].outerHTML)");
+        JavaScriptHelpers.updateUserInfo(view);
     }
 }

@@ -5,30 +5,30 @@
         <item
             android:id="@+id/nav_news"
             android:icon="@drawable/ic_menu_news"
-            android:title="News Feed" />
+            android:title="@string/menu_news" />
         <item
             android:id="@+id/nav_friendreq"
             android:icon="@drawable/ic_menu_friendreq"
-            android:title="Friend Requests" />
+            android:title="@string/menu_friendreq" />
         <item
             android:id="@+id/nav_messages"
             android:icon="@drawable/ic_menu_messages"
-            android:title="Messages" />
+            android:title="@string/menu_messages" />
         <item
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_menu_search"
-            android:title="Search" />
+            android:title="@string/menu_search" />
         <item
             android:id="@+id/nav_mainmenu"
             android:icon="@drawable/ic_menu_mainmenu"
-            android:title="Main Menu" />
+            android:title="@string/menu_mainmenu" />
     </group>
 
     <group android:checkableBehavior="none">
         <item
             android:id="@+id/nav_reload"
             android:icon="@drawable/ic_menu_refresh"
-            android:title="Reload" />
+            android:title="@string/menu_refresh" />
     </group>
 
 </menu>

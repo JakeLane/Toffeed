@@ -1,14 +1,18 @@
 package me.jakelane.wrapperforfacebook;
 
 import android.util.Log;
-import android.view.MenuItem;
 import android.webkit.JavascriptInterface;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class JavaScriptInterfaces {
-    MainActivity mContext;
+@SuppressWarnings("unused")
+class JavaScriptInterfaces {
+    private final MainActivity mContext;
 
     // Instantiate the interface and set the context
     JavaScriptInterfaces(MainActivity c) {
@@ -98,6 +102,16 @@ public class JavaScriptInterfaces {
             name = matcher.group(1);
         }
 
+        if (name != null) {
+            final String finalName = name;
+            mContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((TextView) mContext.findViewById(R.id.profile_name)).setText(finalName);
+                }
+            });
+        }
+
         // Profile picture regex
         pattern = Pattern.compile("url\\(&quot;(.[^\"]*)&quot;\\)");
         matcher = pattern.matcher(htmlElement);
@@ -107,6 +121,15 @@ public class JavaScriptInterfaces {
             profile_url = android.text.Html.fromHtml(matcher.group(1)).toString();
         }
 
-        Log.v("FBWrapper", name + ": " + profile_url);
+        if (profile_url != null) {
+            final String finalProfile_url = profile_url;
+            mContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Picasso.with(mContext).load(finalProfile_url).into((ImageView) mContext.findViewById(R.id.profile_picture));
+                }
+            });
+        }
+
     }
 }

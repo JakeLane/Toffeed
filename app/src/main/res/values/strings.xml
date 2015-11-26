@@ -4,5 +4,14 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="default_user">Unknown user</string>
+
+    <string name="nav_notifications">Notifications</string>
+    <string name="menu_news">News Feed</string>
+    <string name="menu_friendreq">Friend Requests</string>
+    <string name="menu_messages">Messages</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_mainmenu">Main Menu</string>
+    <string name="menu_refresh">Reload</string>
+    <string name="header_profile_pic">Profile Picture</string>
 </resources>

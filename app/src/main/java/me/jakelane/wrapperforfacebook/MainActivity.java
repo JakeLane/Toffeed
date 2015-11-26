@@ -1,9 +1,11 @@
 package me.jakelane.wrapperforfacebook;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,8 +25,9 @@ public class MainActivity extends AppCompatActivity
     // Members
     WebView wrapperWebView;
     NavigationView navigationView;
-    MenuItem notificationButton;
+    private MenuItem notificationButton;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +80,7 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         notificationButton = menu.findItem(R.id.action_notifications);
-        // TODO Fix this
-        ActionItemBadge.update(this, notificationButton, getDrawable(R.drawable.ic_menu_notifications), ActionItemBadge.BadgeStyles.RED, Integer.MIN_VALUE);
+        ActionItemBadge.update(this, notificationButton, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu_notifications, null), ActionItemBadge.BadgeStyles.RED, Integer.MIN_VALUE);
         return true;
     }
 
@@ -96,6 +98,9 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
+
+        // Update the notifications
+        JavaScriptHelpers.updateNotifications(wrapperWebView);
         return super.onOptionsItemSelected(item);
     }
 
@@ -130,10 +135,10 @@ public class MainActivity extends AppCompatActivity
 
     public void setNotificationNum(int num) {
         if (num > 0) {
-            notificationButton.setIcon(R.drawable.ic_menu_notifications_active);
-            ActionItemBadge.update(notificationButton, getDrawable(R.drawable.ic_menu_notifications_active), num);
+            ActionItemBadge.update(notificationButton, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu_notifications_active, null), num);
         } else {
-            ActionItemBadge.update(notificationButton, getDrawable(R.drawable.ic_menu_notifications), Integer.MIN_VALUE);
+            // Hide the badge and show the washed-out button
+            ActionItemBadge.update(notificationButton, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu_notifications, null), Integer.MIN_VALUE);
         }
     }
 }
