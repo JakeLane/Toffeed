@@ -16,4 +16,5 @@
     <string name="header_profile_pic">Profile Picture</string>
     <string name="menu_back">Back</string>
     <string name="menu_forward">Forward</string>
+    <string name="menu_settings">Settings</string>
 </resources>
