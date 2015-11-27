@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="messaging_enabled"
+        android:title="Messaging"
+        android:defaultValue="true"
+        android:summary="When enabled, will provide access to Facebook Messages. Disable if you have a messaging app."/>
+    <CheckBoxPreference
+        android:key="back_button_enabled"
+        android:title="Back button"
+        android:defaultValue="false"
+        android:summary="When enabled, the back button will be visible in the draw."/>
+</PreferenceScreen>

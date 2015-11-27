@@ -2,8 +2,10 @@ package me.jakelane.wrapperforfacebook;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
@@ -19,31 +21,42 @@ import android.webkit.WebViewClient;
 
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     // Members
     WebView wrapperWebView;
     NavigationView navigationView;
     private MenuItem notificationButton;
+    private SharedPreferences preferences;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Preferences
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        PreferenceChangeListener preferenceListener = new PreferenceChangeListener();
+        preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        if (!preferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false)) {
+            navigationView.getMenu().findItem(R.id.nav_messages).setVisible(false);
+        }
+        if (!preferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false)) {
+            navigationView.getMenu().findItem(R.id.nav_back).setVisible(false);
+        }
 
         // Load the WebView
         wrapperWebView = (WebView) findViewById(R.id.webview);
@@ -58,10 +71,36 @@ public class MainActivity extends AppCompatActivity
         wrapperWebView.setWebViewClient(client);
         wrapperWebView.addJavascriptInterface(new JavaScriptInterfaces(this), "android");
 
-        // Settings
+        // Web Settings
         WebSettings webSettings = wrapperWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        wrapperWebView.loadUrl("http://m.facebook.com/");
+        // Get the url to start with
+        wrapperWebView.loadUrl(chooseUrl());
+    }
+
+    private String chooseUrl() {
+        // Handle intents
+        Intent intent = getIntent();
+
+        // Open the proper URL in case the user clicked on a link that brought us here
+        if (intent.getData() != null) {
+            return intent.getData().toString();
+        }
+
+        // If nothing has happened at this point, we want the default url
+        return "https://m.facebook.com/";
+    }
+
+    // Handle preferences changes
+    private class PreferenceChangeListener implements SharedPreferences.OnSharedPreferenceChangeListener {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+            if (key.equals(SettingsActivity.KEY_PREF_BACK_BUTTON)) {
+                navigationView.getMenu().findItem(R.id.nav_back).setVisible(preferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false));
+            } else if (key.equals(SettingsActivity.KEY_PREF_MESSAGING)) {
+                navigationView.getMenu().findItem(R.id.nav_messages).setVisible(preferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false));
+            }
+        }
     }
 
     @Override
@@ -81,6 +120,7 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         notificationButton = menu.findItem(R.id.action_notifications);
+
         ActionItemBadge.update(this, notificationButton, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu_notifications, null), ActionItemBadge.BadgeStyles.RED, Integer.MIN_VALUE);
         return true;
     }
@@ -90,7 +130,7 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here
         int id = item.getItemId();
         if (id == R.id.action_notifications) {
-            wrapperWebView.loadUrl("javascript:(function(){document.querySelector('#notifications_jewel > a').click();})();");
+            wrapperWebView.loadUrl("javascript:try{document.querySelector('#search_jewel > a').click();}catch(e){window.location.href='https://m.facebook.com/notifications.php';}");
 
             // Uncheck other menu items (sorry)
             for (int i = 0; i < navigationView.getMenu().size(); i++) {
@@ -110,23 +150,23 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.nav_news:
-                wrapperWebView.loadUrl("javascript:(function(){document.querySelector('#feed_jewel > a').click();})();");
+                wrapperWebView.loadUrl("javascript:try{document.querySelector('#feed_jewel > a').click();}catch(e){window.location.href='https://m.facebook.com/home.php';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_friendreq:
-                wrapperWebView.loadUrl("javascript:(function(){document.querySelector('#requests_jewel > a').click();})();");
+                wrapperWebView.loadUrl("javascript:try{document.querySelector('#requests_jewel > a').click();}catch(e){window.location.href='https://m.facebook.com/friends/center/requests/';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_messages:
-                wrapperWebView.loadUrl("javascript:(function(){document.querySelector('#messages_jewel > a').click();})();");
+                wrapperWebView.loadUrl("javascript:try{document.querySelector('#messages_jewel > a').click();}catch(e){window.location.href='https://m.facebook.com/messages/';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_search:
-                wrapperWebView.loadUrl("javascript:(function(){document.querySelector('#search_jewel > a').click();})();");
+                wrapperWebView.loadUrl("javascript:try{document.querySelector('#search_jewel > a').click();}catch(e){window.location.href='https://m.facebook.com/search/';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_mainmenu:
-                wrapperWebView.loadUrl("javascript:(function(){document.querySelector('#bookmarks_jewel > a').click();})();");
+                wrapperWebView.loadUrl("javascript:try{document.querySelector('#bookmarks_jewel > a').click();}catch(e){window.location.href='https://m.facebook.com/home.php';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_back:
@@ -139,7 +179,8 @@ public class MainActivity extends AppCompatActivity
                 wrapperWebView.goForward();
                 break;
             case R.id.nav_settings:
-                // TODO
+                Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(i);
                 break;
             default:
                 break;
