@@ -8,6 +8,8 @@ import android.preference.PreferenceManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.util.List;
+
 class WrapperWebViewClient extends WebViewClient {
     private final Activity mActivity;
     private final SharedPreferences mPreferences;
@@ -30,8 +32,11 @@ class WrapperWebViewClient extends WebViewClient {
     }
 
     public void onPageFinished(WebView view, String url) {
-        // Hide the menu bar
-        JavaScriptHelpers.hideMenuBar(view);
+        List<String> uri_segments = Uri.parse(url).getPathSegments();
+        if (!(uri_segments.size() > 0 && uri_segments.get(0).equals("composer"))) {
+            // Hide the menu bar (but not on the composer)
+            JavaScriptHelpers.hideMenuBar(view);
+        }
 
         // Get the currently open tab and check on the navigation menu
         JavaScriptHelpers.updateCurrentTab(view);

@@ -95,6 +95,10 @@ class JavaScriptInterfaces {
 
     @JavascriptInterface
     public void getUserInfo(final String htmlElement) {
+        if (htmlElement == null) {
+            // If there is no result, we don't wanna run
+            return;
+        }
         // Name regex
         Pattern pattern = Pattern.compile("aria-label=\"(.[^\"]*)\"");
         Matcher matcher = pattern.matcher(htmlElement);

@@ -10,7 +10,7 @@ class JavaScriptHelpers {
 
     public static void updateCurrentTab(WebView view) {
         // Get the currently open tab and check on the navigation menu
-        view.loadUrl("javascript:android.getCurrent(document.querySelector('.popoverOpen').id)");
+        view.loadUrl("javascript:try{android.getCurrent(document.querySelector('.popoverOpen').id);}catch(e){null;}");
     }
 
     public static void updateNotificationsService(WebView view, int interval) {
@@ -35,7 +35,7 @@ class JavaScriptHelpers {
 
     public static void updateUserInfo(WebView view) {
         // Get logged in info
-        view.loadUrl("javascript:android.getUserInfo(document.querySelector('form#mbasic_inline_feed_composer').getElementsByClassName('profpic')[0].outerHTML)");
+        view.loadUrl("javascript:try{android.getUserInfo(document.querySelector('form#mbasic_inline_feed_composer').getElementsByClassName('profpic')[0].outerHTML)}catch(e){null;}");
     }
 
 }
