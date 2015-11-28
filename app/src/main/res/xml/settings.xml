@@ -3,11 +3,19 @@
     <CheckBoxPreference
         android:key="messaging_enabled"
         android:title="Messaging"
-        android:defaultValue="true"
-        android:summary="When enabled, will provide access to Facebook Messages. Disable if you have a messaging app."/>
+        android:summary="When enabled, will provide access to Facebook Messages. Disable if you have a messaging app."
+        android:defaultValue="true" />
     <CheckBoxPreference
         android:key="back_button_enabled"
         android:title="Back button"
-        android:defaultValue="false"
-        android:summary="When enabled, the back button will be visible in the draw."/>
+        android:summary="When enabled, the back button will be visible in the draw."
+        android:defaultValue="false" />
+    <ListPreference
+        android:key="service_update_interval"
+        android:title="Update interval"
+        android:summary="The length of time in seconds between notification and message count updates."
+        android:entries="@array/update_interval"
+        android:entryValues="@array/update_interval_values"
+        android:defaultValue="45000" />
+
 </PreferenceScreen>

@@ -36,12 +36,14 @@ class WrapperWebViewClient extends WebViewClient {
         // Get the currently open tab and check on the navigation menu
         JavaScriptHelpers.updateCurrentTab(view);
 
+        int update_interval = Integer.parseInt(mPreferences.getString(SettingsActivity.KEY_PREF_UPDATE_INTERVAL, "45000"));
+
         // Get the notification number
-        JavaScriptHelpers.updateNotifications(view);
+        JavaScriptHelpers.updateNotificationsService(view, update_interval);
 
         // Get the messages number
         if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false)) {
-            JavaScriptHelpers.updateMessages(view);
+            JavaScriptHelpers.updateMessagesService(view, update_interval);
         }
 
         // Get logged in info

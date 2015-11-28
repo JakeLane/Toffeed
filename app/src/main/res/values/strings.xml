@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="default_user">Unknown user</string>
+    <string name="header_profile_pic">Profile Picture</string>
 
     <string name="nav_notifications">Notifications</string>
     <string name="menu_news">News Feed</string>
@@ -12,9 +13,28 @@
     <string name="menu_messages">Messages</string>
     <string name="menu_search">Search</string>
     <string name="menu_mainmenu">Main Menu</string>
+
     <string name="menu_refresh">Reload</string>
-    <string name="header_profile_pic">Profile Picture</string>
     <string name="menu_back">Back</string>
     <string name="menu_forward">Forward</string>
     <string name="menu_settings">Settings</string>
+
+    <string-array name="update_interval">
+        <item>5 seconds</item>
+        <item>15 seconds</item>
+        <item>30 seconds</item>
+        <item>45 seconds</item>
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>5 minutes</item>
+    </string-array>
+    <string-array name="update_interval_values">
+        <item>5000</item>
+        <item>15000</item>
+        <item>30000</item>
+        <item>45000</item>
+        <item>60000</item>
+        <item>120000</item>
+        <item>300000</item>
+    </string-array>
 </resources>

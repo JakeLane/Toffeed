@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_messages:
                 mWrapperWebView.loadUrl("javascript:try{document.querySelector('#messages_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "messages/';}");
+                JavaScriptHelpers.updateMessages(mWrapperWebView);
                 item.setChecked(true);
                 break;
             case R.id.nav_search:
