@@ -1,9 +1,9 @@
 package me.jakelane.wrapperforfacebook;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -20,19 +20,22 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
+import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
+    private final BadgeStyle BADGE_GRAY_FULL = new BadgeStyle(BadgeStyle.Style.LARGE, R.layout.menu_badge_full, Color.parseColor("#8A000000"), Color.parseColor("#8A000000"), Color.WHITE);
 
     // Members
-    WebView wrapperWebView;
-    NavigationView navigationView;
-    private MenuItem notificationButton;
+    private WebView mWrapperWebView;
+    NavigationView mNavigationView;
+    private MenuItem mNotificationButton;
     private SharedPreferences preferences;
 
-    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         // Preferences
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
@@ -40,55 +43,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         PreferenceChangeListener preferenceListener = new PreferenceChangeListener();
         preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
 
-        setContentView(R.layout.activity_main);
+        // Setup the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Setup the DrawLayout
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+        // Create the badge for messages
+        ActionItemBadge.update(this, mNavigationView.getMenu().findItem(R.id.nav_messages), (Drawable) null, BADGE_GRAY_FULL, Integer.MIN_VALUE);
+
+        // Hide buttons if they are disabled
         if (!preferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false)) {
-            navigationView.getMenu().findItem(R.id.nav_messages).setVisible(false);
+            mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(false);
         }
         if (!preferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false)) {
-            navigationView.getMenu().findItem(R.id.nav_back).setVisible(false);
+            mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(false);
         }
 
         // Load the WebView
-        wrapperWebView = (WebView) findViewById(R.id.webview);
+        mWrapperWebView = (WebView) findViewById(R.id.webview);
 
-        WebViewClient client = new WrapperWebViewClient() {
-            @Override
-            public void launchExternalBrowser(String url) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(intent);
-            }
-        };
-        wrapperWebView.setWebViewClient(client);
-        wrapperWebView.addJavascriptInterface(new JavaScriptInterfaces(this), "android");
+        WebViewClient client = new WrapperWebViewClient(this);
+        mWrapperWebView.setWebViewClient(client);
+        mWrapperWebView.addJavascriptInterface(new JavaScriptInterfaces(this), "android");
 
         // Web Settings
-        WebSettings webSettings = wrapperWebView.getSettings();
+        WebSettings webSettings = mWrapperWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         // Get the url to start with
-        wrapperWebView.loadUrl(chooseUrl());
+        mWrapperWebView.loadUrl(chooseUrl());
     }
 
     private String chooseUrl() {
         // Handle intents
         Intent intent = getIntent();
 
-        // Open the proper URL in case the user clicked on a link that brought us here
+        // If there is a intent containing a facebook link, go there
         if (intent.getData() != null) {
             return intent.getData().toString();
         }
 
         // If nothing has happened at this point, we want the default url
-        return "https://m.facebook.com/";
+        return FACEBOOK_URL_BASE;
     }
 
     // Handle preferences changes
@@ -96,9 +99,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
             if (key.equals(SettingsActivity.KEY_PREF_BACK_BUTTON)) {
-                navigationView.getMenu().findItem(R.id.nav_back).setVisible(preferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false));
+                mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(preferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false));
             } else if (key.equals(SettingsActivity.KEY_PREF_MESSAGING)) {
-                navigationView.getMenu().findItem(R.id.nav_messages).setVisible(preferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false));
+                mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(preferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false));
             }
         }
     }
@@ -108,8 +111,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (wrapperWebView.canGoBack()) {
-            wrapperWebView.goBack();
+        } else if (mWrapperWebView.canGoBack()) {
+            mWrapperWebView.goBack();
         } else {
             super.onBackPressed();
         }
@@ -119,9 +122,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        notificationButton = menu.findItem(R.id.action_notifications);
+        mNotificationButton = menu.findItem(R.id.action_notifications);
 
-        ActionItemBadge.update(this, notificationButton, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu_notifications, null), ActionItemBadge.BadgeStyles.RED, Integer.MIN_VALUE);
+        ActionItemBadge.update(this, mNotificationButton, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu_notifications, null), ActionItemBadge.BadgeStyles.RED, Integer.MIN_VALUE);
         return true;
     }
 
@@ -130,18 +133,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle action bar item clicks here
         int id = item.getItemId();
         if (id == R.id.action_notifications) {
-            wrapperWebView.loadUrl("javascript:try{document.querySelector('#search_jewel > a').click();}catch(e){window.location.href='https://m.facebook.com/notifications.php';}");
+            // Load the notification page
+            mWrapperWebView.loadUrl("javascript:try{document.querySelector('#notifications_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "notifications.php';}");
 
             // Uncheck other menu items (sorry)
-            for (int i = 0; i < navigationView.getMenu().size(); i++) {
-                if (navigationView.getMenu().getItem(i).isChecked()) {
-                    navigationView.getMenu().getItem(i).setChecked(false);
+            for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
+                if (mNavigationView.getMenu().getItem(i).isChecked()) {
+                    mNavigationView.getMenu().getItem(i).setChecked(false);
                 }
             }
         }
 
         // Update the notifications
-        JavaScriptHelpers.updateNotifications(wrapperWebView);
+        JavaScriptHelpers.updateNotifications(mWrapperWebView);
         return super.onOptionsItemSelected(item);
     }
 
@@ -150,33 +154,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.nav_news:
-                wrapperWebView.loadUrl("javascript:try{document.querySelector('#feed_jewel > a').click();}catch(e){window.location.href='https://m.facebook.com/home.php';}");
+                mWrapperWebView.loadUrl("javascript:try{document.querySelector('#feed_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "home.php';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_friendreq:
-                wrapperWebView.loadUrl("javascript:try{document.querySelector('#requests_jewel > a').click();}catch(e){window.location.href='https://m.facebook.com/friends/center/requests/';}");
+                mWrapperWebView.loadUrl("javascript:try{document.querySelector('#requests_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "friends/center/requests/';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_messages:
-                wrapperWebView.loadUrl("javascript:try{document.querySelector('#messages_jewel > a').click();}catch(e){window.location.href='https://m.facebook.com/messages/';}");
+                mWrapperWebView.loadUrl("javascript:try{document.querySelector('#messages_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "messages/';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_search:
-                wrapperWebView.loadUrl("javascript:try{document.querySelector('#search_jewel > a').click();}catch(e){window.location.href='https://m.facebook.com/search/';}");
+                mWrapperWebView.loadUrl("javascript:try{document.querySelector('#search_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "search/';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_mainmenu:
-                wrapperWebView.loadUrl("javascript:try{document.querySelector('#bookmarks_jewel > a').click();}catch(e){window.location.href='https://m.facebook.com/home.php';}");
+                mWrapperWebView.loadUrl("javascript:try{document.querySelector('#bookmarks_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "home.php';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_back:
-                wrapperWebView.goBack();
+                mWrapperWebView.goBack();
                 break;
             case R.id.nav_reload:
-                wrapperWebView.reload();
+                mWrapperWebView.reload();
                 break;
             case R.id.nav_forward:
-                wrapperWebView.goForward();
+                mWrapperWebView.goForward();
                 break;
             case R.id.nav_settings:
                 Intent i = new Intent(MainActivity.this, SettingsActivity.class);
@@ -193,10 +197,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void setNotificationNum(int num) {
         if (num > 0) {
-            ActionItemBadge.update(notificationButton, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu_notifications_active, null), num);
+            ActionItemBadge.update(mNotificationButton, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu_notifications_active, null), num);
         } else {
             // Hide the badge and show the washed-out button
-            ActionItemBadge.update(notificationButton, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu_notifications, null), Integer.MIN_VALUE);
+            ActionItemBadge.update(mNotificationButton, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu_notifications, null), Integer.MIN_VALUE);
+        }
+    }
+
+    public void setMessagesNum(int num) {
+        if (num > 0) {
+            ActionItemBadge.update(mNavigationView.getMenu().findItem(R.id.nav_messages), num);
+        } else {
+            // Hide the badge and show the washed-out button
+            ActionItemBadge.update(mNavigationView.getMenu().findItem(R.id.nav_messages), Integer.MIN_VALUE);
         }
     }
 }

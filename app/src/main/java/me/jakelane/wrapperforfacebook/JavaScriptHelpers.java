@@ -5,7 +5,7 @@ import android.webkit.WebView;
 class JavaScriptHelpers {
     public static void hideMenuBar(WebView view) {
         // Hide the menu bar
-        view.loadUrl("javascript:(function(){document.getElementById('page').style.top = '-45px';})();");
+        view.loadUrl("javascript:(function(){document.getElementById('page').style.top='-45px';})();");
     }
 
     public static void updateCurrentTab(WebView view) {
@@ -15,7 +15,12 @@ class JavaScriptHelpers {
 
     public static void updateNotifications(WebView view) {
         // Get the notifications
-        view.loadUrl("javascript:android.getNotifications(document.querySelector('#notifications_jewel').classList.contains('hasCount'))");
+        view.loadUrl("javascript:function notification_service(){android.getNotifications(document.querySelector('#notifications_jewel > a > div > span[data-sigil=count]').innerHTML);setTimeout(notification_service, 60000);}try{notification_service();}catch(e){}");
+    }
+
+    public static void updateMessages(WebView view) {
+        // Get the notifications
+        view.loadUrl("javascript:function message_service(){android.getMessages(document.querySelector('#messages_jewel > a > div > span[data-sigil=count]').innerHTML);setTimeout(message_service, 60000);}try{message_service();}catch(e){}");
     }
 
     public static void updateUserInfo(WebView view) {

@@ -26,21 +26,21 @@ class JavaScriptInterfaces {
             public void run() {
                 switch (value) {
                     case "feed_jewel":
-                        mContext.navigationView.setCheckedItem(R.id.nav_news);
+                        mContext.mNavigationView.setCheckedItem(R.id.nav_news);
                         break;
                     case "requests_jewel":
-                        mContext.navigationView.setCheckedItem(R.id.nav_friendreq);
+                        mContext.mNavigationView.setCheckedItem(R.id.nav_friendreq);
                         break;
                     case "messages_jewel":
-                        mContext.navigationView.setCheckedItem(R.id.nav_messages);
+                        mContext.mNavigationView.setCheckedItem(R.id.nav_messages);
                         break;
                     case "notifications_jewel":
                         break;
                     case "search_jewel":
-                        mContext.navigationView.setCheckedItem(R.id.nav_search);
+                        mContext.mNavigationView.setCheckedItem(R.id.nav_search);
                         break;
                     case "bookmarks_jewel":
-                        mContext.navigationView.setCheckedItem(R.id.nav_mainmenu);
+                        mContext.mNavigationView.setCheckedItem(R.id.nav_mainmenu);
                         break;
                     default:
                         break;
@@ -50,27 +50,7 @@ class JavaScriptInterfaces {
     }
 
     @JavascriptInterface
-    public void getNotifications(final boolean value) {
-        if (value) {
-            mContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mContext.wrapperWebView.loadUrl("javascript:android.getNotificationsNum(document.querySelector('#notifications_jewel > a > div > span[data-sigil=count]').innerHTML)");
-                }
-            });
-        } else {
-            mContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mContext.setNotificationNum(0);
-                }
-            });
-            Log.v("FBWrapper", 0 + " notifications");
-        }
-    }
-
-    @JavascriptInterface
-    public void getNotificationsNum(final String number) {
+    public void getNotifications(final String number) {
         try {
             final int num = Integer.parseInt(number);
             mContext.runOnUiThread(new Runnable() {
@@ -92,6 +72,28 @@ class JavaScriptInterfaces {
     }
 
     @JavascriptInterface
+    public void getMessages(final String number) {
+        try {
+            final int num = Integer.parseInt(number);
+            mContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mContext.setMessagesNum(num);
+                }
+            });
+            Log.v("FBWrapper", number + " messages");
+        } catch (NumberFormatException e) {
+            mContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mContext.setMessagesNum(0);
+                }
+            });
+            Log.v("FBWrapper", 0 + " messages");
+        }
+    }
+
+    @JavascriptInterface
     public void getUserInfo(final String htmlElement) {
         // Name regex
         Pattern pattern = Pattern.compile("aria-label=\"(.[^\"]*)\"");
@@ -107,6 +109,7 @@ class JavaScriptInterfaces {
             mContext.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    Log.v("FBWrapper", "Updated the user's name");
                     ((TextView) mContext.findViewById(R.id.profile_name)).setText(finalName);
                 }
             });
@@ -126,6 +129,7 @@ class JavaScriptInterfaces {
             mContext.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    Log.v("FBWrapper", "Updated the profile picture");
                     Picasso.with(mContext).load(finalProfile_url).error(R.mipmap.ic_launcher).into((ImageView) mContext.findViewById(R.id.profile_picture));
                 }
             });
