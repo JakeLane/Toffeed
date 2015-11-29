@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView mNavigationView;
     private MenuItem mNotificationButton;
     private SharedPreferences preferences;
+    private PreferenceChangeListener preferenceListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Preferences
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        PreferenceChangeListener preferenceListener = new PreferenceChangeListener();
+        preferenceListener = new PreferenceChangeListener();
         preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
 
         // Setup the toolbar
@@ -70,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Load the WebView
         mWrapperWebView = (WebView) findViewById(R.id.webview);
 
-        WebViewClient client = new WrapperWebViewClient(this);
-        mWrapperWebView.setWebViewClient(client);
+        WebViewClient viewClient = new WrapperWebViewClient(this);
+        mWrapperWebView.setWebViewClient(viewClient);
         mWrapperWebView.addJavascriptInterface(new JavaScriptInterfaces(this), "android");
 
         // Web Settings
@@ -79,6 +80,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         webSettings.setJavaScriptEnabled(true);
         // Get the url to start with
         mWrapperWebView.loadUrl(chooseUrl());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Set up a listener whenever a key changes
+        preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Unregister the listener whenever a key changes
+        preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener);
     }
 
     private String chooseUrl() {
