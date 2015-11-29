@@ -14,22 +14,22 @@ class JavaScriptHelpers {
     }
 
     public static void updateNotificationsService(WebView view, int interval) {
-        // Get the notifications
+        // Start the notification service
         view.loadUrl("javascript:function notification_service(){android.getNotifications(document.querySelector('#notifications_jewel > a > div > span[data-sigil=count]').innerHTML);setTimeout(notification_service, " + interval + ");}try{notification_service();}catch(e){}");
     }
 
     public static void updateNotifications(WebView view) {
-        // Get the notifications
+        // Run the notification check once
         view.loadUrl("javascript:android.getNotifications(document.querySelector('#notifications_jewel > a > div > span[data-sigil=count]').innerHTML);");
     }
 
     public static void updateMessagesService(WebView view, int interval) {
-        // Get the notifications
+        // Start the message service
         view.loadUrl("javascript:function message_service(){android.getMessages(document.querySelector('#messages_jewel > a > div > span[data-sigil=count]').innerHTML);setTimeout(message_service, " + interval + ");}try{message_service();}catch(e){}");
     }
 
     public static void updateMessages(WebView view) {
-        // Get the notifications
+        // Run the message check once
         view.loadUrl("javascript:android.getMessages(document.querySelector('#messages_jewel > a > div > span[data-sigil=count]').innerHTML);");
     }
 

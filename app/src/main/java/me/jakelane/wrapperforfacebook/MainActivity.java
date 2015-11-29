@@ -15,23 +15,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
 
+import java.util.Arrays;
+import java.util.List;
+
+import im.delight.android.webview.AdvancedWebView;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
+    private static final List<String> HOSTNAMES = Arrays.asList("facebook.com", "m.facebook.com", "touch.facebook.com", "www.facebook.com");
     private final BadgeStyle BADGE_GRAY_FULL = new BadgeStyle(BadgeStyle.Style.LARGE, R.layout.menu_badge_full, Color.parseColor("#8A000000"), Color.parseColor("#8A000000"), Color.WHITE);
 
     // Members
-    private WebView mWrapperWebView;
+    private AdvancedWebView mWebView;
     NavigationView mNavigationView;
     private MenuItem mNotificationButton;
     private SharedPreferences preferences;
-    private PreferenceChangeListener preferenceListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Preferences
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        preferenceListener = new PreferenceChangeListener();
+        PreferenceChangeListener preferenceListener = new PreferenceChangeListener();
         preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
 
         // Setup the toolbar
@@ -69,31 +71,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         // Load the WebView
-        mWrapperWebView = (WebView) findViewById(R.id.webview);
+        mWebView = (AdvancedWebView) findViewById(R.id.webview);
+        mWebView.addPermittedHostnames(HOSTNAMES);
 
-        WebViewClient viewClient = new WrapperWebViewClient(this);
-        mWrapperWebView.setWebViewClient(viewClient);
-        mWrapperWebView.addJavascriptInterface(new JavaScriptInterfaces(this), "android");
+        mWebView.setListener(this, new WebViewListener(this, mWebView));
+        mWebView.addJavascriptInterface(new JavaScriptInterfaces(this), "android");
 
-        // Web Settings
-        WebSettings webSettings = mWrapperWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
         // Get the url to start with
-        mWrapperWebView.loadUrl(chooseUrl());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Set up a listener whenever a key changes
-        preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // Unregister the listener whenever a key changes
-        preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener);
+        mWebView.loadUrl(chooseUrl());
     }
 
     private String chooseUrl() {
@@ -126,8 +111,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (mWrapperWebView.canGoBack()) {
-            mWrapperWebView.goBack();
+        } else if (mWebView.canGoBack()) {
+            mWebView.goBack();
         } else {
             super.onBackPressed();
         }
@@ -149,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         if (id == R.id.action_notifications) {
             // Load the notification page
-            mWrapperWebView.loadUrl("javascript:try{document.querySelector('#notifications_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "notifications.php';}");
+            mWebView.loadUrl("javascript:try{document.querySelector('#notifications_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "notifications.php';}");
 
             // Uncheck other menu items (sorry)
             for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
@@ -160,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         // Update the notifications
-        JavaScriptHelpers.updateNotifications(mWrapperWebView);
+        JavaScriptHelpers.updateNotifications(mWebView);
         return super.onOptionsItemSelected(item);
     }
 
@@ -169,34 +154,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.nav_news:
-                mWrapperWebView.loadUrl("javascript:try{document.querySelector('#feed_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "home.php';}");
+                mWebView.loadUrl("javascript:try{document.querySelector('#feed_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "home.php';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_friendreq:
-                mWrapperWebView.loadUrl("javascript:try{document.querySelector('#requests_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "friends/center/requests/';}");
+                mWebView.loadUrl("javascript:try{document.querySelector('#requests_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "friends/center/requests/';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_messages:
-                mWrapperWebView.loadUrl("javascript:try{document.querySelector('#messages_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "messages/';}");
-                JavaScriptHelpers.updateMessages(mWrapperWebView);
+                mWebView.loadUrl("javascript:try{document.querySelector('#messages_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "messages/';}");
+                JavaScriptHelpers.updateMessages(mWebView);
                 item.setChecked(true);
                 break;
             case R.id.nav_search:
-                mWrapperWebView.loadUrl("javascript:try{document.querySelector('#search_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "search/';}");
+                mWebView.loadUrl("javascript:try{document.querySelector('#search_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "search/';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_mainmenu:
-                mWrapperWebView.loadUrl("javascript:try{document.querySelector('#bookmarks_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "home.php';}");
+                mWebView.loadUrl("javascript:try{document.querySelector('#bookmarks_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "home.php';}");
                 item.setChecked(true);
                 break;
             case R.id.nav_back:
-                mWrapperWebView.goBack();
+                mWebView.goBack();
                 break;
             case R.id.nav_reload:
-                mWrapperWebView.reload();
+                mWebView.reload();
                 break;
             case R.id.nav_forward:
-                mWrapperWebView.goForward();
+                mWebView.goForward();
                 break;
             case R.id.nav_settings:
                 Intent i = new Intent(MainActivity.this, SettingsActivity.class);
