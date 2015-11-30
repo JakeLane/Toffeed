@@ -17,5 +17,10 @@
         android:entries="@array/update_interval"
         android:entryValues="@array/update_interval_values"
         android:defaultValue="45000" />
+    <CheckBoxPreference
+        android:key="location_enabled"
+        android:title="Location access"
+        android:summary="Enable this to allow Facebook to obtain your location."
+        android:defaultValue="false" />
 
 </PreferenceScreen>

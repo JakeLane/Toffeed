@@ -9,6 +9,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_PREF_BACK_BUTTON = "back_button_enabled";
     public static final String KEY_PREF_MESSAGING = "messaging_enabled";
     public static final String KEY_PREF_UPDATE_INTERVAL = "service_update_interval";
+    public static final String KEY_PREF_LOCATION = "location_enabled";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

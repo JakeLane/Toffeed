@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Load the WebView
         mWebView = (AdvancedWebView) findViewById(R.id.webview);
         mWebView.addPermittedHostnames(HOSTNAMES);
+        mWebView.setGeolocationEnabled(preferences.getBoolean(SettingsActivity.KEY_PREF_LOCATION, false));
 
         mWebView.setListener(this, new WebViewListener(this, mWebView));
         mWebView.addJavascriptInterface(new JavaScriptInterfaces(this), "android");
@@ -98,10 +99,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private class PreferenceChangeListener implements SharedPreferences.OnSharedPreferenceChangeListener {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-            if (key.equals(SettingsActivity.KEY_PREF_BACK_BUTTON)) {
-                mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(preferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false));
-            } else if (key.equals(SettingsActivity.KEY_PREF_MESSAGING)) {
-                mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(preferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false));
+            switch (key) {
+                case SettingsActivity.KEY_PREF_BACK_BUTTON:
+                    mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(preferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false));
+                    break;
+                case SettingsActivity.KEY_PREF_MESSAGING:
+                    mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(preferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false));
+                    break;
+                case SettingsActivity.KEY_PREF_LOCATION:
+                    mWebView.setGeolocationEnabled(preferences.getBoolean(SettingsActivity.KEY_PREF_LOCATION, false));
+                    break;
             }
         }
     }
