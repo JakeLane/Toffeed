@@ -26,7 +26,7 @@ import im.delight.android.webview.AdvancedWebView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
-    private static final List<String> HOSTNAMES = Arrays.asList("facebook.com", "m.facebook.com", "touch.facebook.com", "www.facebook.com");
+    private static final List<String> HOSTNAMES = Arrays.asList("facebook.com", "*.facebook.com");
     private final BadgeStyle BADGE_GRAY_FULL = new BadgeStyle(BadgeStyle.Style.LARGE, R.layout.menu_badge_full, Color.parseColor("#8A000000"), Color.parseColor("#8A000000"), Color.WHITE);
 
     // Members
