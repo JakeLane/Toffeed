@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (!preferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false)) {
             mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(false);
         }
+        if (!preferences.getBoolean(SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON, false)) {
+            mNavigationView.getMenu().findItem(R.id.nav_jump_top).setVisible(false);
+        }
         if (!preferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false)) {
             mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(false);
         }
@@ -100,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
             switch (key) {
+                case SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON:
+                    mNavigationView.getMenu().findItem(R.id.nav_jump_top).setVisible(prefs.getBoolean(SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON, false));
+                    break;
                 case SettingsActivity.KEY_PREF_BACK_BUTTON:
                     mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(prefs.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false));
                     break;

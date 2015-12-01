@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 public class SettingsActivity extends AppCompatActivity {
+    public static final String KEY_PREF_JUMP_TOP_BUTTON = "jump_top_enabled";
     public static final String KEY_PREF_BACK_BUTTON = "back_button_enabled";
     public static final String KEY_PREF_MESSAGING = "messaging_enabled";
     public static final String KEY_PREF_UPDATE_INTERVAL = "service_update_interval";
