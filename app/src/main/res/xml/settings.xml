@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
+        android:key="location_enabled"
+        android:title="@string/location_enabled_title"
+        android:summary="@string/location_enabled_summary"
+        android:defaultValue="false" />
+    <CheckBoxPreference
         android:key="messaging_enabled"
-        android:title="Messaging"
-        android:summary="When enabled, will provide access to Facebook Messages. Disable if you have a messaging app."
+        android:title="@string/messaging_enabled_title"
+        android:summary="@string/messaging_enabled_summary"
         android:defaultValue="true" />
     <CheckBoxPreference
         android:key="back_button_enabled"
-        android:title="Back button"
-        android:summary="When enabled, the back button will be visible in the draw."
+        android:title="@string/back_button_enabled_title"
+        android:summary="@string/back_button_enabled_summary"
+        android:defaultValue="false" />
+    <CheckBoxPreference
+        android:key="jump_top_enabled"
+        android:title="@string/jump_top_enabled_title"
+        android:summary="@string/jump_top_enabled_summary"
         android:defaultValue="false" />
     <ListPreference
         android:key="service_update_interval"
-        android:title="Update interval"
-        android:summary="The length of time in seconds between notification and message count updates."
-        android:entries="@array/update_interval"
-        android:entryValues="@array/update_interval_values"
+        android:title="@string/service_update_interval_title"
+        android:summary="@string/service_update_interval_summary"
+        android:entries="@array/service_update_interval"
+        android:entryValues="@array/service_update_interval_values"
         android:defaultValue="45000" />
-    <CheckBoxPreference
-        android:key="location_enabled"
-        android:title="Location access"
-        android:summary="Enable this to allow Facebook to obtain your location."
-        android:defaultValue="false" />
-
 </PreferenceScreen>

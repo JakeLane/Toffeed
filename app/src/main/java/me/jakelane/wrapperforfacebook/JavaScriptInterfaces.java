@@ -134,7 +134,7 @@ class JavaScriptInterfaces {
                 @Override
                 public void run() {
                     Log.v("FBWrapper", "Updated the profile picture");
-                    Picasso.with(mContext).load(finalProfile_url).error(R.mipmap.ic_launcher).into((ImageView) mContext.findViewById(R.id.profile_picture));
+                    Picasso.with(mContext).load(finalProfile_url).error(R.drawable.side_profile).into((ImageView) mContext.findViewById(R.id.profile_picture));
                 }
             });
         }

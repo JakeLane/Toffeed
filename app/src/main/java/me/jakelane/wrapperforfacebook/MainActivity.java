@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AdvancedWebView mWebView;
     NavigationView mNavigationView;
     private MenuItem mNotificationButton;
-    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Preferences
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         PreferenceChangeListener preferenceListener = new PreferenceChangeListener();
         preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
 
@@ -101,13 +101,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
             switch (key) {
                 case SettingsActivity.KEY_PREF_BACK_BUTTON:
-                    mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(preferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false));
+                    mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(prefs.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false));
                     break;
                 case SettingsActivity.KEY_PREF_MESSAGING:
-                    mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(preferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false));
+                    mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(prefs.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false));
                     break;
                 case SettingsActivity.KEY_PREF_LOCATION:
-                    mWebView.setGeolocationEnabled(preferences.getBoolean(SettingsActivity.KEY_PREF_LOCATION, false));
+                    mWebView.setGeolocationEnabled(prefs.getBoolean(SettingsActivity.KEY_PREF_LOCATION, false));
+                    break;
+                default:
+                    Log.e("FBWrapper", "Encountered an unhandled preference");
                     break;
             }
         }
@@ -180,6 +183,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_mainmenu:
                 mWebView.loadUrl("javascript:try{document.querySelector('#bookmarks_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "home.php';}");
                 item.setChecked(true);
+                break;
+            case R.id.nav_jump_top:
+                mWebView.scrollTo(0,0);
                 break;
             case R.id.nav_back:
                 mWebView.goBack();
