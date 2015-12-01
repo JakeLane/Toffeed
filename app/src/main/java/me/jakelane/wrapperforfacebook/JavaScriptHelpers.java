@@ -5,7 +5,7 @@ import android.webkit.WebView;
 class JavaScriptHelpers {
     public static void hideMenuBar(WebView view) {
         // Hide the menu bar
-        view.loadUrl("javascript:(function(){document.getElementById('page').style.top='-45px';})();");
+        view.loadUrl("javascript:try{if(!document.URL.match('facebook\\.com\\/composer')){document.getElementById('page').style.top='-45px';}}catch(e){}android.loadingCompleted();");
     }
 
     public static void updateCurrentTab(WebView view) {

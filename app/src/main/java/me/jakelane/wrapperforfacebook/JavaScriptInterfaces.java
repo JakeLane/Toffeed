@@ -20,6 +20,16 @@ class JavaScriptInterfaces {
     }
 
     @JavascriptInterface
+    public void loadingCompleted() {
+        mContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mContext.setLoading(false);
+            }
+        });
+    }
+
+    @JavascriptInterface
     public void getCurrent(final String value) {
         mContext.runOnUiThread(new Runnable() {
             @Override

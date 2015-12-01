@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
@@ -81,8 +82,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mWebView.setListener(this, new WebViewListener(this, mWebView));
         mWebView.addJavascriptInterface(new JavaScriptInterfaces(this), "android");
 
+        mWebView.getSettings().setBlockNetworkImage(preferences.getBoolean(SettingsActivity.KEY_PREF_STOP_IMAGES, false));
+
         // Get the url to start with
         mWebView.loadUrl(chooseUrl());
+    }
+
+    public void setLoading(boolean loading) {
+        // Toggle the WebView and Spinner visiblity
+        findViewById(R.id.loadingWebView).setVisibility(loading ? View.VISIBLE : View.GONE);
+        mWebView.setVisibility(loading ? View.GONE : View.VISIBLE);
     }
 
     private String chooseUrl() {
@@ -106,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON:
                     mNavigationView.getMenu().findItem(R.id.nav_jump_top).setVisible(prefs.getBoolean(SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON, false));
                     break;
+                case SettingsActivity.KEY_PREF_STOP_IMAGES:
+                    mWebView.getSettings().setBlockNetworkImage(prefs.getBoolean(SettingsActivity.KEY_PREF_STOP_IMAGES, false));
                 case SettingsActivity.KEY_PREF_BACK_BUTTON:
                     mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(prefs.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false));
                     break;

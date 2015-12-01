@@ -1,6 +1,5 @@
 package me.jakelane.wrapperforfacebook;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -9,31 +8,29 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.webkit.WebView;
 
-import java.util.List;
-
 import im.delight.android.webview.AdvancedWebView;
 
 class WebViewListener implements AdvancedWebView.Listener {
-    private final Activity mActivity;
+    private final MainActivity mActivity;
     private final SharedPreferences mPreferences;
     private final WebView mWebView;
 
-    WebViewListener(Activity activity, WebView view) {
+    WebViewListener(MainActivity activity, WebView view) {
         mActivity = activity;
         mWebView = view;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
     }
 
     @Override
-    public void onPageStarted(String url, Bitmap favicon) {}
+    public void onPageStarted(String url, Bitmap favicon) {
+        // Show the spinner and hide the WebView
+        mActivity.setLoading(true);
+    }
 
     @Override
     public void onPageFinished(String url) {
-        List<String> uri_segments = Uri.parse(url).getPathSegments();
-        if (!(uri_segments.size() > 0 && uri_segments.get(0).equals("composer"))) {
-            // Hide the menu bar (but not on the composer)
-            JavaScriptHelpers.hideMenuBar(mWebView);
-        }
+        // Hide the menu bar (but not on the composer)
+        JavaScriptHelpers.hideMenuBar(mWebView);
 
         // Get the currently open tab and check on the navigation menu
         JavaScriptHelpers.updateCurrentTab(mWebView);

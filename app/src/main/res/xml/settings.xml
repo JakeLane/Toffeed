@@ -6,6 +6,11 @@
         android:summary="@string/location_enabled_summary"
         android:defaultValue="false" />
     <CheckBoxPreference
+        android:key="stop_images"
+        android:title="@string/stop_images_title"
+        android:summary="@string/stop_images_summary"
+        android:defaultValue="false" />
+    <CheckBoxPreference
         android:key="messaging_enabled"
         android:title="@string/messaging_enabled_title"
         android:summary="@string/messaging_enabled_summary"

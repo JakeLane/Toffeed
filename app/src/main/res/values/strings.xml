@@ -23,6 +23,9 @@
     <string name="location_enabled_title">Location access</string>
     <string name="location_enabled_summary">Enable this to allow Facebook to obtain your location.</string>
 
+    <string name="stop_images_title">Don\'t load images</string>
+    <string name="stop_images_summary">When enabled, will not download images. Some images may remain in the cache.</string>
+
     <string name="messaging_enabled_title">Messaging</string>
     <string name="messaging_enabled_summary">When enabled, will provide access to Facebook Messages. Disable if you have a messaging app.</string>
 
