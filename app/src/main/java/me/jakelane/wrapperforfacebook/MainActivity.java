@@ -17,9 +17,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
+import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +29,7 @@ import java.util.List;
 import im.delight.android.webview.AdvancedWebView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
+    static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
     private static final List<String> HOSTNAMES = Arrays.asList("facebook.com", "*.facebook.com");
     private final BadgeStyle BADGE_GRAY_FULL = new BadgeStyle(BadgeStyle.Style.LARGE, R.layout.menu_badge_full, Color.parseColor("#8A000000"), Color.parseColor("#8A000000"), Color.WHITE);
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AdvancedWebView mWebView;
     NavigationView mNavigationView;
     private MenuItem mNotificationButton;
+    private String userID = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,21 +116,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
             switch (key) {
                 case SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON:
-                    mNavigationView.getMenu().findItem(R.id.nav_jump_top).setVisible(prefs.getBoolean(SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON, false));
+                    mNavigationView.getMenu().findItem(R.id.nav_jump_top).setVisible(prefs.getBoolean(key, false));
                     break;
                 case SettingsActivity.KEY_PREF_STOP_IMAGES:
-                    mWebView.getSettings().setBlockNetworkImage(prefs.getBoolean(SettingsActivity.KEY_PREF_STOP_IMAGES, false));
+                    mWebView.getSettings().setBlockNetworkImage(prefs.getBoolean(key, false));
                 case SettingsActivity.KEY_PREF_BACK_BUTTON:
-                    mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(prefs.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false));
+                    mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(prefs.getBoolean(key, false));
                     break;
                 case SettingsActivity.KEY_PREF_MESSAGING:
-                    mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(prefs.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false));
+                    mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(prefs.getBoolean(key, false));
                     break;
                 case SettingsActivity.KEY_PREF_LOCATION:
-                    mWebView.setGeolocationEnabled(prefs.getBoolean(SettingsActivity.KEY_PREF_LOCATION, false));
+                    mWebView.setGeolocationEnabled(prefs.getBoolean(key, false));
                     break;
                 default:
-                    Log.e("FBWrapper", "Encountered an unhandled preference");
                     break;
             }
         }
@@ -224,6 +226,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void updateUserInfo() {
+        // Facebook appears to have TWO cookies that seem to contain the id (or sometime garbage)
+        String temp = Helpers.getCookie("c_user");
+        if (temp == null) {
+            temp = Helpers.getCookie("m_user");
+        }
+
+        if (temp != null && !temp.equals(userID)) {
+            userID = temp;
+            Log.v(Helpers.LogTag, temp);
+            Picasso.with(this).load("https://graph.facebook.com/" + userID + "/picture?type=normal").error(R.drawable.side_profile).into((ImageView) findViewById(R.id.profile_picture));
+        }
     }
 
     public void setNotificationNum(int num) {

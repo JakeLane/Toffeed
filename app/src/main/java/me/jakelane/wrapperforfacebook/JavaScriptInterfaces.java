@@ -2,10 +2,7 @@ package me.jakelane.wrapperforfacebook;
 
 import android.util.Log;
 import android.webkit.JavascriptInterface;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -128,26 +125,5 @@ class JavaScriptInterfaces {
                 }
             });
         }
-
-        // Profile picture regex
-        pattern = Pattern.compile("url\\(&quot;(.[^\"]*)&quot;\\)");
-        matcher = pattern.matcher(htmlElement);
-
-        String profile_url = null;
-        if (matcher.find()) {
-            profile_url = android.text.Html.fromHtml(matcher.group(1)).toString();
-        }
-
-        if (profile_url != null) {
-            final String finalProfile_url = profile_url;
-            mContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.v("FBWrapper", "Updated the profile picture");
-                    Picasso.with(mContext).load(finalProfile_url).error(R.drawable.side_profile).into((ImageView) mContext.findViewById(R.id.profile_picture));
-                }
-            });
-        }
-
     }
 }
