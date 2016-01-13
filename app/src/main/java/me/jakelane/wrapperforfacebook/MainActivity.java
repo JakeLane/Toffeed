@@ -10,6 +10,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView mNavigationView;
     private MenuItem mNotificationButton;
     private String userID = null;
+    private SwipeRefreshLayout swipeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(false);
         }
 
+        // Start the Swipe to reload listener
+        swipeView = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
+        swipeView.setColorSchemeResources(R.color.colorPrimary);
+        swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mWebView.reload();
+            }
+        });
+
         // Load the WebView
         mWebView = (AdvancedWebView) findViewById(R.id.webview);
         mWebView.addPermittedHostnames(HOSTNAMES);
@@ -95,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Toggle the WebView and Spinner visiblity
         findViewById(R.id.loadingWebView).setVisibility(loading ? View.VISIBLE : View.GONE);
         mWebView.setVisibility(loading ? View.GONE : View.VISIBLE);
+        swipeView.setRefreshing(loading);
     }
 
     private String chooseUrl() {
