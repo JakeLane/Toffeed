@@ -18,11 +18,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
-import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,12 +44,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AdvancedWebView mWebView;
     NavigationView mNavigationView;
     private MenuItem mNotificationButton;
-    private String userID = null;
     private SwipeRefreshLayout swipeView;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_main);
 
         // Preferences
@@ -99,15 +106,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mWebView.getSettings().setBlockNetworkImage(preferences.getBoolean(SettingsActivity.KEY_PREF_STOP_IMAGES, false));
 
-        // Get the url to start with
-        mWebView.loadUrl(chooseUrl());
+        callbackManager = CallbackManager.Factory.create();
+
+        FacebookCallback<LoginResult> loginResult = new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                checkLoggedInState();
+                mWebView.loadUrl(chooseUrl());
+            }
+
+            @Override
+            public void onCancel() {
+                checkLoggedInState();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                // TODO
+                Toast.makeText(getApplicationContext(), "Something went wrong, please try logging in again", Toast.LENGTH_LONG).show();
+                Log.e(Helpers.LogTag, error.toString());
+                LoginManager.getInstance().logOut();
+                checkLoggedInState();
+            }
+        };
+
+        LoginManager.getInstance().registerCallback(callbackManager, loginResult);
+
+        if (checkLoggedInState()) {
+            mWebView.loadUrl(chooseUrl());
+        }
     }
 
     public void setLoading(boolean loading) {
-        // Toggle the WebView and Spinner visiblity
-        findViewById(R.id.loadingWebView).setVisibility(loading ? View.VISIBLE : View.GONE);
+        // Toggle the WebView and Spinner visibility
         mWebView.setVisibility(loading ? View.GONE : View.VISIBLE);
         swipeView.setRefreshing(loading);
+    }
+
+    public boolean checkLoggedInState() {
+        if (AccessToken.getCurrentAccessToken() != null && Helpers.getCookie("c_user") != null) {
+            findViewById(R.id.webview).setVisibility(View.VISIBLE);
+            Log.v(Helpers.LogTag, "LOGGED IN");
+            return true;
+        } else {
+            Helpers.loginPrompt(swipeView);
+            findViewById(R.id.webview).setVisibility(View.GONE);
+
+            Log.v(Helpers.LogTag, "LOGGED OUT");
+            return false;
+        }
     }
 
     private String chooseUrl() {
@@ -146,6 +193,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -217,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 item.setChecked(true);
                 break;
             case R.id.nav_jump_top:
-                mWebView.scrollTo(0,0);
+                mWebView.scrollTo(0, 0);
                 break;
             case R.id.nav_back:
                 mWebView.goBack();
@@ -229,8 +282,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mWebView.goForward();
                 break;
             case R.id.nav_settings:
-                Intent i = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(i);
+                Intent settingsActivity = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(settingsActivity);
                 break;
             default:
                 break;
@@ -239,20 +292,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public void updateUserInfo() {
-        // Facebook appears to have TWO cookies that seem to contain the id (or sometime garbage)
-        String temp = Helpers.getCookie("c_user");
-        if (temp == null) {
-            temp = Helpers.getCookie("m_user");
-        }
-
-        if (temp != null && !temp.equals(userID)) {
-            userID = temp;
-            Log.v(Helpers.LogTag, temp);
-            Picasso.with(this).load("https://graph.facebook.com/" + userID + "/picture?type=normal").error(R.drawable.side_profile).into((ImageView) findViewById(R.id.profile_picture));
-        }
     }
 
     public void setNotificationNum(int num) {
