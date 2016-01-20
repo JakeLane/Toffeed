@@ -1,12 +1,16 @@
 package me.jakelane.wrapperforfacebook;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +22,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -25,10 +31,17 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem mNotificationButton;
     private SwipeRefreshLayout swipeView;
     private CallbackManager callbackManager;
+    private Snackbar loginSnackbar = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,8 +125,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FacebookCallback<LoginResult> loginResult = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                checkLoggedInState();
                 mWebView.loadUrl(chooseUrl());
+                updateUserInfo();
             }
 
             @Override
@@ -122,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(FacebookException error) {
-                // TODO
                 Toast.makeText(getApplicationContext(), "Something went wrong, please try logging in again", Toast.LENGTH_LONG).show();
                 Log.e(Helpers.LogTag, error.toString());
                 LoginManager.getInstance().logOut();
@@ -134,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (checkLoggedInState()) {
             mWebView.loadUrl(chooseUrl());
+            updateUserInfo();
         }
     }
 
@@ -144,17 +158,65 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public boolean checkLoggedInState() {
-        if (AccessToken.getCurrentAccessToken() != null && Helpers.getCookie("c_user") != null) {
-            findViewById(R.id.webview).setVisibility(View.VISIBLE);
+        if (loginSnackbar != null) {
+            loginSnackbar.dismiss();
+        }
+
+        if (AccessToken.getCurrentAccessToken() != null && Helpers.getCookie() != null) {
+            // Not logged in (possibly logged into Facebook OAuth and/or webapp)
+            mWebView.setVisibility(View.VISIBLE);
+            mNavigationView.getMenu().findItem(R.id.nav_fblogin).setVisible(false);
             Log.v(Helpers.LogTag, "LOGGED IN");
             return true;
         } else {
-            Helpers.loginPrompt(swipeView);
-            findViewById(R.id.webview).setVisibility(View.GONE);
+            loginSnackbar = Helpers.loginPrompt(swipeView);
+            mWebView.setVisibility(View.GONE);
+            mNavigationView.getMenu().findItem(R.id.nav_fblogin).setVisible(true);
 
             Log.v(Helpers.LogTag, "LOGGED OUT");
             return false;
         }
+    }
+
+    private void updateUserInfo() {
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                // Update header
+                try {
+                    // Set the user's name under the header
+                    ((TextView) findViewById(R.id.profile_name)).setText(object.getString("name"));
+
+                    // Set the cover photo with resizing
+                    final View header = findViewById(R.id.header_layout);
+                    Picasso.with(getApplicationContext()).load(object.getJSONObject("cover").getString("source")).resize(header.getWidth(), header.getHeight()).centerCrop().into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            header.setBackground(new BitmapDrawable(getResources(), bitmap));
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Drawable errorDrawable) {
+
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                        }
+                    });
+
+                    Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + object.getString("id") + "/picture?type=large").error(R.drawable.side_profile).into((ImageView) findViewById(R.id.profile_picture));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,cover");
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 
     private String chooseUrl() {
@@ -268,6 +330,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_mainmenu:
                 mWebView.loadUrl("javascript:try{document.querySelector('#bookmarks_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "home.php';}");
                 item.setChecked(true);
+                break;
+            case R.id.nav_fblogin:
+                LoginManager.getInstance().logInWithReadPermissions(this, Helpers.FB_PERMISSIONS);
+
                 break;
             case R.id.nav_jump_top:
                 mWebView.scrollTo(0, 0);

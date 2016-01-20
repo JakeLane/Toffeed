@@ -26,6 +26,10 @@
 
     <group android:checkableBehavior="none">
         <item
+            android:id="@+id/nav_fblogin"
+            android:icon="@drawable/ic_menu_fblogin"
+            android:title="@string/menu_fblogin" />
+        <item
             android:id="@+id/nav_jump_top"
             android:icon="@drawable/ic_menu_jump_top"
             android:title="@string/menu_jump_top" />

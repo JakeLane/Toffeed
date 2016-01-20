@@ -2,10 +2,6 @@ package me.jakelane.wrapperforfacebook;
 
 import android.util.Log;
 import android.webkit.JavascriptInterface;
-import android.widget.TextView;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
 class JavaScriptInterfaces {
@@ -97,33 +93,6 @@ class JavaScriptInterfaces {
                 }
             });
             Log.v("FBWrapper", 0 + " messages");
-        }
-    }
-
-    @JavascriptInterface
-    public void getUserInfo(final String htmlElement) {
-        if (htmlElement == null) {
-            // If there is no result, we don't wanna run
-            return;
-        }
-        // Name regex
-        Pattern pattern = Pattern.compile("aria-label=\"(.[^\"]*)\"");
-        Matcher matcher = pattern.matcher(htmlElement);
-
-        String name = null;
-        if (matcher.find()) {
-            name = matcher.group(1);
-        }
-
-        if (name != null) {
-            final String finalName = name;
-            mContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.v("FBWrapper", "Updated the user's name");
-                    ((TextView) mContext.findViewById(R.id.profile_name)).setText(finalName);
-                }
-            });
         }
     }
 }

@@ -45,9 +45,6 @@ class WebViewListener implements AdvancedWebView.Listener {
             JavaScriptHelpers.updateMessagesService(mWebView, update_interval);
         }
 
-        // Update the user's name
-        JavaScriptHelpers.updateUserInfo(mWebView);
-
         // Make sure the user is logged in
         mActivity.checkLoggedInState();
     }

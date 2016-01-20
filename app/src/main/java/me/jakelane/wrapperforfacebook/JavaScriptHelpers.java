@@ -32,10 +32,4 @@ class JavaScriptHelpers {
         // Run the message check once
         view.loadUrl("javascript:android.getMessages(document.querySelector('#messages_jewel > a > div > span[data-sigil=count]').innerHTML);");
     }
-
-    public static void updateUserInfo(WebView view) {
-        // Get logged in info
-        view.loadUrl("javascript:try{android.getUserInfo(document.querySelector('form#mbasic_inline_feed_composer').getElementsByClassName('profpic')[0].outerHTML)}catch(e){null;}");
-    }
-
 }

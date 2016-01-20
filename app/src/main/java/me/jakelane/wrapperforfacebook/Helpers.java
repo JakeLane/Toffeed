@@ -12,10 +12,10 @@ import java.util.List;
 
 class Helpers {
     public static final String LogTag = "FBWrapper";
-    private static final List<String> FB_PERMISSIONS = Arrays.asList("public_profile", "user_friends");
+    protected static final List<String> FB_PERMISSIONS = Arrays.asList("public_profile", "user_friends");
 
     // Method to retrieve a single cookie
-    public static String getCookie(String cookieName){
+    public static String getCookie() {
         CookieManager cookieManager = CookieManager.getInstance();
         String cookies = cookieManager.getCookie(MainActivity.FACEBOOK_URL_BASE);
         String[] temp = cookies.split(";");
@@ -29,8 +29,8 @@ class Helpers {
         return null;
     }
 
-    public static void loginPrompt(final View view) {
-        final Snackbar snackBar = Snackbar.make(view, "You are not logged in", Snackbar.LENGTH_INDEFINITE);
+    public static Snackbar loginPrompt(final View view) {
+        final Snackbar snackBar = Snackbar.make(view, "You are not logged in", Snackbar.LENGTH_LONG);
         snackBar.setAction("Login", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,5 +38,6 @@ class Helpers {
             }
         });
         snackBar.show();
+        return snackBar;
     }
 }
