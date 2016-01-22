@@ -1,6 +1,5 @@
 package me.jakelane.wrapperforfacebook;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -33,6 +32,7 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         };
 
+        LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_ONLY);
         LoginManager.getInstance().registerCallback(callbackManager, loginResult);
 
         if (checkLoggedInState()) {
@@ -333,7 +334,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_fblogin:
                 LoginManager.getInstance().logInWithReadPermissions(this, Helpers.FB_PERMISSIONS);
-
                 break;
             case R.id.nav_jump_top:
                 mWebView.scrollTo(0, 0);

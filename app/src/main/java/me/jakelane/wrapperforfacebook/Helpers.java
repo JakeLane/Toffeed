@@ -12,7 +12,7 @@ import java.util.List;
 
 class Helpers {
     public static final String LogTag = "FBWrapper";
-    protected static final List<String> FB_PERMISSIONS = Arrays.asList("public_profile", "user_friends");
+    static final List<String> FB_PERMISSIONS = Arrays.asList("public_profile", "user_friends");
 
     // Method to retrieve a single cookie
     public static String getCookie() {
