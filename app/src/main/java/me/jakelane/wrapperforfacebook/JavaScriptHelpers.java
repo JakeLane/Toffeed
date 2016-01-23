@@ -32,4 +32,9 @@ class JavaScriptHelpers {
         // Run the message check once
         view.loadUrl("javascript:android.getMessages(document.querySelector('#messages_jewel > a > div > span[data-sigil=count]').innerHTML);");
     }
+
+    public static void loadComposer(WebView view) {
+        // Load the composer if there is the 'loadcomposer' param
+        view.loadUrl("javascript:if(location.search=='?loadcomposer'){document.querySelector('button[name=\"view_overview\"]').click();};");
+    }
 }

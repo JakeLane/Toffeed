@@ -29,6 +29,9 @@ class WebViewListener implements AdvancedWebView.Listener {
 
     @Override
     public void onPageFinished(String url) {
+        // Load the composer if there is the 'loadcomposer' param
+        JavaScriptHelpers.loadComposer(mWebView);
+
         // Hide the menu bar (but not on the composer)
         JavaScriptHelpers.hideMenuBar(mWebView);
 

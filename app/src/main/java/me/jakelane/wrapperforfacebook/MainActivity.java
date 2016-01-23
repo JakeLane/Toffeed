@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.res.ResourcesCompat;
@@ -23,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -110,6 +110,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        // Inflate the FAB
+        FloatingActionButton webviewFab = (FloatingActionButton) findViewById(R.id.webviewFAB);
+        webviewFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                mWebView.loadUrl("javascript:try{document.querySelector('button[name=\"view_overview\"]').click();}catch(_){window.location.href='http://m.facebook.com/?loadcomposer';}");
+            }
+        });
+
         // Load the WebView
         mWebView = (AdvancedWebView) findViewById(R.id.webview);
         mWebView.addPermittedHostnames(HOSTNAMES);
@@ -136,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(getApplicationContext(), "Something went wrong, please try logging in again", Toast.LENGTH_LONG).show();
+                Snackbar.make(mWebView, "Something went wrong, please try logging in again", Snackbar.LENGTH_LONG).show();
                 Log.e(Helpers.LogTag, error.toString());
                 LoginManager.getInstance().logOut();
                 checkLoggedInState();
