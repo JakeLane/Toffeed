@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -160,115 +161,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void setLoading(boolean loading) {
-        // Toggle the WebView and Spinner visibility
-        mWebView.setVisibility(loading ? View.GONE : View.VISIBLE);
-        swipeView.setRefreshing(loading);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mWebView.onResume();
     }
 
-    public boolean checkLoggedInState() {
-        if (loginSnackbar != null) {
-            loginSnackbar.dismiss();
-        }
-
-        if (AccessToken.getCurrentAccessToken() != null && Helpers.getCookie() != null) {
-            // Not logged in (possibly logged into Facebook OAuth and/or webapp)
-            mWebView.setVisibility(View.VISIBLE);
-            mNavigationView.getMenu().findItem(R.id.nav_fblogin).setVisible(false);
-            Log.v(Helpers.LogTag, "LOGGED IN");
-            return true;
-        } else {
-            loginSnackbar = Helpers.loginPrompt(swipeView);
-            mWebView.setVisibility(View.GONE);
-            mNavigationView.getMenu().findItem(R.id.nav_fblogin).setVisible(true);
-
-            Log.v(Helpers.LogTag, "LOGGED OUT");
-            return false;
-        }
+    @Override
+    protected void onPause() {
+        mWebView.onPause();
+        super.onPause();
     }
 
-    private void updateUserInfo() {
-        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-                // Update header
-                try {
-                    // Set the user's name under the header
-                    ((TextView) findViewById(R.id.profile_name)).setText(object.getString("name"));
-
-                    // Set the cover photo with resizing
-                    final View header = findViewById(R.id.header_layout);
-                    Picasso.with(getApplicationContext()).load(object.getJSONObject("cover").getString("source")).resize(header.getWidth(), header.getHeight()).centerCrop().into(new Target() {
-                        @Override
-                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            header.setBackground(new BitmapDrawable(getResources(), bitmap));
-                        }
-
-                        @Override
-                        public void onBitmapFailed(Drawable errorDrawable) {
-
-                        }
-
-                        @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                        }
-                    });
-
-                    Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + object.getString("id") + "/picture?type=large").error(R.drawable.side_profile).into((ImageView) findViewById(R.id.profile_picture));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,cover");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
-
-    private String chooseUrl() {
-        // Handle intents
-        Intent intent = getIntent();
-
-        // If there is a intent containing a facebook link, go there
-        if (intent.getData() != null) {
-            return intent.getData().toString();
-        }
-
-        // If nothing has happened at this point, we want the default url
-        return FACEBOOK_URL_BASE;
-    }
-
-    // Handle preferences changes
-    private class PreferenceChangeListener implements SharedPreferences.OnSharedPreferenceChangeListener {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-            switch (key) {
-                case SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON:
-                    mNavigationView.getMenu().findItem(R.id.nav_jump_top).setVisible(prefs.getBoolean(key, false));
-                    break;
-                case SettingsActivity.KEY_PREF_STOP_IMAGES:
-                    mWebView.getSettings().setBlockNetworkImage(prefs.getBoolean(key, false));
-                case SettingsActivity.KEY_PREF_BACK_BUTTON:
-                    mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(prefs.getBoolean(key, false));
-                    break;
-                case SettingsActivity.KEY_PREF_MESSAGING:
-                    mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(prefs.getBoolean(key, false));
-                    break;
-                case SettingsActivity.KEY_PREF_LOCATION:
-                    mWebView.setGeolocationEnabled(prefs.getBoolean(key, false));
-                    break;
-                default:
-                    break;
-            }
-        }
+    @Override
+    protected void onDestroy() {
+        mWebView.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        mWebView.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -368,6 +282,99 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    // Handle preferences changes
+    private class PreferenceChangeListener implements SharedPreferences.OnSharedPreferenceChangeListener {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+            switch (key) {
+                case SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON:
+                    mNavigationView.getMenu().findItem(R.id.nav_jump_top).setVisible(prefs.getBoolean(key, false));
+                    break;
+                case SettingsActivity.KEY_PREF_STOP_IMAGES:
+                    mWebView.getSettings().setBlockNetworkImage(prefs.getBoolean(key, false));
+                case SettingsActivity.KEY_PREF_BACK_BUTTON:
+                    mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(prefs.getBoolean(key, false));
+                    break;
+                case SettingsActivity.KEY_PREF_MESSAGING:
+                    mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(prefs.getBoolean(key, false));
+                    break;
+                case SettingsActivity.KEY_PREF_LOCATION:
+                    mWebView.setGeolocationEnabled(prefs.getBoolean(key, false));
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public void setLoading(boolean loading) {
+        // Toggle the WebView and Spinner visibility
+        mWebView.setVisibility(loading ? View.GONE : View.VISIBLE);
+        swipeView.setRefreshing(loading);
+    }
+
+    public boolean checkLoggedInState() {
+        if (loginSnackbar != null) {
+            loginSnackbar.dismiss();
+        }
+
+        if (AccessToken.getCurrentAccessToken() != null && Helpers.getCookie() != null) {
+            // Not logged in (possibly logged into Facebook OAuth and/or webapp)
+            mWebView.setVisibility(View.VISIBLE);
+            mNavigationView.getMenu().findItem(R.id.nav_fblogin).setVisible(false);
+            Log.v(Helpers.LogTag, "LOGGED IN");
+            return true;
+        } else {
+            loginSnackbar = Helpers.loginPrompt(swipeView);
+            mWebView.setVisibility(View.GONE);
+            mNavigationView.getMenu().findItem(R.id.nav_fblogin).setVisible(true);
+
+            Log.v(Helpers.LogTag, "LOGGED OUT");
+            return false;
+        }
+    }
+
+    private void updateUserInfo() {
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                // Update header
+                try {
+                    // Set the user's name under the header
+                    ((TextView) findViewById(R.id.profile_name)).setText(object.getString("name"));
+
+                    // Set the cover photo with resizing
+                    final View header = findViewById(R.id.header_layout);
+                    Picasso.with(getApplicationContext()).load(object.getJSONObject("cover").getString("source")).resize(header.getWidth(), header.getHeight()).centerCrop().into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            header.setBackground(new BitmapDrawable(getResources(), bitmap));
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Drawable errorDrawable) {
+
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                        }
+                    });
+
+                    Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + object.getString("id") + "/picture?type=large").error(R.drawable.side_profile).into((ImageView) findViewById(R.id.profile_picture));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,cover");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
     public void setNotificationNum(int num) {
         if (num > 0) {
             ActionItemBadge.update(mNotificationButton, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu_notifications_active, null), num);
@@ -384,5 +391,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // Hide the badge and show the washed-out button
             ActionItemBadge.update(mNavigationView.getMenu().findItem(R.id.nav_messages), Integer.MIN_VALUE);
         }
+    }
+
+    private String chooseUrl() {
+        // Handle intents
+        Intent intent = getIntent();
+
+        // If there is a intent containing a facebook link, go there
+        if (intent.getData() != null) {
+            return intent.getData().toString();
+        }
+
+        // If nothing has happened at this point, we want the default url
+        return FACEBOOK_URL_BASE;
     }
 }
