@@ -8,8 +8,8 @@ android {
         applicationId "me.jakelane.wrapperforfacebook"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1.0"
     }
     buildTypes {
         release {
@@ -29,7 +29,6 @@ dependencies {
         transitive = true
     }
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile "org.jsoup:jsoup:1.8.3"
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile('com.github.JakeLane:Android-AdvancedWebView:-SNAPSHOT') {
         changing = true
