@@ -167,12 +167,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    protected void onPause() {
-        mWebView.onPause();
-        super.onPause();
-    }
-
-    @Override
     protected void onDestroy() {
         mWebView.onDestroy();
         super.onDestroy();
