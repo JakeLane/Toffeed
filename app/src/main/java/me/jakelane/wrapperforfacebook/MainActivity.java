@@ -208,13 +208,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_notifications) {
             // Load the notification page
             mWebView.loadUrl("javascript:try{document.querySelector('#notifications_jewel > a').click();}catch(e){window.location.href='" + FACEBOOK_URL_BASE + "notifications.php';}");
-
-            // Uncheck other menu items (sorry)
-            for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
-                if (mNavigationView.getMenu().getItem(i).isChecked()) {
-                    mNavigationView.getMenu().getItem(i).setChecked(false);
-                }
-            }
+            Helpers.uncheckRadioMenu(mNavigationView.getMenu());
         }
 
         // Update the notifications

@@ -2,6 +2,7 @@ package me.jakelane.wrapperforfacebook;
 
 import android.app.Activity;
 import android.support.design.widget.Snackbar;
+import android.view.Menu;
 import android.view.View;
 import android.webkit.CookieManager;
 
@@ -29,6 +30,7 @@ class Helpers {
         return null;
     }
 
+    // Prompt a login
     public static Snackbar loginPrompt(final View view) {
         final Snackbar snackBar = Snackbar.make(view, "You are not logged in", Snackbar.LENGTH_LONG);
         snackBar.setAction("Login", new View.OnClickListener() {
@@ -39,5 +41,15 @@ class Helpers {
         });
         snackBar.show();
         return snackBar;
+    }
+
+    // Uncheck all items menu
+    public static void uncheckRadioMenu(Menu menu) {
+        for (int i = 0; i < menu.size(); i++) {
+            if (menu.getItem(i).isChecked()) {
+                menu.getItem(i).setChecked(false);
+                return;
+            }
+        }
     }
 }

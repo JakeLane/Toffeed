@@ -38,6 +38,7 @@ class JavaScriptInterfaces {
                         mContext.mNavigationView.setCheckedItem(R.id.nav_messages);
                         break;
                     case "notifications_jewel":
+                        Helpers.uncheckRadioMenu(mContext.mNavigationView.getMenu());
                         break;
                     case "search_jewel":
                         mContext.mNavigationView.setCheckedItem(R.id.nav_search);
@@ -46,6 +47,7 @@ class JavaScriptInterfaces {
                         mContext.mNavigationView.setCheckedItem(R.id.nav_mainmenu);
                         break;
                     default:
+                        Helpers.uncheckRadioMenu(mContext.mNavigationView.getMenu());
                         break;
                 }
             }

@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-        android:key="location_enabled"
-        android:title="@string/location_enabled_title"
-        android:summary="@string/location_enabled_summary"
-        android:defaultValue="false" />
-    <CheckBoxPreference
-        android:key="stop_images"
-        android:title="@string/stop_images_title"
-        android:summary="@string/stop_images_summary"
-        android:defaultValue="false" />
-    <CheckBoxPreference
-        android:key="messaging_enabled"
-        android:title="@string/messaging_enabled_title"
-        android:summary="@string/messaging_enabled_summary"
-        android:defaultValue="true" />
-    <CheckBoxPreference
-        android:key="back_button_enabled"
-        android:title="@string/back_button_enabled_title"
-        android:summary="@string/back_button_enabled_summary"
-        android:defaultValue="false" />
-    <CheckBoxPreference
-        android:key="jump_top_enabled"
-        android:title="@string/jump_top_enabled_title"
-        android:summary="@string/jump_top_enabled_summary"
-        android:defaultValue="false" />
-    <ListPreference
-        android:key="service_update_interval"
-        android:title="@string/service_update_interval_title"
-        android:summary="@string/service_update_interval_summary"
-        android:entries="@array/service_update_interval"
-        android:entryValues="@array/service_update_interval_values"
-        android:defaultValue="45000" />
+    <PreferenceCategory android:title="Services">
+        <CheckBoxPreference
+            android:key="messaging_enabled"
+            android:title="@string/messaging_enabled_title"
+            android:summary="@string/messaging_enabled_summary"
+            android:defaultValue="true" />
+        <ListPreference
+            android:key="service_update_interval"
+            android:title="@string/service_update_interval_title"
+            android:summary="@string/service_update_interval_summary"
+            android:entries="@array/service_update_interval"
+            android:entryValues="@array/service_update_interval_values"
+            android:defaultValue="45000" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Content">
+        <CheckBoxPreference
+            android:key="location_enabled"
+            android:title="@string/location_enabled_title"
+            android:summary="@string/location_enabled_summary"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="stop_images"
+            android:title="@string/stop_images_title"
+            android:summary="@string/stop_images_summary"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Navigation Menu">
+        <CheckBoxPreference
+            android:key="back_button_enabled"
+            android:title="@string/back_button_enabled_title"
+            android:summary="@string/back_button_enabled_summary"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="jump_top_enabled"
+            android:title="@string/jump_top_enabled_title"
+            android:summary="@string/jump_top_enabled_summary"
+            android:defaultValue="false" />
+    </PreferenceCategory>
 </PreferenceScreen>

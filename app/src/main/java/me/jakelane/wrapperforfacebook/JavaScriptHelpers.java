@@ -10,7 +10,7 @@ class JavaScriptHelpers {
 
     public static void updateCurrentTab(WebView view) {
         // Get the currently open tab and check on the navigation menu
-        view.loadUrl("javascript:try{android.getCurrent(document.querySelector('.popoverOpen').id);}catch(e){null;}");
+        view.loadUrl("javascript:try{android.getCurrent(document.querySelector('.popoverOpen').id);}catch(e){android.getCurrent('null');}");
     }
 
     public static void updateNotificationsService(WebView view, int interval) {
