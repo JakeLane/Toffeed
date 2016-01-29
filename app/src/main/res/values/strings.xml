@@ -38,24 +38,11 @@
     <string name="jump_top_enabled_title">Jump to Top button</string>
     <string name="jump_top_enabled_summary">When enabled, the Jump to Top button will be visible in the draw.</string>
 
-    <string name="service_update_interval_title">Update interval</string>
-    <string name="service_update_interval_summary">The length of time in seconds between notification and message count updates.</string>
-    <string-array name="service_update_interval">
-        <item>5 seconds</item>
-        <item>15 seconds</item>
-        <item>30 seconds</item>
-        <item>45 seconds</item>
-        <item>1 minute</item>
-        <item>2 minutes</item>
-        <item>5 minutes</item>
-    </string-array>
-    <string-array name="service_update_interval_values">
-        <item>5000</item>
-        <item>15000</item>
-        <item>30000</item>
-        <item>45000</item>
-        <item>60000</item>
-        <item>120000</item>
-        <item>300000</item>
-    </string-array>
+    <string name="login_button">Login</string>
+
+    <string name="not_logged_in">You are not logged in</string>
+    <string name="error_login">Something went wrong, please try logging in again</string>
+    <string name="error_super_wrong">Something went super wrong</string>
+    <string name="error_facebook_noconnection">Could not access Facebook</string>
+    <string name="error_facebook_error">Something went wrong on Facebook\'s end</string>
 </resources>

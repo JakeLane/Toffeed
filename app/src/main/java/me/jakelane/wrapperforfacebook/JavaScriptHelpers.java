@@ -3,6 +3,8 @@ package me.jakelane.wrapperforfacebook;
 import android.webkit.WebView;
 
 class JavaScriptHelpers {
+    private static final int BADGE_UPDATE_INTERVAL = 30000;
+
     public static void hideMenuBar(WebView view) {
         // Hide the menu bar
         view.loadUrl("javascript:try{if(!document.URL.match('facebook\\.com\\/composer')){document.getElementById('page').style.top='-45px';}}catch(e){}android.loadingCompleted();");
@@ -13,9 +15,9 @@ class JavaScriptHelpers {
         view.loadUrl("javascript:try{android.getCurrent(document.querySelector('.popoverOpen').id);}catch(e){android.getCurrent('null');}");
     }
 
-    public static void updateNotificationsService(WebView view, int interval) {
+    public static void updateNotificationsService(WebView view) {
         // Start the notification service
-        view.loadUrl("javascript:function notification_service(){android.getNotifications(document.querySelector('#notifications_jewel > a > div > span[data-sigil=count]').innerHTML);setTimeout(notification_service, " + interval + ");}try{notification_service();}catch(e){}");
+        view.loadUrl("javascript:function notification_service(){android.getNotifications(document.querySelector('#notifications_jewel > a > div > span[data-sigil=count]').innerHTML);setTimeout(notification_service, " + BADGE_UPDATE_INTERVAL + ");}try{notification_service();}catch(e){}");
     }
 
     public static void updateNotifications(WebView view) {
@@ -23,9 +25,9 @@ class JavaScriptHelpers {
         view.loadUrl("javascript:android.getNotifications(document.querySelector('#notifications_jewel > a > div > span[data-sigil=count]').innerHTML);");
     }
 
-    public static void updateMessagesService(WebView view, int interval) {
+    public static void updateMessagesService(WebView view) {
         // Start the message service
-        view.loadUrl("javascript:function message_service(){android.getMessages(document.querySelector('#messages_jewel > a > div > span[data-sigil=count]').innerHTML);setTimeout(message_service, " + interval + ");}try{message_service();}catch(e){}");
+        view.loadUrl("javascript:function message_service(){android.getMessages(document.querySelector('#messages_jewel > a > div > span[data-sigil=count]').innerHTML);setTimeout(message_service, " + BADGE_UPDATE_INTERVAL + ");}try{message_service();}catch(e){}");
     }
 
     public static void updateMessages(WebView view) {

@@ -32,8 +32,8 @@ class Helpers {
 
     // Prompt a login
     public static Snackbar loginPrompt(final View view) {
-        final Snackbar snackBar = Snackbar.make(view, "You are not logged in", Snackbar.LENGTH_LONG);
-        snackBar.setAction("Login", new View.OnClickListener() {
+        final Snackbar snackBar = Snackbar.make(view, R.string.not_logged_in, Snackbar.LENGTH_LONG);
+        snackBar.setAction(R.string.login_button, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LoginManager.getInstance().logInWithReadPermissions((Activity) view.getContext(), FB_PERMISSIONS);

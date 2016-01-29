@@ -38,14 +38,12 @@ class WebViewListener implements AdvancedWebView.Listener {
         // Get the currently open tab and check on the navigation menu
         JavaScriptHelpers.updateCurrentTab(mWebView);
 
-        int update_interval = Integer.parseInt(mPreferences.getString(SettingsActivity.KEY_PREF_UPDATE_INTERVAL, "45000"));
-
         // Get the notification number
-        JavaScriptHelpers.updateNotificationsService(mWebView, update_interval);
+        JavaScriptHelpers.updateNotificationsService(mWebView);
 
         // Get the messages number
         if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false)) {
-            JavaScriptHelpers.updateMessagesService(mWebView, update_interval);
+            JavaScriptHelpers.updateMessagesService(mWebView);
         }
 
         // Make sure the user is logged in
@@ -53,7 +51,9 @@ class WebViewListener implements AdvancedWebView.Listener {
     }
 
     @Override
-    public void onPageError(int errorCode, String description, String failingUrl) {}
+    public void onPageError(int errorCode, String description, String failingUrl) {
+        mActivity.setLoading(false);
+    }
 
     @Override
     public void onDownloadRequested(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {}

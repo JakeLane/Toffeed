@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(FacebookException error) {
-                Snackbar.make(mWebView, "Something went wrong, please try logging in again", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(mWebView, R.string.error_login, Snackbar.LENGTH_LONG).show();
                 Log.e(Helpers.LogTag, error.toString());
                 LoginManager.getInstance().logOut();
                 checkLoggedInState();
@@ -279,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
                 case SettingsActivity.KEY_PREF_STOP_IMAGES:
                     mWebView.getSettings().setBlockNetworkImage(prefs.getBoolean(key, false));
+                    break;
                 case SettingsActivity.KEY_PREF_BACK_BUTTON:
                     mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(prefs.getBoolean(key, false));
                     break;
@@ -332,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     // Set the cover photo with resizing
                     final View header = findViewById(R.id.header_layout);
-                    Picasso.with(getApplicationContext()).load(object.getJSONObject("cover").getString("source")).resize(header.getWidth(), header.getHeight()).centerCrop().into(new Target() {
+                    Picasso.with(getApplicationContext()).load(object.getJSONObject("cover").getString("source")).resize(header.getWidth(), header.getHeight()).centerCrop().error(R.drawable.side_nav_bar).into(new Target() {
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                             header.setBackground(new BitmapDrawable(getResources(), bitmap));
@@ -350,8 +351,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     });
 
                     Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + object.getString("id") + "/picture?type=large").error(R.drawable.side_profile).into((ImageView) findViewById(R.id.profile_picture));
+                } catch (NullPointerException e) {
+                    Snackbar.make(mWebView, R.string.error_facebook_noconnection, Snackbar.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Snackbar.make(mWebView, R.string.error_facebook_error, Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Snackbar.make(mWebView, R.string.error_super_wrong, Snackbar.LENGTH_LONG).show();
                 }
             }
         });
