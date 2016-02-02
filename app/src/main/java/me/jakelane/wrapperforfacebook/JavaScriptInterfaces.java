@@ -55,6 +55,15 @@ class JavaScriptInterfaces {
     }
 
     @JavascriptInterface
+    public void isComposer(boolean composer) {
+        if (composer) {
+            mContext.swipeView.setEnabled(false);
+        } else {
+            mContext.swipeView.setEnabled(true);
+        }
+    }
+
+    @JavascriptInterface
     public void getNotifications(final String number) {
         try {
             final int num = Integer.parseInt(number);
@@ -64,7 +73,7 @@ class JavaScriptInterfaces {
                     mContext.setNotificationNum(num);
                 }
             });
-            Log.v("FBWrapper", number + " notifications");
+            Log.v(Helpers.LogTag, number + " notifications");
         } catch (NumberFormatException e) {
             mContext.runOnUiThread(new Runnable() {
                 @Override
@@ -72,7 +81,7 @@ class JavaScriptInterfaces {
                     mContext.setNotificationNum(0);
                 }
             });
-            Log.v("FBWrapper", 0 + " notifications");
+            Log.v(Helpers.LogTag, 0 + " notifications");
         }
     }
 
@@ -86,7 +95,7 @@ class JavaScriptInterfaces {
                     mContext.setMessagesNum(num);
                 }
             });
-            Log.v("FBWrapper", number + " messages");
+            Log.v(Helpers.LogTag, number + " messages");
         } catch (NumberFormatException e) {
             mContext.runOnUiThread(new Runnable() {
                 @Override
@@ -94,7 +103,7 @@ class JavaScriptInterfaces {
                     mContext.setMessagesNum(0);
                 }
             });
-            Log.v("FBWrapper", 0 + " messages");
+            Log.v(Helpers.LogTag, 0 + " messages");
         }
     }
 }

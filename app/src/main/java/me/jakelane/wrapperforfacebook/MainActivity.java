@@ -57,10 +57,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final BadgeStyle BADGE_GRAY_FULL = new BadgeStyle(BadgeStyle.Style.LARGE, R.layout.menu_badge_full, Color.parseColor("#8A000000"), Color.parseColor("#8A000000"), Color.WHITE);
 
     // Members
-    private AdvancedWebView mWebView;
+    SwipeRefreshLayout swipeView;
     NavigationView mNavigationView;
+    private AdvancedWebView mWebView;
     private MenuItem mNotificationButton;
-    private SwipeRefreshLayout swipeView;
     private CallbackManager callbackManager;
     private Snackbar loginSnackbar = null;
 
