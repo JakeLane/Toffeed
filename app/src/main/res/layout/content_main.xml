@@ -11,15 +11,9 @@
     tools:context="me.jakelane.wrapperforfacebook.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <android.support.v4.widget.NestedScrollView
+    <im.delight.android.webview.AdvancedWebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <im.delight.android.webview.AdvancedWebView
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </android.support.v4.widget.NestedScrollView>
+        android:layout_height="match_parent" />
 
 </android.support.v4.widget.SwipeRefreshLayout>

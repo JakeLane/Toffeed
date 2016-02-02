@@ -49,7 +49,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import im.delight.android.webview.AdvancedWebView;
-import me.jakelane.wrapperforfacebook.behaviours.ScrollAwareFABBehavior;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
@@ -63,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem mNotificationButton;
     private CallbackManager callbackManager;
     private Snackbar loginSnackbar = null;
+    FloatingActionButton webviewFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         // Inflate the FAB
-        FloatingActionButton webviewFab = (FloatingActionButton) findViewById(R.id.webviewFAB);
+        webviewFab = (FloatingActionButton) findViewById(R.id.webviewFAB);
         if (!preferences.getBoolean(SettingsActivity.KEY_PREF_FAB_SCROLL, false)) {
             CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) webviewFab.getLayoutParams();
             p.setBehavior(null);
@@ -305,16 +305,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
                 case SettingsActivity.KEY_PREF_FAB_SCROLL:
                     FloatingActionButton webviewFab = (FloatingActionButton) findViewById(R.id.webviewFAB);
-                    CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) webviewFab.getLayoutParams();
-
-                    if (prefs.getBoolean(key, false)) {
-                        // Make the button hide on scroll
-                        p.setBehavior(new ScrollAwareFABBehavior());
-                    } else {
-                        p.setBehavior(null);
-                    }
-
-                    webviewFab.setLayoutParams(p);
+                    webviewFab.show();
+                    break;
                 default:
                     break;
             }

@@ -30,7 +30,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_fab_post"
-        app:elevation="4dp"
-        app:layout_behavior="me.jakelane.wrapperforfacebook.behaviours.ScrollAwareFABBehavior" />
+        app:elevation="4dp" />
 
 </android.support.design.widget.CoordinatorLayout>
