@@ -8,6 +8,7 @@ import android.view.MenuItem;
 public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_PREF_BACK_BUTTON = "back_button_enabled";
     public static final String KEY_PREF_STOP_IMAGES = "stop_images";
+    public static final String KEY_PREF_FAB_SCROLL = "hide_fab_on_scroll";
     public static final String KEY_PREF_MESSAGING = "messaging_enabled";
     public static final String KEY_PREF_JUMP_TOP_BUTTON = "jump_top_enabled";
     public static final String KEY_PREF_LOCATION = "location_enabled";

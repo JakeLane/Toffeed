@@ -22,12 +22,21 @@
     <string name="menu_back">Back</string>
     <string name="menu_forward">Forward</string>
     <string name="menu_settings">Settings</string>
+    <string name="menu_fullscreen">Fullscreen</string>
+    <string name="menu_unfullscreen">Exit Fullscreen</string>
+
+    <string name="content_setting_title">Content</string>
 
     <string name="location_enabled_title">Location access</string>
     <string name="location_enabled_summary">Enable this to allow Facebook to obtain your location.</string>
 
     <string name="stop_images_title">Don\'t load images</string>
     <string name="stop_images_summary">When enabled, will not download images. Some images may remain in the cache.</string>
+
+    <string name="navigation_setting_title">Navigation</string>
+
+    <string name="hide_fab_on_scroll_title">Hide Floating Action Button on scroll</string>
+    <string name="hide_fab_on_scroll_summary">Hide the FAB when scrolling down</string>
 
     <string name="messaging_enabled_title">Messaging</string>
     <string name="messaging_enabled_summary">When enabled, will provide access to Facebook Messages. Disable if you have a messaging app.</string>

@@ -27,9 +27,10 @@
         android:id="@+id/webviewFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_fab_post"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        app:elevation="4dp" />
+        android:src="@drawable/ic_fab_post"
+        app:elevation="4dp"
+        app:layout_behavior="me.jakelane.wrapperforfacebook.behaviours.ScrollAwareFABBehavior" />
 
 </android.support.design.widget.CoordinatorLayout>

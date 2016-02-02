@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Content">
+    <PreferenceCategory android:title="@string/content_setting_title">
         <CheckBoxPreference
             android:key="location_enabled"
             android:title="@string/location_enabled_title"
@@ -12,7 +12,12 @@
             android:summary="@string/stop_images_summary"
             android:defaultValue="false" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Navigation Menu">
+    <PreferenceCategory android:title="@string/navigation_setting_title">
+        <CheckBoxPreference
+            android:key="hide_fab_on_scroll"
+            android:title="@string/hide_fab_on_scroll_title"
+            android:summary="@string/hide_fab_on_scroll_summary"
+            android:defaultValue="false" />
         <CheckBoxPreference
             android:key="back_button_enabled"
             android:title="@string/back_button_enabled_title"

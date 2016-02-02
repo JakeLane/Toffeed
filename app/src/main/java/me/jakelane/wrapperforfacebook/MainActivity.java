@@ -6,8 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -47,6 +49,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import im.delight.android.webview.AdvancedWebView;
+import me.jakelane.wrapperforfacebook.behaviours.ScrollAwareFABBehavior;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
@@ -112,6 +115,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Inflate the FAB
         FloatingActionButton webviewFab = (FloatingActionButton) findViewById(R.id.webviewFAB);
+        if (!preferences.getBoolean(SettingsActivity.KEY_PREF_FAB_SCROLL, false)) {
+            CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) webviewFab.getLayoutParams();
+            p.setBehavior(null);
+            webviewFab.setLayoutParams(p);
+        }
         webviewFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mWebView.loadUrl("javascript:try{document.querySelector('button[name=\"view_overview\"]').click();}catch(_){window.location.href='http://m.facebook.com/?loadcomposer';}");
@@ -256,6 +264,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_forward:
                 mWebView.goForward();
                 break;
+            case R.id.nav_fullscreen:
+                hideSystemUI();
+                break;
+            case R.id.nav_unfullscreen:
+                showSystemUI();
+                break;
             case R.id.nav_settings:
                 Intent settingsActivity = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(settingsActivity);
@@ -289,6 +303,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case SettingsActivity.KEY_PREF_LOCATION:
                     mWebView.setGeolocationEnabled(prefs.getBoolean(key, false));
                     break;
+                case SettingsActivity.KEY_PREF_FAB_SCROLL:
+                    FloatingActionButton webviewFab = (FloatingActionButton) findViewById(R.id.webviewFAB);
+                    CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) webviewFab.getLayoutParams();
+
+                    if (prefs.getBoolean(key, false)) {
+                        // Make the button hide on scroll
+                        p.setBehavior(new ScrollAwareFABBehavior());
+                    } else {
+                        p.setBehavior(null);
+                    }
+
+                    webviewFab.setLayoutParams(p);
                 default:
                     break;
             }
@@ -341,12 +367,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         @Override
                         public void onBitmapFailed(Drawable errorDrawable) {
-
                         }
 
                         @Override
                         public void onPrepareLoad(Drawable placeHolderDrawable) {
-
                         }
                     });
 
@@ -367,6 +391,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         parameters.putString("fields", "id,name,cover");
         request.setParameters(parameters);
         request.executeAsync();
+    }
+
+    private void hideSystemUI() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE);
+        }
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+        mNavigationView.getMenu().findItem(R.id.nav_fullscreen).setVisible(false);
+        mNavigationView.getMenu().findItem(R.id.nav_unfullscreen).setVisible(true);
+    }
+
+    private void showSystemUI() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().show();
+        }
+        mNavigationView.getMenu().findItem(R.id.nav_fullscreen).setVisible(true);
+        mNavigationView.getMenu().findItem(R.id.nav_unfullscreen).setVisible(false);
     }
 
     public void setNotificationNum(int num) {
