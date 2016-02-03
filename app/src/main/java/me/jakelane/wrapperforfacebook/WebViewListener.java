@@ -31,25 +31,25 @@ class WebViewListener implements AdvancedWebView.Listener {
 
     @Override
     public void onPageFinished(String url) {
-        // Load the composer if there is the 'loadcomposer' param
-        JavaScriptHelpers.loadComposer(mWebView);
+        // Only do things if logged in
+        if (mActivity.checkLoggedInState()) {
+            // Load the composer if there is the 'loadcomposer' param
+            JavaScriptHelpers.loadComposer(mWebView);
 
-        // Hide the menu bar (but not on the composer)
-        JavaScriptHelpers.hideMenuBar(mWebView);
+            // Hide the menu bar (but not on the composer)
+            JavaScriptHelpers.hideMenuBar(mWebView);
 
-        // Get the currently open tab and check on the navigation menu
-        JavaScriptHelpers.updateCurrentTab(mWebView);
+            // Get the currently open tab and check on the navigation menu
+            JavaScriptHelpers.updateCurrentTab(mWebView);
 
-        // Get the notification number
-        JavaScriptHelpers.updateNotificationsService(mWebView);
+            // Get the notification number
+            JavaScriptHelpers.updateNotificationsService(mWebView);
 
-        // Get the messages number
-        if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false)) {
-            JavaScriptHelpers.updateMessagesService(mWebView);
+            // Get the messages number
+            if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false)) {
+                JavaScriptHelpers.updateMessagesService(mWebView);
+            }
         }
-
-        // Make sure the user is logged in
-        mActivity.checkLoggedInState();
     }
 
     @Override
@@ -58,7 +58,8 @@ class WebViewListener implements AdvancedWebView.Listener {
     }
 
     @Override
-    public void onDownloadRequested(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {}
+    public void onDownloadRequested(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+    }
 
     @Override
     public void onExternalPageRequest(String url) {

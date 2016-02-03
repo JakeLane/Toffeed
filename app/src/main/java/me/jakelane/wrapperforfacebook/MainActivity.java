@@ -329,17 +329,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if (AccessToken.getCurrentAccessToken() != null && Helpers.getCookie() != null) {
-            // Not logged in (possibly logged into Facebook OAuth and/or webapp)
+            // Logged in, show webview
             mWebView.setVisibility(View.VISIBLE);
+
+            // Hide login button
             mNavigationView.getMenu().findItem(R.id.nav_fblogin).setVisible(false);
-            Log.v(Helpers.LogTag, "LOGGED IN");
+
+            // Enable navigation buttons
+            mNavigationView.getMenu().setGroupEnabled(R.id.group_fbnav, true);
             return true;
         } else {
+            // Not logged in (possibly logged into Facebook OAuth and/or webapp)
             loginSnackbar = Helpers.loginPrompt(mCoordinatorLayoutView);
             mWebView.setVisibility(View.GONE);
+
+            // Show login button
             mNavigationView.getMenu().findItem(R.id.nav_fblogin).setVisible(true);
 
-            Log.v(Helpers.LogTag, "LOGGED OUT");
+            // Disable navigation buttons
+            mNavigationView.getMenu().setGroupEnabled(R.id.group_fbnav, false);
             return false;
         }
     }
