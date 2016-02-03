@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
@@ -64,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Snackbar loginSnackbar = null;
     FloatingActionButton webviewFab;
     private View mCoordinatorLayoutView;
+    @SuppressWarnings("FieldCanBeLocal") // Will be garbage collected as a local variable
+    private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +75,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Preferences
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        PreferenceChangeListener preferenceListener = new PreferenceChangeListener();
-        preferences.registerOnSharedPreferenceChangeListener(preferenceListener);
+        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                switch (key) {
+                    case SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON:
+                        mNavigationView.getMenu().findItem(R.id.nav_jump_top).setVisible(prefs.getBoolean(key, false));
+                        break;
+                    case SettingsActivity.KEY_PREF_STOP_IMAGES:
+                        mWebView.getSettings().setBlockNetworkImage(prefs.getBoolean(key, false));
+                        break;
+                    case SettingsActivity.KEY_PREF_BACK_BUTTON:
+                        mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(prefs.getBoolean(key, false));
+                        break;
+                    case SettingsActivity.KEY_PREF_MESSAGING:
+                        mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(prefs.getBoolean(key, false));
+                        break;
+                    case SettingsActivity.KEY_PREF_LOCATION:
+                        mWebView.setGeolocationEnabled(prefs.getBoolean(key, false));
+                        break;
+                    case SettingsActivity.KEY_PREF_FAB_SCROLL:
+                        FloatingActionButton webviewFab = (FloatingActionButton) findViewById(R.id.webviewFAB);
+                        webviewFab.show();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+        preferences.registerOnSharedPreferenceChangeListener(listener);
 
         // Setup the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -285,36 +312,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    // Handle preferences changes
-    private class PreferenceChangeListener implements SharedPreferences.OnSharedPreferenceChangeListener {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-            switch (key) {
-                case SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON:
-                    mNavigationView.getMenu().findItem(R.id.nav_jump_top).setVisible(prefs.getBoolean(key, false));
-                    break;
-                case SettingsActivity.KEY_PREF_STOP_IMAGES:
-                    mWebView.getSettings().setBlockNetworkImage(prefs.getBoolean(key, false));
-                    break;
-                case SettingsActivity.KEY_PREF_BACK_BUTTON:
-                    mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(prefs.getBoolean(key, false));
-                    break;
-                case SettingsActivity.KEY_PREF_MESSAGING:
-                    mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(prefs.getBoolean(key, false));
-                    break;
-                case SettingsActivity.KEY_PREF_LOCATION:
-                    mWebView.setGeolocationEnabled(prefs.getBoolean(key, false));
-                    break;
-                case SettingsActivity.KEY_PREF_FAB_SCROLL:
-                    FloatingActionButton webviewFab = (FloatingActionButton) findViewById(R.id.webviewFAB);
-                    webviewFab.show();
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 
     public void setLoading(boolean loading) {
