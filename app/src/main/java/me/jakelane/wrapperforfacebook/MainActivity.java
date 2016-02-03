@@ -341,6 +341,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             // Not logged in (possibly logged into Facebook OAuth and/or webapp)
             loginSnackbar = Helpers.loginPrompt(mCoordinatorLayoutView);
+            setLoading(false);
             mWebView.setVisibility(View.GONE);
 
             // Show login button
@@ -370,12 +371,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
 
                         @Override
-                        public void onBitmapFailed(Drawable errorDrawable) {
-                        }
+                        public void onBitmapFailed(Drawable errorDrawable) {}
 
                         @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-                        }
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {}
                     });
 
                     Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + object.getString("id") + "/picture?type=large").error(R.drawable.side_profile).into((ImageView) findViewById(R.id.profile_picture));
@@ -398,14 +397,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void hideSystemUI() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE);
-        }
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
@@ -414,13 +405,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void showSystemUI() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().show();
         }
