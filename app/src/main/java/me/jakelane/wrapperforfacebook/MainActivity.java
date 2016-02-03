@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private CallbackManager callbackManager;
     private Snackbar loginSnackbar = null;
     FloatingActionButton webviewFab;
+    private View mCoordinatorLayoutView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (!preferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false)) {
             mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(false);
         }
+
+        // Bind the Coordinator to member
+        mCoordinatorLayoutView = findViewById(R.id.coordinatorLayout);
 
         // Start the Swipe to reload listener
         swipeView = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
@@ -152,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(FacebookException error) {
-                Snackbar.make(mWebView, R.string.error_login, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(mCoordinatorLayoutView, R.string.error_login, Snackbar.LENGTH_LONG).show();
                 Log.e(Helpers.LogTag, error.toString());
                 LoginManager.getInstance().logOut();
                 checkLoggedInState();
@@ -331,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.v(Helpers.LogTag, "LOGGED IN");
             return true;
         } else {
-            loginSnackbar = Helpers.loginPrompt(swipeView);
+            loginSnackbar = Helpers.loginPrompt(mCoordinatorLayoutView);
             mWebView.setVisibility(View.GONE);
             mNavigationView.getMenu().findItem(R.id.nav_fblogin).setVisible(true);
 
@@ -368,13 +372,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + object.getString("id") + "/picture?type=large").error(R.drawable.side_profile).into((ImageView) findViewById(R.id.profile_picture));
                 } catch (NullPointerException e) {
-                    Snackbar.make(mWebView, R.string.error_facebook_noconnection, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mCoordinatorLayoutView, R.string.error_facebook_noconnection, Snackbar.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Snackbar.make(mWebView, R.string.error_facebook_error, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mCoordinatorLayoutView, R.string.error_facebook_error, Snackbar.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Snackbar.make(mWebView, R.string.error_super_wrong, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mCoordinatorLayoutView, R.string.error_super_wrong, Snackbar.LENGTH_LONG).show();
                 }
             }
         });
