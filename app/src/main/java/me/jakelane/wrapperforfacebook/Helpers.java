@@ -32,7 +32,7 @@ class Helpers {
 
     // Prompt a login
     public static Snackbar loginPrompt(final View view) {
-        final Snackbar snackBar = Snackbar.make(view, R.string.not_logged_in, Snackbar.LENGTH_LONG);
+        final Snackbar snackBar = Snackbar.make(view, R.string.not_logged_in, Snackbar.LENGTH_INDEFINITE);
         snackBar.setAction(R.string.login_button, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

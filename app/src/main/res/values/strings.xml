@@ -22,8 +22,6 @@
     <string name="menu_back">Back</string>
     <string name="menu_forward">Forward</string>
     <string name="menu_settings">Settings</string>
-    <string name="menu_fullscreen">Fullscreen</string>
-    <string name="menu_unfullscreen">Exit Fullscreen</string>
 
     <string name="content_setting_title">Content</string>
 

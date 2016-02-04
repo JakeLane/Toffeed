@@ -14,13 +14,11 @@ class WebViewListener implements AdvancedWebView.Listener {
     private final MainActivity mActivity;
     private final SharedPreferences mPreferences;
     private final AdvancedWebView mWebView;
-    private final int mScrollThreshold;
 
     WebViewListener(MainActivity activity, WebView view) {
         mActivity = activity;
         mWebView = (AdvancedWebView) view;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        mScrollThreshold = activity.getResources().getDimensionPixelOffset(R.dimen.fab_scroll_threshold);
     }
 
     @Override
@@ -71,15 +69,5 @@ class WebViewListener implements AdvancedWebView.Listener {
 
     @Override
     public void onScrollChange(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-        // Make sure the hiding is enabled and the scroll was significant
-        if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_FAB_SCROLL, false) && Math.abs(oldScrollY - scrollY) > mScrollThreshold) {
-            if (scrollY > oldScrollY) {
-                // User scrolled down, hide the button
-                mActivity.webviewFab.hide();
-            } else if (scrollY < oldScrollY) {
-                // User scrolled up, show the button
-                mActivity.webviewFab.show();
-            }
-        }
     }
 }

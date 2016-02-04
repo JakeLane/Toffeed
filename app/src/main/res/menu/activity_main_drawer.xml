@@ -46,15 +46,6 @@
             android:icon="@drawable/ic_menu_forward"
             android:title="@string/menu_forward" />
         <item
-            android:id="@+id/nav_fullscreen"
-            android:icon="@drawable/ic_menu_fullscreen"
-            android:title="@string/menu_fullscreen" />
-        <item
-            android:id="@+id/nav_unfullscreen"
-            android:icon="@drawable/ic_menu_unfullscreen"
-            android:visible="false"
-            android:title="@string/menu_unfullscreen" />
-        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_settings"
             android:title="@string/menu_settings" />

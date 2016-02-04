@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem mNotificationButton;
     private CallbackManager callbackManager;
     private Snackbar loginSnackbar = null;
-    FloatingActionButton webviewFab;
     private View mCoordinatorLayoutView;
     @SuppressWarnings("FieldCanBeLocal") // Will be garbage collected as a local variable
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
@@ -145,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         // Inflate the FAB
-        webviewFab = (FloatingActionButton) findViewById(R.id.webviewFAB);
+        FloatingActionButton webviewFab = (FloatingActionButton) findViewById(R.id.webviewFAB);
         if (!preferences.getBoolean(SettingsActivity.KEY_PREF_FAB_SCROLL, false)) {
             CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) webviewFab.getLayoutParams();
             p.setBehavior(null);
@@ -295,12 +294,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_forward:
                 mWebView.goForward();
                 break;
-            case R.id.nav_fullscreen:
-                hideSystemUI();
-                break;
-            case R.id.nav_unfullscreen:
-                showSystemUI();
-                break;
             case R.id.nav_settings:
                 Intent settingsActivity = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(settingsActivity);
@@ -391,22 +384,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         parameters.putString("fields", "id,name,cover");
         request.setParameters(parameters);
         request.executeAsync();
-    }
-
-    private void hideSystemUI() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
-        mNavigationView.getMenu().findItem(R.id.nav_fullscreen).setVisible(false);
-        mNavigationView.getMenu().findItem(R.id.nav_unfullscreen).setVisible(true);
-    }
-
-    private void showSystemUI() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().show();
-        }
-        mNavigationView.getMenu().findItem(R.id.nav_fullscreen).setVisible(true);
-        mNavigationView.getMenu().findItem(R.id.nav_unfullscreen).setVisible(false);
     }
 
     public void setNotificationNum(int num) {
