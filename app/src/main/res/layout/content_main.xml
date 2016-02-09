@@ -17,3 +17,17 @@
         android:layout_height="match_parent" />
 
 </android.support.v4.widget.SwipeRefreshLayout>
+
+<FrameLayout
+        android:id="@+id/fullscreen_custom_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clickable="false"
+        android:visibility="gone"
+        tools:ignore="ObsoleteLayoutParam" />
+
+    	</FrameLayout>
