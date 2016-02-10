@@ -49,6 +49,12 @@ import java.util.List;
 
 import im.delight.android.webview.AdvancedWebView;
 
+//ChromeClient needed to show custom view
+import android.webkit.WebChromeClient;
+
+//Framelayout needed for custom view
+import android.widget.FrameLayout;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
     private static final List<String> HOSTNAMES = Arrays.asList("facebook.com", "*.facebook.com");
@@ -64,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private View mCoordinatorLayoutView;
     @SuppressWarnings("FieldCanBeLocal") // Will be garbage collected as a local variable
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
+    
+    //Custom View For Full Screen Video
+    View mCustomView;
+    FrameLayout customViewContainer;
+    private CustomViewCallback mCustomViewCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +126,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
+        
+        //Setup custom view for full screen
+        customViewContainer = (FrameLayout) findViewById(R.id.fullscreen_custom_content);
 
         // Create the badge for messages
         ActionItemBadge.update(this, mNavigationView.getMenu().findItem(R.id.nav_messages), (Drawable) null, BADGE_GRAY_FULL, Integer.MIN_VALUE);
@@ -197,6 +211,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             updateUserInfo();
         }
     }
+    
+    //Full Screen Video Fix
+    webView.setWebChromeClient(new WebChromeClient(){ 
+        	
+        	        	
+        	@Override
+            public void onShowCustomView(View view,CustomViewCallback callback) {
+                // if a view already exists then immediately terminate the new one
+                if (mCustomView != null) {
+                    callback.onCustomViewHidden();
+                    return;
+                }
+                mCustomView = view;
+
+               
+               
+                customViewContainer.setVisibility(View.VISIBLE);
+                toolbar.setVisibility(View.GONE);
+                customViewContainer.addView(view);
+                mCustomViewCallback = callback;
+
+             
+            }
+        	
+        
+
+        	@Override
+            public void onHideCustomView() {
+                super.onHideCustomView();
+                if (mCustomView == null)
+                    return;
+
+                // hide and remove customViewContainer
+                mCustomView.setVisibility(View.GONE);
+                customViewContainer.setVisibility(View.GONE);
+                //if (preferences.getBoolean("hidden", false)) {
+                	//toolbar.setVisibility(View.GONE);
+                //}else{
+                	toolbar.setVisibility(View.VISIBLE);
+                }
+                customViewContainer.removeView(mCustomView);
+                mCustomViewCallback.onCustomViewHidden();
+
+               
+                mCustomView = null;
+
+              
+        	}
+    
 
     @Override
     protected void onResume() {
