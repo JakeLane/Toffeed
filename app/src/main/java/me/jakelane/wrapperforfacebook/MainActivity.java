@@ -8,7 +8,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -65,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private View mCoordinatorLayoutView;
     @SuppressWarnings("FieldCanBeLocal") // Will be garbage collected as a local variable
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
+    FloatingActionButton mFAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         mWebView.setGeolocationEnabled(prefs.getBoolean(key, false));
                         break;
                     case SettingsActivity.KEY_PREF_FAB_SCROLL:
-                        FloatingActionButton webviewFab = (FloatingActionButton) findViewById(R.id.webviewFAB);
-                        webviewFab.show();
+                        mFAB.show();
                         break;
                     default:
                         break;
@@ -145,12 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         // Inflate the FAB
-        FloatingActionButton mFAB = (FloatingActionButton) findViewById(R.id.webviewFAB);
-        if (!preferences.getBoolean(SettingsActivity.KEY_PREF_FAB_SCROLL, false)) {
-            CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) mFAB.getLayoutParams();
-            p.setBehavior(null);
-            mFAB.setLayoutParams(p);
-        }
+        mFAB = (FloatingActionButton) findViewById(R.id.webviewFAB);
         mFAB.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mWebView.loadUrl("javascript:try{document.querySelector('button[name=\"view_overview\"]').click();}catch(_){window.location.href='http://m.facebook.com/?loadcomposer';}");
