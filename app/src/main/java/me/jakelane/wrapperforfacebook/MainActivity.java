@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,12 +50,6 @@ import java.util.List;
 
 import im.delight.android.webview.AdvancedWebView;
 
-//ChromeClient needed to show custom view
-import android.webkit.WebChromeClient;
-
-//Framelayout needed for custom view
-import android.widget.FrameLayout;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
     private static final List<String> HOSTNAMES = Arrays.asList("facebook.com", "*.facebook.com");
@@ -70,11 +65,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private View mCoordinatorLayoutView;
     @SuppressWarnings("FieldCanBeLocal") // Will be garbage collected as a local variable
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
-    
-    //Custom View For Full Screen Video
-    View mCustomView;
-    FrameLayout customViewContainer;
-    private CustomViewCallback mCustomViewCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,20 +105,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         preferences.registerOnSharedPreferenceChangeListener(listener);
 
         // Setup the toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
         // Setup the DrawLayout
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
-        
-        //Setup custom view for full screen
-        customViewContainer = (FrameLayout) findViewById(R.id.fullscreen_custom_content);
 
         // Create the badge for messages
         ActionItemBadge.update(this, mNavigationView.getMenu().findItem(R.id.nav_messages), (Drawable) null, BADGE_GRAY_FULL, Integer.MIN_VALUE);
@@ -158,13 +145,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         // Inflate the FAB
-        FloatingActionButton webviewFab = (FloatingActionButton) findViewById(R.id.webviewFAB);
+        FloatingActionButton mFAB = (FloatingActionButton) findViewById(R.id.webviewFAB);
         if (!preferences.getBoolean(SettingsActivity.KEY_PREF_FAB_SCROLL, false)) {
-            CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) webviewFab.getLayoutParams();
+            CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) mFAB.getLayoutParams();
             p.setBehavior(null);
-            webviewFab.setLayoutParams(p);
+            mFAB.setLayoutParams(p);
         }
-        webviewFab.setOnClickListener(new View.OnClickListener() {
+        mFAB.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mWebView.loadUrl("javascript:try{document.querySelector('button[name=\"view_overview\"]').click();}catch(_){window.location.href='http://m.facebook.com/?loadcomposer';}");
             }
@@ -179,6 +166,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mWebView.addJavascriptInterface(new JavaScriptInterfaces(this), "android");
 
         mWebView.getSettings().setBlockNetworkImage(preferences.getBoolean(SettingsActivity.KEY_PREF_STOP_IMAGES, false));
+        mWebView.getSettings().setAppCacheEnabled(true);
+
+        mWebView.setWebChromeClient(new CustomWebChromeClient(this, mWebView, (FrameLayout) findViewById(R.id.fullscreen_custom_content), mFAB));
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -211,55 +201,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             updateUserInfo();
         }
     }
-    
-    //Full Screen Video Fix
-    webView.setWebChromeClient(new WebChromeClient(){ 
-        	
-        	        	
-        	@Override
-            public void onShowCustomView(View view,CustomViewCallback callback) {
-                // if a view already exists then immediately terminate the new one
-                if (mCustomView != null) {
-                    callback.onCustomViewHidden();
-                    return;
-                }
-                mCustomView = view;
-
-               
-               
-                customViewContainer.setVisibility(View.VISIBLE);
-                toolbar.setVisibility(View.GONE);
-                customViewContainer.addView(view);
-                mCustomViewCallback = callback;
-
-             
-            }
-        	
-        
-
-        	@Override
-            public void onHideCustomView() {
-                super.onHideCustomView();
-                if (mCustomView == null)
-                    return;
-
-                // hide and remove customViewContainer
-                mCustomView.setVisibility(View.GONE);
-                customViewContainer.setVisibility(View.GONE);
-                //if (preferences.getBoolean("hidden", false)) {
-                	//toolbar.setVisibility(View.GONE);
-                //}else{
-                	toolbar.setVisibility(View.VISIBLE);
-                }
-                customViewContainer.removeView(mCustomView);
-                mCustomViewCallback.onCustomViewHidden();
-
-               
-                mCustomView = null;
-
-              
-        	}
-    
 
     @Override
     protected void onResume() {
@@ -424,10 +365,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
 
                         @Override
-                        public void onBitmapFailed(Drawable errorDrawable) {}
+                        public void onBitmapFailed(Drawable errorDrawable) {
+                        }
 
                         @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {}
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        }
                     });
 
                     Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + object.getString("id") + "/picture?type=large").error(R.drawable.side_profile).into((ImageView) findViewById(R.id.profile_picture));

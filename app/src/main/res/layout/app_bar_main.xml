@@ -34,4 +34,14 @@
         android:src="@drawable/ic_fab_post"
         app:elevation="4dp" />
 
+    <FrameLayout
+        android:id="@+id/fullscreen_custom_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#000"
+        android:clickable="false"
+        android:visibility="gone" />
+
 </android.support.design.widget.CoordinatorLayout>

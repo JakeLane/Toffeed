@@ -52,4 +52,6 @@
     <string name="error_super_wrong">Something went super wrong</string>
     <string name="error_facebook_noconnection">Could not access Facebook</string>
     <string name="error_facebook_error">Something went wrong on Facebook\'s end</string>
+
+    <string name="loading">Loading</string>
 </resources>
