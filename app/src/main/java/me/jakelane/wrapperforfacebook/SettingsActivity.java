@@ -12,6 +12,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_PREF_MESSAGING = "messaging_enabled";
     public static final String KEY_PREF_JUMP_TOP_BUTTON = "jump_top_enabled";
     public static final String KEY_PREF_LOCATION = "location_enabled";
+    public static final String KEY_PREF_HIDE_EDITOR = "hide_editor_newsfeed";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

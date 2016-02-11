@@ -7,6 +7,11 @@
             android:summary="@string/location_enabled_summary"
             android:defaultValue="false" />
         <CheckBoxPreference
+            android:key="hide_editor_newsfeed"
+            android:title="@string/hide_editor_newsfeed_title"
+            android:summary="@string/hide_editor_newsfeed_summary"
+            android:defaultValue="true" />
+        <CheckBoxPreference
             android:key="stop_images"
             android:title="@string/stop_images_title"
             android:summary="@string/stop_images_summary"

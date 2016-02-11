@@ -39,4 +39,9 @@ class JavaScriptHelpers {
         // Load the composer if there is the 'loadcomposer' param
         view.loadUrl("javascript:if(location.search=='?loadcomposer'){document.querySelector('button[name=\"view_overview\"]').click();};");
     }
+
+    public static void hideStatusEditor(WebView view) {
+        // Hide the status editor on the newsfeed if setting is enabled
+        view.loadUrl("javascript:(function()%7Btry%20%7Bdocument.querySelector('%23mbasic_inline_feed_composer').style.display%3D'none'%3B%7D%20catch(_)%20%7B%7D%7D)()");
+    }
 }

@@ -39,6 +39,11 @@ class WebViewListener implements AdvancedWebView.Listener {
             // Load the composer if there is the 'loadcomposer' param
             JavaScriptHelpers.loadComposer(mWebView);
 
+            // Hide the status editor on the newsfeed if setting is enabled
+            if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_HIDE_EDITOR, true)) {
+                JavaScriptHelpers.hideStatusEditor(mWebView);
+            }
+
             // Hide the menu bar (but not on the composer)
             JavaScriptHelpers.hideMenuBar(mWebView);
 

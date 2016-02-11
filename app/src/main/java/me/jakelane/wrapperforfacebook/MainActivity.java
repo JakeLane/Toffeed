@@ -1,5 +1,6 @@
 package me.jakelane.wrapperforfacebook;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Members
     SwipeRefreshLayout swipeView;
     NavigationView mNavigationView;
+    FloatingActionButton mFAB;
     private AdvancedWebView mWebView;
     private MenuItem mNotificationButton;
     private CallbackManager callbackManager;
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private View mCoordinatorLayoutView;
     @SuppressWarnings("FieldCanBeLocal") // Will be garbage collected as a local variable
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
-    FloatingActionButton mFAB;
+    private boolean requiresReload = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case SettingsActivity.KEY_PREF_STOP_IMAGES:
                         mWebView.getSettings().setBlockNetworkImage(prefs.getBoolean(key, false));
+                        requiresReload = true;
                         break;
                     case SettingsActivity.KEY_PREF_BACK_BUTTON:
                         mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(prefs.getBoolean(key, false));
@@ -95,6 +98,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case SettingsActivity.KEY_PREF_FAB_SCROLL:
                         mFAB.show();
+                        break;
+                    case SettingsActivity.KEY_PREF_HIDE_EDITOR:
+                        requiresReload = true;
                         break;
                     default:
                         break;
@@ -200,6 +206,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         mWebView.onResume();
+
+        // Check if we need to show a page reload snackbar
+        if (requiresReload) {
+            Snackbar reloadSnackbar = Snackbar.make(mCoordinatorLayoutView, "Reload for changes to take effect", Snackbar.LENGTH_LONG);
+            reloadSnackbar.setAction(R.string.menu_refresh, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mWebView.reload();
+                }
+            });
+            reloadSnackbar.show();
+            requiresReload = false;
+        }
     }
 
     @Override
