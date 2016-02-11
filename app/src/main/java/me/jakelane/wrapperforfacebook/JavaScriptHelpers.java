@@ -8,27 +8,27 @@ class JavaScriptHelpers {
 
     public static void updateCurrentTab(WebView view) {
         // Get the currently open tab and check on the navigation menu
-        view.loadUrl("javascript:try{android.getCurrent(document.querySelector('.popoverOpen').id);}catch(e){android.getCurrent('null');}");
+        view.loadUrl("javascript:(function()%7Btry%7Bandroid.getCurrent(document.querySelector('.popoverOpen').id)%7Dcatch(_)%7Bandroid.getCurrent('null')%7D%7D)()");
     }
 
     public static void updateNotificationsService(WebView view) {
-        // Start the notification service
-        view.loadUrl("javascript:function notification_service(){android.getNotifications(document.querySelector('#notifications_jewel > a > div > span[data-sigil=count]').innerHTML);setTimeout(notification_service, " + BADGE_UPDATE_INTERVAL + ");}try{notification_service();}catch(e){}");
+        // Start the notification service");
+        view.loadUrl("javascript:(function()%7Bfunction%20notification_service()%7Bandroid.getNotifications(document.querySelector('%23notifications_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D').innerHTML)%2CsetTimeout(notification_service%2C" + BADGE_UPDATE_INTERVAL + ")%7Dtry%7Bnotification_service()%7Dcatch(_)%7B%7D%7D)()");
     }
 
     public static void updateNotifications(WebView view) {
         // Run the notification check once
-        view.loadUrl("javascript:android.getNotifications(document.querySelector('#notifications_jewel > a > div > span[data-sigil=count]').innerHTML);");
+        view.loadUrl("javascript:(function()%7Btry%7Bandroid.getNotifications(document.querySelector('%23notifications_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D').innerHTML)%7Dcatch(_)%7B%7D%7D)()");
     }
 
     public static void updateMessagesService(WebView view) {
         // Start the message service
-        view.loadUrl("javascript:function message_service(){android.getMessages(document.querySelector('#messages_jewel > a > div > span[data-sigil=count]').innerHTML);setTimeout(message_service, " + BADGE_UPDATE_INTERVAL + ");}try{message_service();}catch(e){}");
+        view.loadUrl("javascript:(function()%7Bfunction%20message_service()%7Bandroid.getMessages(document.querySelector('%23messages_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D').innerHTML)%2CsetTimeout(message_service%2C" + BADGE_UPDATE_INTERVAL + ")%7Dtry%7Bmessage_service()%7Dcatch(_)%7B%7D%7D)()");
     }
 
     public static void updateMessages(WebView view) {
         // Run the message check once
-        view.loadUrl("javascript:android.getMessages(document.querySelector('#messages_jewel > a > div > span[data-sigil=count]').innerHTML);");
+        view.loadUrl("javascript:(function()%7Btry%7Bandroid.getMessages(document.querySelector('%23messages_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D').innerHTML)%7Dcatch(_)%7B%7D%7D)()");
     }
 
     public static void paramLoader(WebView view, String url) {
