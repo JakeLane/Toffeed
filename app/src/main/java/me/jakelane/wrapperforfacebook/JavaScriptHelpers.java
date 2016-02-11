@@ -1,14 +1,10 @@
 package me.jakelane.wrapperforfacebook;
 
+import android.net.UrlQuerySanitizer;
 import android.webkit.WebView;
 
 class JavaScriptHelpers {
     private static final int BADGE_UPDATE_INTERVAL = 30000;
-
-    public static void hideMenuBar(WebView view) {
-        // Hide the menu bar
-        view.loadUrl("javascript:try{if(!document.URL.match('facebook\\.com\\/composer')){document.getElementById('page').style.top='-45px';android.isComposer(false)}else{android.isComposer(true)}}catch(e){}android.loadingCompleted();");
-    }
 
     public static void updateCurrentTab(WebView view) {
         // Get the currently open tab and check on the navigation menu
@@ -35,13 +31,24 @@ class JavaScriptHelpers {
         view.loadUrl("javascript:android.getMessages(document.querySelector('#messages_jewel > a > div > span[data-sigil=count]').innerHTML);");
     }
 
-    public static void loadComposer(WebView view) {
-        // Load the composer if there is the 'loadcomposer' param
-        view.loadUrl("javascript:if(location.search=='?loadcomposer'){document.querySelector('button[name=\"view_overview\"]').click();};");
+    public static void paramLoader(WebView view, String url) {
+        UrlQuerySanitizer sanitizer = new UrlQuerySanitizer();
+        sanitizer.parseUrl(url);
+        String param = sanitizer.getValue("pageload");
+        if (param != null) {
+            switch (param) {
+                case "composer":
+                    view.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('button%5Bname%3D%22view_overview%22%5D').click()%7Dcatch(_)%7B%7D%7D)()");
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
 
-    public static void hideStatusEditor(WebView view) {
-        // Hide the status editor on the newsfeed if setting is enabled
-        view.loadUrl("javascript:(function()%7Btry%20%7Bdocument.querySelector('%23mbasic_inline_feed_composer').style.display%3D'none'%3B%7D%20catch(_)%20%7B%7D%7D)()");
+    public static void loadCSS(WebView view, String css) {
+        // Inject CSS string to the HEAD of the webpage
+        view.loadUrl("javascript:(function()%7Bvar%20styles%3Ddocument.createElement(%22style%22)%3Bstyles.innerHTML%3D%22" + css + "%22%2Cdocument.getElementsByTagName(%22head%22)%5B0%5D.appendChild(styles)%2Candroid.loadingCompleted()%7D)()");
     }
 }

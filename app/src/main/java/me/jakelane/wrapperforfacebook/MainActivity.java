@@ -1,6 +1,5 @@
 package me.jakelane.wrapperforfacebook;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -153,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mFAB = (FloatingActionButton) findViewById(R.id.webviewFAB);
         mFAB.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mWebView.loadUrl("javascript:try{document.querySelector('button[name=\"view_overview\"]').click();}catch(_){window.location.href='http://m.facebook.com/?loadcomposer';}");
+                mWebView.loadUrl("javascript:try{document.querySelector('button[name=\"view_overview\"]').click();}catch(_){window.location.href='http://m.facebook.com/?pageload=composer';}");
             }
         });
 
@@ -209,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Check if we need to show a page reload snackbar
         if (requiresReload) {
-            Snackbar reloadSnackbar = Snackbar.make(mCoordinatorLayoutView, "Reload for changes to take effect", Snackbar.LENGTH_LONG);
+            Snackbar reloadSnackbar = Snackbar.make(mCoordinatorLayoutView, R.string.hide_editor_newsfeed_snackbar, Snackbar.LENGTH_LONG);
             reloadSnackbar.setAction(R.string.menu_refresh, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

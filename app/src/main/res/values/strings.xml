@@ -30,6 +30,7 @@
 
     <string name="hide_editor_newsfeed_title">Hide Status editor in News Feed</string>
     <string name="hide_editor_newsfeed_summary">When enabled, the status editor will be hidden on the News Feed (still accessible with the FAB).</string>
+    <string name="hide_editor_newsfeed_snackbar">Reload for changes to take effect</string>
 
     <string name="stop_images_title">Don\'t load images</string>
     <string name="stop_images_summary">When enabled, will not download images. Some images may remain in the cache.</string>

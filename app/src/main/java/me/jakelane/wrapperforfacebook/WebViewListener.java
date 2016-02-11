@@ -12,6 +12,11 @@ import android.webkit.WebView;
 import im.delight.android.webview.AdvancedWebView;
 
 class WebViewListener implements AdvancedWebView.Listener {
+    // #page{top:-45px;}
+    private static final String HIDE_MENU_BAR_CSS = "%23page%7Btop%3A-45px%7D";
+    // #mbasic_inline_feed_composer{display:none}
+    private static final String HIDE_COMPOSER_CSS = "%23mbasic_inline_feed_composer%7Bdisplay%3Anone%7D";
+
     private final MainActivity mActivity;
     private final SharedPreferences mPreferences;
     private final AdvancedWebView mWebView;
@@ -37,15 +42,25 @@ class WebViewListener implements AdvancedWebView.Listener {
         // Only do things if logged in
         if (mActivity.checkLoggedInState()) {
             // Load the composer if there is the 'loadcomposer' param
-            JavaScriptHelpers.loadComposer(mWebView);
+            JavaScriptHelpers.paramLoader(mWebView, url);
 
-            // Hide the status editor on the newsfeed if setting is enabled
-            if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_HIDE_EDITOR, true)) {
-                JavaScriptHelpers.hideStatusEditor(mWebView);
-            }
+            // Build a CSS string for injection
+            String css = "";
 
             // Hide the menu bar (but not on the composer)
-            JavaScriptHelpers.hideMenuBar(mWebView);
+            if (!url.contains("/composer/")) {
+                css += HIDE_MENU_BAR_CSS;
+            }
+
+            // Hide the status editor on the News Feed if setting is enabled
+            if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_HIDE_EDITOR, true)) {
+                css += HIDE_COMPOSER_CSS;
+            }
+
+            // Inject the css
+            if (!css.isEmpty()) {
+                JavaScriptHelpers.loadCSS(mWebView, css);
+            }
 
             // Get the currently open tab and check on the navigation menu
             JavaScriptHelpers.updateCurrentTab(mWebView);
