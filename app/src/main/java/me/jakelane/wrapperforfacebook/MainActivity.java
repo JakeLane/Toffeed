@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         mWebView.setGeolocationEnabled(prefs.getBoolean(key, false));
                         break;
                     case SettingsActivity.KEY_PREF_FAB_SCROLL:
-                        mMenuFAB.hideMenuButton(true);
+                        mMenuFAB.showMenuButton(true);
                         break;
                     case SettingsActivity.KEY_PREF_HIDE_EDITOR:
                         requiresReload = true;

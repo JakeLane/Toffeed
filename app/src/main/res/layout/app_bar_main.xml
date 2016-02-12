@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_checkin"
-            fab:fab_label="Check In"
+            fab:fab_label="@string/fab_checkin"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_photo"
-            fab:fab_label="Post a photo"
+            fab:fab_label="@string/fab_photo"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_fab_text"
-            fab:fab_label="Post a status"
+            fab:fab_label="@string/fab_text"
             fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>
