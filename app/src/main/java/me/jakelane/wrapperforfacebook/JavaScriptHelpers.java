@@ -49,6 +49,6 @@ class JavaScriptHelpers {
 
     public static void loadCSS(WebView view, String css) {
         // Inject CSS string to the HEAD of the webpage
-        view.loadUrl("javascript:(function()%7Bvar%20styles%3Ddocument.createElement(%22style%22)%3Bstyles.innerHTML%3D%22" + css + "%22%2Cdocument.getElementsByTagName(%22head%22)%5B0%5D.appendChild(styles)%2Candroid.loadingCompleted()%7D)()");
+        view.loadUrl("javascript:(function()%7Bvar%20styles%3Ddocument.createElement('style')%3Bstyles.innerHTML%3D'" + css + "'%2Cstyles.onload%3Dandroid.loadingCompleted()%2Cdocument.getElementsByTagName('head')%5B0%5D.appendChild(styles)%7D)()");
     }
 }
