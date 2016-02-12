@@ -12,6 +12,8 @@ import android.webkit.WebView;
 import im.delight.android.webview.AdvancedWebView;
 
 class WebViewListener implements AdvancedWebView.Listener {
+    // *{-webkit-tap-highlight-color:rgba(255,255,255,0);-webkit-tap-highlight-color:transparent}
+    private static final String HIDE_ORANGE_FOCUS = "*%7B-webkit-tap-highlight-color%3Argba(255%2C255%2C255%2C0)%3B-webkit-tap-highlight-color%3Atransparent%7D";
     // #page{top:-45px;}
     private static final String HIDE_MENU_BAR_CSS = "%23page%7Btop%3A-45px%7D";
     // #mbasic_inline_feed_composer{display:none}
@@ -41,11 +43,11 @@ class WebViewListener implements AdvancedWebView.Listener {
     public void onPageFinished(String url) {
         // Only do things if logged in
         if (mActivity.checkLoggedInState()) {
-            // Load the composer if there is the 'loadcomposer' param
+            // Load a certain page if there is a parameter
             JavaScriptHelpers.paramLoader(mWebView, url);
 
-            // Build a CSS string for injection
-            String css = "";
+            // Hide Orange highlight on focus
+            String css = HIDE_ORANGE_FOCUS;
 
             // Hide the menu bar (but not on the composer)
             if (!url.contains("/composer/")) {
@@ -58,9 +60,7 @@ class WebViewListener implements AdvancedWebView.Listener {
             }
 
             // Inject the css
-            if (!css.isEmpty()) {
-                JavaScriptHelpers.loadCSS(mWebView, css);
-            }
+            JavaScriptHelpers.loadCSS(mWebView, css);
 
             // Get the currently open tab and check on the navigation menu
             JavaScriptHelpers.updateCurrentTab(mWebView);
