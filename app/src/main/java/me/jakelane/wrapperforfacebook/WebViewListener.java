@@ -12,12 +12,14 @@ import android.webkit.WebView;
 import im.delight.android.webview.AdvancedWebView;
 
 class WebViewListener implements AdvancedWebView.Listener {
-    // *{-webkit-tap-highlight-color:rgba(255,255,255,0);-webkit-tap-highlight-color:transparent}
-    private static final String HIDE_ORANGE_FOCUS = "*%7B-webkit-tap-highlight-color%3Argba(255%2C255%2C255%2C0)%3B-webkit-tap-highlight-color%3Atransparent%7D";
+    // *{-webkit-tap-highlight-color: rgba(0,0,0, 0.0);outline: none;}
+    private static final String HIDE_ORANGE_FOCUS = "*%7B-webkit-tap-highlight-color%3Atransparent%3Boutline%3A0%7D";
     // #page{top:-45px;}
     private static final String HIDE_MENU_BAR_CSS = "%23page%7Btop%3A-45px%7D";
     // #mbasic_inline_feed_composer{display:none}
     private static final String HIDE_COMPOSER_CSS = "%23mbasic_inline_feed_composer%7Bdisplay%3Anone%7D";
+    // article[data-ft*=ei]{display:none;}
+    private static final String HIDE_SPONSORED = "article%5Bdata-ft*%3Dei%5D%7Bdisplay%3Anone%7D";
 
     private final MainActivity mActivity;
     private final SharedPreferences mPreferences;
@@ -57,6 +59,11 @@ class WebViewListener implements AdvancedWebView.Listener {
             // Hide the status editor on the News Feed if setting is enabled
             if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_HIDE_EDITOR, true)) {
                 css += HIDE_COMPOSER_CSS;
+            }
+
+            // Hide 'Sponsored' content (ads)
+            if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_HIDE_SPONSORED, true)) {
+                css += HIDE_SPONSORED;
             }
 
             // Inject the css

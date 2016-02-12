@@ -102,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case SettingsActivity.KEY_PREF_HIDE_EDITOR:
                         requiresReload = true;
                         break;
+                    case SettingsActivity.KEY_PREF_HIDE_SPONSORED:
+                        requiresReload = true;
+                        break;
                     default:
                         break;
                 }

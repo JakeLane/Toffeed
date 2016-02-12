@@ -16,6 +16,11 @@
             android:title="@string/stop_images_title"
             android:summary="@string/stop_images_summary"
             android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="hide_sponsored"
+            android:title="@string/hide_sponsored_title"
+            android:summary="@string/hide_sponsored_summary"
+            android:defaultValue="true" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/navigation_setting_title">
         <CheckBoxPreference
@@ -32,7 +37,7 @@
             android:key="messaging_enabled"
             android:title="@string/messaging_enabled_title"
             android:summary="@string/messaging_enabled_summary"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
         <CheckBoxPreference
             android:key="jump_top_enabled"
             android:title="@string/jump_top_enabled_title"
