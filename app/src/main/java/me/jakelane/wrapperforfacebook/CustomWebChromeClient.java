@@ -1,6 +1,5 @@
 package me.jakelane.wrapperforfacebook;
 
-import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,20 +7,23 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 
+import com.github.clans.fab.FloatingActionMenu;
+
+
 class CustomWebChromeClient extends WebChromeClient {
     private final MainActivity mActivity;
     private final WebView mWebView;
     private final ViewGroup mCustomViewContainer;
-    private final FloatingActionButton mFAB;
+    private final FloatingActionMenu mMenuFAB;
     private View mVideoProgressView;
     private View mCustomView;
     private CustomViewCallback customViewCallback;
 
-    public CustomWebChromeClient(MainActivity activity, WebView webview, FrameLayout viewcontainer, FloatingActionButton fab) {
+    public CustomWebChromeClient(MainActivity activity, WebView webview, FrameLayout viewcontainer) {
         mActivity = activity;
         mWebView = webview;
         mCustomViewContainer = viewcontainer;
-        mFAB = fab;
+        mMenuFAB = (FloatingActionMenu) activity.findViewById(R.id.menuFAB);
     }
 
     @Override
@@ -34,7 +36,7 @@ class CustomWebChromeClient extends WebChromeClient {
 
         mCustomView = view;
         mWebView.setVisibility(View.GONE);
-        mFAB.hide();
+        mMenuFAB.hideMenuButton(true);
         mCustomViewContainer.setVisibility(View.VISIBLE);
         mCustomViewContainer.addView(view);
         customViewCallback = callback;
@@ -57,7 +59,7 @@ class CustomWebChromeClient extends WebChromeClient {
         }
 
         mWebView.setVisibility(View.VISIBLE);
-        mFAB.show();
+        mMenuFAB.showMenuButton(true);
         mCustomViewContainer.setVisibility(View.GONE);
 
         // Hide the custom view.

@@ -33,12 +33,19 @@ class JavaScriptHelpers {
 
     public static void paramLoader(WebView view, String url) {
         UrlQuerySanitizer sanitizer = new UrlQuerySanitizer();
+        sanitizer.setAllowUnregisteredParamaters(true);
         sanitizer.parseUrl(url);
         String param = sanitizer.getValue("pageload");
         if (param != null) {
             switch (param) {
                 case "composer":
                     view.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('button%5Bname%3D%22view_overview%22%5D').click()%7Dcatch(_)%7B%7D%7D)()");
+                    break;
+                case "composer_photo":
+                    view.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('button%5Bname%3D%22view_photo%22%5D').click()%7Dcatch(_)%7B%7D%7D)()");
+                    break;
+                case "composer_checkin":
+                    view.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('button%5Bname%3D%22view_location%22%5D').click()%7Dcatch(_)%7B%7D%7D)()");
                     break;
                 default:
                     break;

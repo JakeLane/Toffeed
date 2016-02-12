@@ -5,9 +5,10 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.webkit.WebView;
+
+import com.github.clans.fab.FloatingActionMenu;
 
 import im.delight.android.webview.AdvancedWebView;
 
@@ -24,7 +25,7 @@ class WebViewListener implements AdvancedWebView.Listener {
     private final MainActivity mActivity;
     private final SharedPreferences mPreferences;
     private final AdvancedWebView mWebView;
-    private final FloatingActionButton mWebViewFAB;
+    private final FloatingActionMenu mMenuFAB;
     private final int mScrollThreshold;
 
     WebViewListener(MainActivity activity, WebView view) {
@@ -32,7 +33,7 @@ class WebViewListener implements AdvancedWebView.Listener {
         mWebView = (AdvancedWebView) view;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
         mScrollThreshold = activity.getResources().getDimensionPixelOffset(R.dimen.fab_scroll_threshold);
-        mWebViewFAB = activity.mFAB;
+        mMenuFAB = (FloatingActionMenu) activity.findViewById(R.id.menuFAB);
     }
 
     @Override
@@ -105,11 +106,12 @@ class WebViewListener implements AdvancedWebView.Listener {
         if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_FAB_SCROLL, false) && Math.abs(oldScrollY - scrollY) > mScrollThreshold) {
             if (scrollY > oldScrollY) {
                 // User scrolled down, hide the button
-                mWebViewFAB.hide();
+                mMenuFAB.hideMenuButton(true);
             } else if (scrollY < oldScrollY) {
                 // User scrolled up, show the button
-                mWebViewFAB.show();
+                mMenuFAB.showMenuButton(true);
             }
+
         }
     }
 }

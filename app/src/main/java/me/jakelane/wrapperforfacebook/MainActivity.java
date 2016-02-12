@@ -8,7 +8,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.res.ResourcesCompat;
@@ -36,6 +35,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
 import com.squareup.picasso.Picasso;
@@ -58,8 +58,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Members
     SwipeRefreshLayout swipeView;
     NavigationView mNavigationView;
-    FloatingActionButton mFAB;
+    private FloatingActionMenu mMenuFAB;
     private AdvancedWebView mWebView;
+    private final View.OnClickListener mFABClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.textFAB:
+                    mWebView.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('button%5Bname%3D%22view_overview%22%5D').click()%7Dcatch(_)%7Bwindow.location.href%3D%22" + FACEBOOK_URL_BASE_ENCODED + "%3Fpageload%3Dcomposer%22%7D%7D)()");
+                    break;
+                case R.id.photoFAB:
+                    mWebView.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('button%5Bname%3D%22view_photo%22%5D').click()%7Dcatch(_)%7Bwindow.location.href%3D%22" + FACEBOOK_URL_BASE_ENCODED + "%3Fpageload%3Dcomposer_photo%22%7D%7D)()");
+                    break;
+                case R.id.checkinFAB:
+                    mWebView.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('button%5Bname%3D%22view_location%22%5D').click()%7Dcatch(_)%7Bwindow.location.href%3D%22" + FACEBOOK_URL_BASE_ENCODED + "%3Fpageload%3Dcomposer_checkin%22%7D%7D)()");
+                    break;
+                default:
+                    break;
+            }
+            mMenuFAB.close(true);
+        }
+    };
     private MenuItem mNotificationButton;
     private CallbackManager callbackManager;
     private Snackbar loginSnackbar = null;
@@ -97,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         mWebView.setGeolocationEnabled(prefs.getBoolean(key, false));
                         break;
                     case SettingsActivity.KEY_PREF_FAB_SCROLL:
-                        mFAB.show();
+                        mMenuFAB.hideMenuButton(true);
                         break;
                     case SettingsActivity.KEY_PREF_HIDE_EDITOR:
                         requiresReload = true;
@@ -152,13 +171,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        // Inflate the FAB
-        mFAB = (FloatingActionButton) findViewById(R.id.webviewFAB);
-        mFAB.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mWebView.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('button%5Bname%3D%22view_overview%22%5D').click()%7Dcatch(_)%7Bwindow.location.href%3D%22"  + FACEBOOK_URL_BASE_ENCODED + "%3Fpageload%3Dcomposer%22%7D%7D)()");
-            }
-        });
+        // Inflate the FAB menu
+        mMenuFAB = (FloatingActionMenu) findViewById(R.id.menuFAB);
+        findViewById(R.id.textFAB).setOnClickListener(mFABClickListener);
+        findViewById(R.id.photoFAB).setOnClickListener(mFABClickListener);
+        findViewById(R.id.checkinFAB).setOnClickListener(mFABClickListener);
 
         // Load the WebView
         mWebView = (AdvancedWebView) findViewById(R.id.webview);
@@ -171,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mWebView.getSettings().setBlockNetworkImage(preferences.getBoolean(SettingsActivity.KEY_PREF_STOP_IMAGES, false));
         mWebView.getSettings().setAppCacheEnabled(true);
 
-        mWebView.setWebChromeClient(new CustomWebChromeClient(this, mWebView, (FrameLayout) findViewById(R.id.fullscreen_custom_content), mFAB));
+        mWebView.setWebChromeClient(new CustomWebChromeClient(this, mWebView, (FrameLayout) findViewById(R.id.fullscreen_custom_content)));
 
         callbackManager = CallbackManager.Factory.create();
 
