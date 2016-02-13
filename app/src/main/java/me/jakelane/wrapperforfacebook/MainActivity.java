@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("FieldCanBeLocal") // Will be garbage collected as a local variable
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
     private boolean requiresReload = false;
+    private String mUserLink = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,8 +137,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(mToolbar);
 
         // Setup the DrawLayout
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -189,6 +190,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mWebView.getSettings().setAppCacheEnabled(true);
 
         mWebView.setWebChromeClient(new CustomWebChromeClient(this, mWebView, (FrameLayout) findViewById(R.id.fullscreen_custom_content)));
+
+        // Add OnClick listener to Profile picture
+        ImageView profileImage = (ImageView) mNavigationView.getHeaderView(0).findViewById(R.id.profile_picture);
+        profileImage.setClickable(true);
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mUserLink != null) {
+                    drawer.closeDrawers();
+                    mWebView.loadUrl(mUserLink);
+                }
+            }
+        });
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -386,6 +400,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onCompleted(JSONObject object, GraphResponse response) {
                 // Update header
                 try {
+                    String userID = object.getString("id");
+                    mUserLink = object.getString("link");
+
                     // Set the user's name under the header
                     ((TextView) findViewById(R.id.profile_name)).setText(object.getString("name"));
 
@@ -406,7 +423,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     });
 
-                    Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + object.getString("id") + "/picture?type=large").error(R.drawable.side_profile).into((ImageView) findViewById(R.id.profile_picture));
+                    Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + userID + "/picture?type=large").error(R.drawable.side_profile).into((ImageView) findViewById(R.id.profile_picture));
                 } catch (NullPointerException e) {
                     Snackbar.make(mCoordinatorLayoutView, R.string.error_facebook_noconnection, Snackbar.LENGTH_LONG).show();
                 } catch (JSONException e) {
@@ -420,7 +437,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,cover");
+        parameters.putString("fields", "id,name,cover,link");
         request.setParameters(parameters);
         request.executeAsync();
     }
