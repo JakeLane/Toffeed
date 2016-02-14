@@ -31,4 +31,5 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.github.JakeLane:Android-AdvancedWebView:-SNAPSHOT'
     compile 'com.github.clans:fab:1.6.2'
+    compile 'com.android.support:customtabs:23.1.1'
 }

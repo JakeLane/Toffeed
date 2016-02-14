@@ -57,6 +57,7 @@
     <string name="jump_top_enabled_summary">When enabled, the Jump to Top button will be visible in the draw.</string>
 
     <string name="login_button">Login</string>
+    <string name="share_text">Share</string>
 
     <string name="not_logged_in">You are not logged in</string>
     <string name="error_login">Something went wrong, please try logging in again</string>

@@ -1,10 +1,13 @@
 package me.jakelane.wrapperforfacebook;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.webkit.WebView;
 
@@ -96,8 +99,19 @@ class WebViewListener implements AdvancedWebView.Listener {
     public void onExternalPageRequest(String url) {
         Log.v(Helpers.LogTag, "External page: " + url);
         // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        mActivity.startActivity(intent);
+
+        CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+        intentBuilder.setShowTitle(true);
+        intentBuilder.setToolbarColor(ContextCompat.getColor(mActivity, R.color.colorPrimary));
+
+        Intent actionIntent = new Intent(Intent.ACTION_SEND);
+        actionIntent.setType("text/plain");
+        actionIntent.putExtra(Intent.EXTRA_TEXT, url);
+
+        PendingIntent menuItemPendingIntent = PendingIntent.getActivity(mActivity, 0, actionIntent, 0);
+        intentBuilder.addMenuItem(mActivity.getString(R.string.share_text), menuItemPendingIntent);
+
+        intentBuilder.build().launchUrl(mActivity, Uri.parse(url));
     }
 
     @Override
