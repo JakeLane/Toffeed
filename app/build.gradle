@@ -32,4 +32,6 @@ dependencies {
     compile 'com.github.JakeLane:Android-AdvancedWebView:-SNAPSHOT'
     compile 'com.github.clans:fab:1.6.2'
     compile 'com.android.support:customtabs:23.1.1'
+    compile 'com.github.ahorn:android-rss:master'
+    compile 'org.jsoup:jsoup:1.8.3'
 }

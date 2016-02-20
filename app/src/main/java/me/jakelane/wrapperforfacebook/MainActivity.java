@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
     private boolean requiresReload = false;
     private String mUserLink = null;
+    private SharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Preferences
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                 switch (key) {
@@ -125,12 +127,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case SettingsActivity.KEY_PREF_HIDE_SPONSORED:
                         requiresReload = true;
                         break;
+                    case SettingsActivity.KEY_PREF_NOTIFICATIONS_ENABLED:
+                        PollReceiver.scheduleAlarms(getApplicationContext(), false);
+                        break;
+                    case SettingsActivity.KEY_PREF_NOTIFICATION_INTERVAL:
+                        PollReceiver.scheduleAlarms(getApplicationContext(), false);
+                        break;
                     default:
                         break;
                 }
             }
         };
-        preferences.registerOnSharedPreferenceChangeListener(listener);
+        mPreferences.registerOnSharedPreferenceChangeListener(listener);
 
         // Setup the toolbar
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -149,13 +157,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionItemBadge.update(this, mNavigationView.getMenu().findItem(R.id.nav_messages), (Drawable) null, BADGE_GRAY_FULL, Integer.MIN_VALUE);
 
         // Hide buttons if they are disabled
-        if (!preferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false)) {
+        if (!mPreferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false)) {
             mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(false);
         }
-        if (!preferences.getBoolean(SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON, false)) {
+        if (!mPreferences.getBoolean(SettingsActivity.KEY_PREF_JUMP_TOP_BUTTON, false)) {
             mNavigationView.getMenu().findItem(R.id.nav_jump_top).setVisible(false);
         }
-        if (!preferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false)) {
+        if (!mPreferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false)) {
             mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(false);
         }
 
@@ -181,12 +189,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Load the WebView
         mWebView = (AdvancedWebView) findViewById(R.id.webview);
         mWebView.addPermittedHostnames(HOSTNAMES);
-        mWebView.setGeolocationEnabled(preferences.getBoolean(SettingsActivity.KEY_PREF_LOCATION, false));
+        mWebView.setGeolocationEnabled(mPreferences.getBoolean(SettingsActivity.KEY_PREF_LOCATION, false));
 
         mWebView.setListener(this, new WebViewListener(this, mWebView));
         mWebView.addJavascriptInterface(new JavaScriptInterfaces(this), "android");
 
-        mWebView.getSettings().setBlockNetworkImage(preferences.getBoolean(SettingsActivity.KEY_PREF_STOP_IMAGES, false));
+        mWebView.getSettings().setBlockNetworkImage(mPreferences.getBoolean(SettingsActivity.KEY_PREF_STOP_IMAGES, false));
         mWebView.getSettings().setAppCacheEnabled(true);
 
         mWebView.setWebChromeClient(new CustomWebChromeClient(this, mWebView, (FrameLayout) findViewById(R.id.fullscreen_custom_content)));
@@ -378,6 +386,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             // Enable navigation buttons
             mNavigationView.getMenu().setGroupEnabled(R.id.group_fbnav, true);
+
+            // Start the Notification service (if not already running)
+            PollReceiver.scheduleAlarms(getApplicationContext(), false);
             return true;
         } else {
             // Not logged in (possibly logged into Facebook OAuth and/or webapp)
@@ -390,6 +401,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             // Disable navigation buttons
             mNavigationView.getMenu().setGroupEnabled(R.id.group_fbnav, false);
+
+            // Cancel the Notification service if we are logged out
+            PollReceiver.scheduleAlarms(getApplicationContext(), true);
+
+            // Kill the Feed URL, so we don't get the wrong notifications
+            mPreferences.edit().putString("feed_uri", null).apply();
             return false;
         }
     }
@@ -465,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = getIntent();
 
         // If there is a intent containing a facebook link, go there
-        if (intent.getData() != null) {
+        if (intent.getData() != null && URLUtil.isValidUrl(intent.getData().toString())) {
             return intent.getData().toString();
         }
 

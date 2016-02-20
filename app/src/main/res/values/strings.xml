@@ -27,6 +27,30 @@
     <string name="fab_photo">Post a photo</string>
     <string name="fab_checkin">Check In</string>
 
+    <string name="notifications_setting_title">Notifications</string>
+
+    <string name="notifications_enabled_title">Background Notifications</string>
+    <string name="notifications_enabled_summary">When enabled, you will recieve background notifications from Facebook</string>
+
+    <string name="notification_interval_title">Background Notifications</string>
+    <string name="notification_interval_summary">When enabled, you will recieve background notifications from Facebook</string>
+    <string-array name="notification_interval">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+    </string-array>
+    <string-array name="notification_interval_values">
+        <item>300000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>3600000</item>
+        <item>7200000</item>
+    </string-array>
+
     <string name="content_setting_title">Content</string>
 
     <string name="location_enabled_title">Location access</string>
@@ -66,4 +90,5 @@
     <string name="error_facebook_error">Something went wrong on Facebook\'s end</string>
 
     <string name="loading">Loading</string>
+    <string name="notification_multiple_text">%s new notifications.</string>
 </resources>

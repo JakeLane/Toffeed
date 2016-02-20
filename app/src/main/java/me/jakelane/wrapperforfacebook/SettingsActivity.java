@@ -14,6 +14,8 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_PREF_LOCATION = "location_enabled";
     public static final String KEY_PREF_HIDE_EDITOR = "hide_editor_newsfeed";
     public static final String KEY_PREF_HIDE_SPONSORED = "hide_sponsored";
+    public static final String KEY_PREF_NOTIFICATIONS_ENABLED = "notifications_enabled";
+    public static final String KEY_PREF_NOTIFICATION_INTERVAL = "notification_interval";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
