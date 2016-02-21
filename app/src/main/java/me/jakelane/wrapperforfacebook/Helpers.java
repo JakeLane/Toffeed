@@ -19,11 +19,13 @@ class Helpers {
     public static String getCookie() {
         CookieManager cookieManager = CookieManager.getInstance();
         String cookies = cookieManager.getCookie(MainActivity.FACEBOOK_URL_BASE);
-        String[] temp = cookies.split(";");
-        for (String ar1 : temp) {
-            if (ar1.contains("c_user")) {
-                String[] temp1 = ar1.split("=");
-                return temp1[1];
+        if (cookies != null) {
+            String[] temp = cookies.split(";");
+            for (String ar1 : temp) {
+                if (ar1.contains("c_user")) {
+                    String[] temp1 = ar1.split("=");
+                    return temp1[1];
+                }
             }
         }
         // Return null as we found no cookie
