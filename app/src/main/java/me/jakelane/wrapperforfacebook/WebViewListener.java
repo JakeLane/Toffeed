@@ -58,6 +58,9 @@ class WebViewListener implements AdvancedWebView.Listener {
             // Hide the menu bar (but not on the composer)
             if (!url.contains("/composer/")) {
                 css += HIDE_MENU_BAR_CSS;
+                mActivity.swipeView.setEnabled(true);
+            } else {
+                mActivity.swipeView.setEnabled(false);
             }
 
             // Hide the status editor on the News Feed if setting is enabled

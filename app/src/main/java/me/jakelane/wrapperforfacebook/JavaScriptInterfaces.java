@@ -55,15 +55,6 @@ class JavaScriptInterfaces {
     }
 
     @JavascriptInterface
-    public void isComposer(boolean composer) {
-        if (composer) {
-            mContext.swipeView.setEnabled(false);
-        } else {
-            mContext.swipeView.setEnabled(true);
-        }
-    }
-
-    @JavascriptInterface
     public void getNotifications(final String number) {
         try {
             final int num = Integer.parseInt(number);

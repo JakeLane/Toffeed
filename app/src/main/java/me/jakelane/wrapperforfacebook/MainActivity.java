@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Setup the DrawLayout
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -182,6 +183,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Inflate the FAB menu
         mMenuFAB = (FloatingActionMenu) findViewById(R.id.menuFAB);
+        // Nasty hack to get the FAB menu button
+        mMenuFAB.getChildAt(3).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mMenuFAB.hideMenu(true);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Show your View after 3 seconds
+                        mMenuFAB.showMenu(true);
+                    }
+                }, 3000);
+                return false;
+            }
+        });
         findViewById(R.id.textFAB).setOnClickListener(mFABClickListener);
         findViewById(R.id.photoFAB).setOnClickListener(mFABClickListener);
         findViewById(R.id.checkinFAB).setOnClickListener(mFABClickListener);
