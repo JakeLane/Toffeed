@@ -17,28 +17,19 @@ import android.util.Log;
 import android.webkit.CookieManager;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.mcsoxford.rss.RSSItem;
-import org.mcsoxford.rss.RSSReader;
-import org.mcsoxford.rss.RSSReaderException;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 public class NotificationService extends IntentService {
-    private static final DateFormat DATEFORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
-    private static final String NOTIFICATION_URL = "https://www.facebook.com/notifications";
-    private static final String DESKTOP_USERAGENT = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";
+    private static final String USERAGENT = System.getProperty("http.agent");
+    private static final int NOTIFICATION_ID = 0;
+    private static final int MESSAGE_ID = 0;
 
-    private Date mLastNotification = null;
-    private String feedURI = null;
     private SharedPreferences mPreferences;
+    private String lastNotificationID = "";
+    private String lastMessageID = "";
 
     public NotificationService() {
         super("NotificationService");
@@ -48,108 +39,89 @@ public class NotificationService extends IntentService {
     public void onCreate() {
         super.onCreate();
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Try to find a feed uri
-        feedURI = mPreferences.getString("feed_uri", null);
-        Log.v(Helpers.LogTag, "Found Feed in preferences");
-
-        // Try to find the most recent notification
-        String dateString = mPreferences.getString("last_notification_date", null);
-        if (dateString != null) {
-            try {
-                mLastNotification = DATEFORMAT.parse(dateString);
-            } catch (ParseException e) {
-                mLastNotification = null;
-                Log.i(Helpers.LogTag, "Last notification timestamp could parsed");
-            }
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        // Save the most recent notification to preferences
-        if (mLastNotification != null) {
-            String datetime = DATEFORMAT.format(mLastNotification);
-            mPreferences.edit().putString("last_notification_date", datetime).apply();
-        }
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.v(Helpers.LogTag, "Notification alarm running");
-
-        // Check if we have a Feed URL
-        if (feedURI == null) {
-            // Try to find the Feed URL
-            updateFeed();
-        }
-
-        List<RSSItem> notificationsBlob = fetchNotifications();
-
-        // If we can't get the notifications, don't waste resources
-        if (notificationsBlob == null) {
-            return;
-        }
-
-        if (mLastNotification != null) {
-            List<RSSItem> unread = new ArrayList<>();
-
-            for (RSSItem rssItem : notificationsBlob) {
-                if (!rssItem.getPubDate().after(mLastNotification)) {
-                    // Only add notifications that have not been posted
-                    break;
-                }
-                unread.add(rssItem);
-            }
-
-            // Only proceed if there is a new notification
-            if (unread.size() > 0) {
-                // Update the last notification
-                mLastNotification = unread.get(0).getPubDate();
-
-                // Send the unread notifications to be posted
-                sendNotification(unread);
-            }
-        } else {
-            // No previous notification, set it to the most recent notification
-            if (notificationsBlob.size() > 0) {
-                mLastNotification = notificationsBlob.get(0).getPubDate();
-            }
-        }
-    }
-
-    private void updateFeed() {
-        Log.i(Helpers.LogTag, "Updating Feed URL");
         try {
-            Elements element = Jsoup.connect(NOTIFICATION_URL).userAgent(DESKTOP_USERAGENT).timeout(10000)
+            Elements navbar = Jsoup.connect(MainActivity.FACEBOOK_URL_BASE).userAgent(USERAGENT).timeout(10000)
                     .cookie(MainActivity.FACEBOOK_URL_BASE, CookieManager.getInstance().getCookie(MainActivity.FACEBOOK_URL_BASE)).get()
-                    .select("div#content").select("div.fwn").select("a[href*=rss20]");
-            feedURI = "https://www.facebook.com/" + element.attr("href");
-            mPreferences.edit().putString("feed_uri", feedURI).apply();
-            Log.i(Helpers.LogTag, "Feed URL set");
+                    .select("div#mJewelNav");
+
+            if (mPreferences.getBoolean("notifications_enabled", false)) {
+                Log.v(Helpers.LogTag, "Attempting to find notifications");
+                Elements notificationJewel = navbar.select("div#notifications_jewel");
+                int notificationNumber = getServiceNumber(notificationJewel);
+
+                Element notificationElements = notificationJewel.select("div#notifications_flyout").select("ol[data-sigil=contents]").get(0);
+
+                String firstNotificationText = null;
+                Uri link = null;
+                String notificationID = "";
+                for (org.jsoup.nodes.Element element : notificationElements.children()) {
+                    if (element.hasClass("aclb")) {
+                        Log.v(Helpers.LogTag, "Found 1st notification");
+                        // If notification is unread (this is unclicked, not necessarily unseen)
+                        firstNotificationText = element.children().select(".c").text();
+                        Log.v(Helpers.LogTag, firstNotificationText);
+                        link = Uri.parse(MainActivity.FACEBOOK_URL_BASE + element.children().select("div > a").attr("href"));
+                        Log.v(Helpers.LogTag, link.toString());
+                        notificationID = element.id();
+                        Log.v(Helpers.LogTag, notificationID);
+                        break;
+                    }
+                }
+
+                if (notificationNumber > 0 && !lastNotificationID.equals(notificationID)) {
+                    // There is a notification, and it has not already been posted
+                    lastNotificationID = notificationID;
+                    sendNotification(false, notificationNumber, firstNotificationText, link);
+                }
+            }
+
+            if (mPreferences.getBoolean("message_notifications_enabled", false)) {
+                Log.v(Helpers.LogTag, "Attempting to find messages");
+                Elements messagesJewel = navbar.select("div#messages_jewel");
+                int messagesNumber = getServiceNumber(messagesJewel);
+
+                String firstMessageText = null;
+                Uri link = null;
+                String messageID = null;
+                Element messagesElements = messagesJewel.select("div.flyout").select("li[data-sigil=marea]").get(0);
+                for (org.jsoup.nodes.Element element : messagesElements.children()) {
+                    if (element.child(0).hasClass("aclb")) {
+                        // If notification is unread (this is unclicked, not necessarily unseen)
+                        firstMessageText = element.child(0).children().select(".oneLine").text();
+                        link = Uri.parse(MainActivity.FACEBOOK_URL_BASE + element.child(0).children().select("a").attr("href"));
+                        messageID = element.child(0).id();
+                        break;
+                    }
+                }
+
+                if (messagesNumber > 0 && !lastMessageID.equals(messageID)) {
+                    lastMessageID = messageID;
+                    sendNotification(true, messagesNumber, firstMessageText, link);
+                }
+            }
+
+            Log.i(Helpers.LogTag, "Completed notification check");
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e(Helpers.LogTag, "Failed to find Feed URL");
+            Log.e(Helpers.LogTag, "Failed to check notifications");
         }
     }
 
-    private List<RSSItem> fetchNotifications() {
-        RSSReader reader = new RSSReader();
-        try {
-            return reader.load(feedURI).getItems();
-        } catch (RSSReaderException e) {
-            Log.e(Helpers.LogTag, "Some error occurred with the RSS Reader");
-            e.printStackTrace();
-        } catch (Exception e) {
-            Log.e(Helpers.LogTag, "Some error occurred when attempting to get RSS result");
-            e.printStackTrace();
+    private int getServiceNumber(Elements jewel) {
+        String notificationCountString = jewel.select("a > div > span[data-sigil=count]").text();
+        if (notificationCountString.length() > 0 && android.text.TextUtils.isDigitsOnly(notificationCountString)) {
+            return Integer.valueOf(notificationCountString);
+        } else {
+            return 0;
         }
-        return null;
     }
 
-    private void sendNotification(List<RSSItem> notifications) {
+    private void sendNotification(boolean isMessage, int number, String text, Uri link) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -161,28 +133,46 @@ public class NotificationService extends IntentService {
         // Intent depends on context
         Intent resultIntent;
 
-        if (notifications.size() > 1) {
+        if (number > 1) {
             // If there are multiple notifications, mention the number
-            String text = getString(R.string.notification_multiple_text, notifications.size());
-            mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(text)).setContentText(text);
+            String multiple_text;
+            if (isMessage) {
+                multiple_text = getString(R.string.message_multiple_text, number);
+            } else {
+                multiple_text = getString(R.string.notification_multiple_text, number);
+            }
+            mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(multiple_text)).setContentText(multiple_text);
 
             // Set the url to the notification centre
             resultIntent = new Intent(this, MainActivity.class);
-            resultIntent.setData(Uri.parse(MainActivity.FACEBOOK_URL_BASE + "notifications/"));
+            if (isMessage) {
+                resultIntent.setData(Uri.parse(MainActivity.FACEBOOK_URL_BASE + "messages/"));
+            } else {
+                resultIntent.setData(Uri.parse(MainActivity.FACEBOOK_URL_BASE + "notifications/"));
+            }
+
         } else {
             // Set the title
-            RSSItem notification = notifications.get(0);
-            mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(notification.getTitle())).setContentText(notification.getTitle());
+            mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(text)).setContentText(text);
 
-            // View all Notifications button
+            // View all notifications/messages button
             Intent viewNotificationsIntent = new Intent(this, MainActivity.class);
-            viewNotificationsIntent.setData(Uri.parse(MainActivity.FACEBOOK_URL_BASE + "notifications/"));
+            if (isMessage) {
+                viewNotificationsIntent.setData(Uri.parse(MainActivity.FACEBOOK_URL_BASE + "messages/"));
+            } else {
+                viewNotificationsIntent.setData(Uri.parse(MainActivity.FACEBOOK_URL_BASE + "notifications/"));
+            }
+
             PendingIntent pendingViewNotifications = PendingIntent.getActivity(getApplicationContext(), 0, viewNotificationsIntent, 0);
-            mBuilder.addAction(R.drawable.ic_menu_notifications_active, "View all Notifications", pendingViewNotifications);
+            if (isMessage) {
+                mBuilder.addAction(R.drawable.ic_menu_notifications_active, getString(R.string.message_view_all), pendingViewNotifications);
+            } else {
+                mBuilder.addAction(R.drawable.ic_menu_notifications_active, getString(R.string.notification_view_all), pendingViewNotifications);
+            }
 
             // Creates an explicit intent for an Activity in your app
             resultIntent = new Intent(this, MainActivity.class);
-            resultIntent.setData(notification.getLink());
+            resultIntent.setData(link);
         }
 
         // Notification Priority (make LED blink)
@@ -206,9 +196,12 @@ public class NotificationService extends IntentService {
         notification.ledARGB = ContextCompat.getColor(this, R.color.colorPrimary);
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // notifyID allows you to update the notification later on.
-        int notifyID = 1;
-        mNotificationManager.notify(notifyID, notification);
+
+        if (isMessage) {
+            mNotificationManager.notify(MESSAGE_ID, notification);
+        } else {
+            mNotificationManager.notify(NOTIFICATION_ID, notification);
+        }
 
         Log.i(Helpers.LogTag, "Notification posted");
     }
