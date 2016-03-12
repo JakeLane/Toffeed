@@ -30,10 +30,10 @@
     <string name="notifications_setting_title">Notifications</string>
 
     <string name="notifications_enabled_title">Background Notifications</string>
-    <string name="notifications_enabled_summary">When enabled, you will recieve background notifications from Facebook</string>
+    <string name="notifications_enabled_summary">When enabled, you will receive background notifications from Facebook.</string>
 
-    <string name="notification_interval_title">Background Notifications</string>
-    <string name="notification_interval_summary">When enabled, you will recieve background notifications from Facebook</string>
+    <string name="notification_interval_title">Background Notifications interval</string>
+    <string name="notification_interval_summary">Specify the update interval for the notification service.</string>
     <string-array name="notification_interval">
         <item>5 minutes</item>
         <item>10 minutes</item>
@@ -57,7 +57,7 @@
     <string name="location_enabled_summary">Enable this to allow Facebook to obtain your location.</string>
 
     <string name="hide_editor_newsfeed_title">Hide Status editor in News Feed</string>
-    <string name="hide_editor_newsfeed_summary">When enabled, the status editor will be hidden on the News Feed (still accessible with the FAB).</string>
+    <string name="hide_editor_newsfeed_summary">When enabled, the status editor will be hidden on the News Feed.</string>
     <string name="hide_editor_newsfeed_snackbar">Reload for changes to take effect</string>
 
     <string name="stop_images_title">Don\'t load images</string>
