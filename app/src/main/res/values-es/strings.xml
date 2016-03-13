@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Toffeed</string>
+
+    <string name="navigation_drawer_open">Abrir cajón de navegación</string>
+    <string name="navigation_drawer_close">Cerrar cajón de navegación</string>
+
+    <string name="default_user">Usuario desconocido</string>
+    <string name="header_profile_pic">Imágen de perfil</string>
+
+    <string name="nav_notifications">Notificaciones</string>
+    <string name="menu_news">Noticias</string>
+    <string name="menu_friendreq">Solicitudes de amistad</string>
+    <string name="menu_messages">Mensajes</string>
+    <string name="menu_search">Búsqueda</string>
+    <string name="menu_mainmenu">Menú Principal</string>
+
+    <string name="menu_fblogin">Entrar a Facebook</string>
+    <string name="menu_jump_top">Ir a arriba</string>
+    <string name="menu_refresh">Recargar</string>
+    <string name="menu_back">Atrás</string>
+    <string name="menu_forward">Adelante</string>
+    <string name="menu_settings">Opciones</string>
+
+    <string name="fab_text">Publicar tu estado</string>
+    <string name="fab_photo">Publicar una foto</string>
+    <string name="fab_checkin">Registrar visita</string>
+
+    <string name="notifications_setting_title">Notificaciones</string>
+
+    <string name="notifications_enabled_title">Notificaciones en segundo plano</string>
+    <string name="notifications_enabled_summary">Al activarlo, recibirás las notificaciones de Facebook.</string>
+
+    <string name="notification_interval_title">Intervalo de notificaciones en segundo plano</string>
+    <string name="notification_interval_summary">Especifica el intervalo de actualización del servicio de notificación.</string>
+    <string-array name="notification_interval">
+        <item>5 minutos</item>
+        <item>10 minutos</item>
+        <item>15 minutos</item>
+        <item>30 minutos</item>
+        <item>1 hora</item>
+        <item>2 horas</item>
+    </string-array>
+    <string-array name="notification_interval_values">
+        <item>300000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>3600000</item>
+        <item>7200000</item>
+    </string-array>
+
+    <string name="content_setting_title">Contenido</string>
+
+    <string name="location_enabled_title">Acceso a tu ubicación</string>
+    <string name="location_enabled_summary">Activa esto para permitir a Facebook obtener tu ubicación.</string>
+
+    <string name="hide_editor_newsfeed_title">Ocultar editor de estado en las noticias</string>
+    <string name="hide_editor_newsfeed_summary">Al activarlo, el editor de estado no se verá en las noticias.</string>
+    <string name="hide_editor_newsfeed_snackbar">Recargar para activar los cambios</string>
+
+    <string name="stop_images_title">No cargar imágenes</string>
+    <string name="stop_images_summary">Al activarlo, no se descargarán imágenes. Algunas imágenes podrian permanecer en la caché.</string>
+
+    <string name="hide_sponsored_title">No mostrar contenido "patrocinado"</string>
+    <string name="hide_sponsored_summary">Al activarlo, se ocultará el contenido "patrocinado"(anuncios) de la noticias.</string>
+
+    <string name="navigation_setting_title">Navegación</string>
+
+    <string name="hide_fab_on_scroll_title">Ocultar el botón flotante de acción al deslizar</string>
+    <string name="hide_fab_on_scroll_summary">Ocultar el botón cuando se desliza hacia abajo</string>
+
+    <string name="messaging_enabled_title">Mensajes</string>
+    <string name="messaging_enabled_summary">Al activarlo, tendrás acceso a los mensajes de Facebook. Desactívalo si usas otra app de mensajeria.</string>
+
+    <string name="back_button_enabled_title">Botón atrás</string>
+    <string name="back_button_enabled_summary">Al activarlo, el boton atrás será visible en el cajón.</string>
+
+    <string name="jump_top_enabled_title">Botón ir a arriba</string>
+    <string name="jump_top_enabled_summary">Al activarlo, El botón ir a arriba será visible en el cajón.</string>
+
+    <string name="login_button">Entrar</string>
+    <string name="share_text">Compartir</string>
+
+    <string name="not_logged_in">No has iniciado la sesión</string>
+    <string name="error_login">Algo fue mal, intenta iniciar la sesión de nuevo</string>
+    <string name="error_super_wrong">Algo fue super mal</string>
+    <string name="error_facebook_noconnection">No se puede acceder a Facebook</string>
+    <string name="error_facebook_error">Algo funcionó mal en Facebook</string>
+
+    <string name="loading">Cargando</string>
+    <string name="notification_multiple_text">%s nuevas notificaciones.</string>
+</resources>
