@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Toffeed</string>
+
+    <string name="navigation_drawer_open">打開側邊選單</string>
+    <string name="navigation_drawer_close">關閉側邊選單</string>
+
+    <string name="default_user">未知用戶</string>
+    <string name="header_profile_pic">個人頭像</string>
+
+    <string name="nav_notifications">通知</string>
+    <string name="menu_news">動態消息</string>
+    <string name="menu_friendreq">交友邀請</string>
+    <string name="menu_messages">訊息</string>
+    <string name="menu_search">搜尋</string>
+    <string name="menu_mainmenu">主選單</string>
+
+    <string name="menu_fblogin">登入Facebook</string>
+    <string name="menu_jump_top">回到頂部</string>
+    <string name="menu_refresh">重新讀取</string>
+    <string name="menu_back">返回</string>
+    <string name="menu_forward">向前</string>
+    <string name="menu_settings">設定</string>
+
+    <string name="fab_text">近況更新</string>
+    <string name="fab_photo">新增相片</string>
+    <string name="fab_checkin">打卡</string>
+
+    <string name="notifications_setting_title">通知</string>
+
+    <string name="notifications_enabled_title">後台通知</string>
+    <string name="notifications_enabled_summary">開啟後，你將可以收到Facebook的後台通知。</string>
+
+    <string name="notification_interval_title">後台通知時間間隔</string>
+    <string name="notification_interval_summary">設定「後台通知」的更新頻率。</string>
+    <string-array name="notification_interval">
+        <item>5 分鐘</item>
+        <item>10 分鐘</item>
+        <item>15 分鐘</item>
+        <item>30 分鐘</item>
+        <item>1 小時</item>
+        <item>2 小時</item>
+    </string-array>
+    <string-array name="notification_interval_values">
+        <item>300000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>3600000</item>
+        <item>7200000</item>
+    </string-array>
+
+    <string name="content_setting_title">內容</string>
+
+    <string name="location_enabled_title">GPS定位</string>
+    <string name="location_enabled_summary">開啟後，將允許Facebook使用GPS定位功能。（打卡很方便）</string>
+
+    <string name="hide_editor_newsfeed_title">隱藏Facebook預設的文字編輯區。</string>
+    <string name="hide_editor_newsfeed_summary">這項功能開啟後，Facebook預設的文字編輯區將會被隱藏，但是請放心，Toffeed內建的更好用。</string>
+    <string name="hide_editor_newsfeed_snackbar">重新整理讓剛剛的設定生效</string>
+
+    <string name="stop_images_title">不要顯示任何圖片</string>
+    <string name="stop_images_summary">這項功能開啟後，系統將不會下載任何圖片。（部分圖片有可能會留存在快取當中，這是正常現象。）</string>
+
+    <string name="hide_sponsored_title">隱藏「贊助」的內容。</string>
+    <string name="hide_sponsored_summary">這項功能開啟後，系統將會隱藏你塗鴉牆上顯示「贊助」的內容（也就是俗稱的擋廣告）。</string>
+
+    <string name="navigation_setting_title">導航</string>
+
+    <string name="hide_fab_on_scroll_title">滑動時，隱藏右下角的懸浮操作按鈕。</string>
+    <string name="hide_fab_on_scroll_summary">當你往下滑動閱讀時，隱藏右下角的懸浮操作按鈕，避免擋到部分內容。</string>
+
+    <string name="messaging_enabled_title">訊息功能</string>
+    <string name="messaging_enabled_summary">啟動這項功能後，「訊息」按鈕將會出現在左側選單當中，方便你直接閱讀訊息。如果你想繼續使用臉書的「Messenger」軟體，可以不要啟動這項功能。</string>
+
+    <string name="back_button_enabled_title">返回按鈕</string>
+    <string name="back_button_enabled_summary">啟動這項功能後，「返回」按鈕將會出現在左側選單當中。</string>
+
+    <string name="jump_top_enabled_title">回到頂部按鈕</string>
+    <string name="jump_top_enabled_summary">啟動這項功能後，「回到頂部」按鈕將會出現在左側選單當中。</string>
+
+    <string name="login_button">登入</string>
+    <string name="share_text">分享</string>
+
+    <string name="not_logged_in">您尚未登入</string>
+    <string name="error_login">出了點狀況，請您再嘗試登入一次</string>
+    <string name="error_super_wrong">哎呀，出了大麻煩</string>
+    <string name="error_facebook_noconnection">目前無法連線到Facebook</string>
+    <string name="error_facebook_error">臉書那邊的伺服器出了些問題</string>
+
+    <string name="loading">讀取中</string>
+    <string name="notification_multiple_text">%s 新通知</string>
+</resources>
