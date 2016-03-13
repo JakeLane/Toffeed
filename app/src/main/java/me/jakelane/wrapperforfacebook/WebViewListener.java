@@ -47,6 +47,7 @@ class WebViewListener implements AdvancedWebView.Listener {
 
     @Override
     public void onPageFinished(String url) {
+        Uri uri = Uri.parse(url);
         // Only do things if logged in
         if (mActivity.checkLoggedInState()) {
             // Load a certain page if there is a parameter
@@ -61,6 +62,10 @@ class WebViewListener implements AdvancedWebView.Listener {
                 mActivity.swipeView.setEnabled(true);
             } else {
                 mActivity.swipeView.setEnabled(false);
+            }
+
+            if (uri.getPath().equals("/") || uri.getPath().equals("/home.php")) {
+                JavaScriptHelpers.mostRecentButton(mWebView);
             }
 
             // Hide the status editor on the News Feed if setting is enabled
