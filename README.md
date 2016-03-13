@@ -4,3 +4,5 @@ Toffeed is a wrapper for Facebook's mobile site that provides enhancements to th
 Please submit any bugs or feature requests on the [issue tracker](https://github.com/JakeLane/Toffeed/issues/new).
 
 Toffeed is currently available [here](https://play.google.com/store/apps/details?id=me.jakelane.wrapperforfacebook) on Google Play.
+
+Any contributions to localisation are greatly appreciated. You can read how to contribute [here](https://github.com/JakeLane/Toffeed/wiki/Localisation)
