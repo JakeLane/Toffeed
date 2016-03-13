@@ -27,3 +27,5 @@
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
 }
+
+-keeppackagenames org.jsoup.nodes
