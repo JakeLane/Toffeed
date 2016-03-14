@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Toffeed</string>
+
+    <string name="navigation_drawer_open">Apri navigation drawer</string>
+    <string name="navigation_drawer_close">Chiudi navigation drawer</string>
+
+    <string name="default_user">Utente sconosciuto</string>
+    <string name="header_profile_pic">Foto Profilo</string>
+
+    <string name="nav_notifications">Notifiche</string>
+    <string name="menu_news">News Feed</string>
+    <string name="menu_friendreq">Richieste di Amicizia</string>
+    <string name="menu_messages">Messaggi</string>
+    <string name="menu_search">Cerca</string>
+    <string name="menu_mainmenu">Menu Principale</string>
+
+    <string name="menu_fblogin">Entra in Facebook</string>
+    <string name="menu_jump_top">Torna in Alto</string>
+    <string name="menu_refresh">Ricarica</string>
+    <string name="menu_back">Indietro</string>
+    <string name="menu_forward">Avanti</string>
+    <string name="menu_settings">Impostazioni</string>
+
+    <string name="fab_text">Condividi uno stato</string>
+    <string name="fab_photo">Condividi una foto</string>
+    <string name="fab_checkin">Condividi posizione</string>
+
+    <string name="notifications_setting_title">Notifiche</string>
+
+    <string name="notifications_enabled_title">Notifiche in Background</string>
+    <string name="notifications_enabled_summary">Quando attiva, riceverai notifiche in background da Toffeed.</string>
+
+    <string name="notification_interval_title">Intervallo di notifiche in background</string>
+    <string name="notification_interval_summary">Specifica l'intervallo di aggiornamento per il servizio di notifiche in background.</string>
+    <string-array name="notification_interval">
+        <item>5 minuti</item>
+        <item>10 minuti</item>
+        <item>15 minuti</item>
+        <item>30 minuti</item>
+        <item>1 ora</item>
+        <item>2 ore</item>
+    </string-array>
+    <string-array name="notification_interval_values">
+        <item>300000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>3600000</item>
+        <item>7200000</item>
+    </string-array>
+
+    <string name="content_setting_title">Contenuto</string>
+
+    <string name="location_enabled_title">Accesso alla posizione</string>
+    <string name="location_enabled_summary">Attivala per permettere a Toffeed di ottenere la tua posizione.</string>
+
+    <string name="hide_editor_newsfeed_title">Nascondi l'editor di stato nel News Feed</string>
+    <string name="hide_editor_newsfeed_summary">Quando attiva, l'editor di stato sarà nascosto dal News Feed.</string>
+    <string name="hide_editor_newsfeed_snackbar">Ricarica per applicare le modifiche</string>
+
+    <string name="stop_images_title">Non visualizzare le immagini</string>
+    <string name="stop_images_summary">Quando attiva, non verranno visualizzate le immagini. Alcune immagini potrebbero rimanere nella cache.</string>
+
+    <string name="hide_sponsored_title">Nascondi Contenuti "Sponsorizzati"</string>
+    <string name="hide_sponsored_summary">Quando attiva, verrà nascosta la pubblicità nel News Feed.</string>
+
+    <string name="navigation_setting_title">Navigazione</string>
+
+    <string name="hide_fab_on_scroll_title">Nascondi il Floating Action Button (FAB) quando scrolli</string>
+    <string name="hide_fab_on_scroll_summary">Quando attiva, nasconde il FAB quando scrolli in basso</string>
+
+    <string name="messaging_enabled_title">Messaggistica</string>
+    <string name="messaging_enabled_summary">Quando attiva, permetterà di accedere ai Messaggi di Facebook. Disattiva questa opzione se hai un'app di messaggistica (Facebook Messenger).</string>
+
+    <string name="back_button_enabled_title">Tasto "Indietro"</string>
+    <string name="back_button_enabled_summary">Quando attiva, il tasto "Indietro" sarà visibile nel menu laterale.</string>
+
+    <string name="jump_top_enabled_title">Tasto "Torna in Alto"</string>
+    <string name="jump_top_enabled_summary">Quando attiva, il tasto "Torna in Alto" sarà visibile nel menu laterale.</string>
+
+    <string name="login_button">Entra</string>
+    <string name="share_text">Condividi</string>
+
+    <string name="not_logged_in">Non hai effettuato l'accesso</string>
+    <string name="error_login">Qualcosa è andato storto, prova a eseguire di nuovo l'accesso</string>
+    <string name="error_super_wrong">Qualcosa è andato molto storto</string>
+    <string name="error_facebook_noconnection">Impossibile accedere a Facebook</string>
+    <string name="error_facebook_error">Qualcosa è andato storto alla fine di Facebook</string>
+
+    <string name="loading">Caricamento</string>
+    <string name="notification_multiple_text">%s nuove notifiche.</string>
+</resources>
