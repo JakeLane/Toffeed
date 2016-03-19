@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
@@ -89,6 +90,16 @@ class WebViewListener implements AdvancedWebView.Listener {
             } else {
                 mActivity.swipeView.setEnabled(false);
             }
+
+            if (url.contains("mbasic.facebook.com/composer/?text=")) {
+                UrlQuerySanitizer sanitizer = new UrlQuerySanitizer();
+                sanitizer.setAllowUnregisteredParamaters(true);
+                sanitizer.parseUrl(url);
+                String param = sanitizer.getValue("text");
+
+                mWebView.loadUrl("javascript:(function()%7Bdocument.querySelector('%23composerInput').innerHTML%3D'" + param + "'%7D)()");
+            }
+
 
             if (uri.getPath().equals("/") || uri.getPath().equals("/home.php")) {
                 JavaScriptHelpers.mostRecentButton(mWebView);

@@ -46,6 +46,8 @@ import com.squareup.picasso.Target;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -510,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void setRequestsNum(int num) {
         if (num > 0) {
-            ActionItemBadge.update(mNavigationView.getMenu().findItem(R.id.nav_messages), num);
+            ActionItemBadge.update(mNavigationView.getMenu().findItem(R.id.nav_friendreq), num);
         } else {
             // Hide the badge and show the washed-out button
             ActionItemBadge.update(mNavigationView.getMenu().findItem(R.id.nav_friendreq), Integer.MIN_VALUE);
@@ -520,9 +522,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String chooseUrl() {
         // Handle intents
         Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
 
-        // If there is a intent containing a facebook link, go there
-        if (intent.getData() != null && URLUtil.isValidUrl(intent.getData().toString())) {
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if (URLUtil.isValidUrl(intent.getStringExtra(Intent.EXTRA_TEXT))) {
+                try {
+                    Log.v(Helpers.LogTag, "Shared URL Intent");
+                    return "https://mbasic.facebook.com/composer/?text=" + URLEncoder.encode(intent.getStringExtra(Intent.EXTRA_TEXT), "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else if (Intent.ACTION_VIEW.equals(action) && intent.getData() != null && URLUtil.isValidUrl(intent.getData().toString())) {
+            // If there is a intent containing a facebook link, go there
+            Log.v(Helpers.LogTag, "Opened URL Intent");
             return intent.getData().toString();
         }
 

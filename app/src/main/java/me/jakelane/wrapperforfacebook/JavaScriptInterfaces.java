@@ -1,10 +1,6 @@
 package me.jakelane.wrapperforfacebook;
 
-import android.util.Log;
 import android.webkit.JavascriptInterface;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 @SuppressWarnings("unused")
 class JavaScriptInterfaces {
@@ -58,23 +54,17 @@ class JavaScriptInterfaces {
     }
 
     @JavascriptInterface
-    public void getNums(final String json) {
-        try {
-            final JSONObject nums = new JSONObject(json);
-            final int notifications = nums.getInt("n");
-            final int messages = nums.getInt("m");
-            final int requests = nums.getInt("r");
-            mContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mContext.setNotificationNum(notifications);
-                    mContext.setMessagesNum(messages);
-                    mContext.setRequestsNum(requests);
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e(Helpers.LogTag, "Getting numbers threw JSON Exception");
-        }
+    public void getNums(final String notifications, final String messages, final String requests) {
+        final int notifications_int = Helpers.isInteger(notifications) ? Integer.parseInt(notifications) : 0;
+        final int messages_int = Helpers.isInteger(messages) ? Integer.parseInt(messages) : 0;
+        final int requests_int = Helpers.isInteger(requests) ? Integer.parseInt(requests): 0;
+        mContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mContext.setNotificationNum(notifications_int);
+                mContext.setMessagesNum(messages_int);
+                mContext.setRequestsNum(requests_int);
+            }
+        });
     }
 }
