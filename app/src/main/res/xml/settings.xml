@@ -13,6 +13,11 @@
             android:defaultValue="600000"
             android:entries="@array/notification_interval"
             android:entryValues="@array/notification_interval_values"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="notifications_vibration"
+            android:summary="@string/notifications_vibration_summary"
+            android:title="@string/notifications_vibration_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/content_setting_title">
         <CheckBoxPreference
