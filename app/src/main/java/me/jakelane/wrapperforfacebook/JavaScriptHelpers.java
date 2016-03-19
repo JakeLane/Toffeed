@@ -4,7 +4,7 @@ import android.net.UrlQuerySanitizer;
 import android.webkit.WebView;
 
 class JavaScriptHelpers {
-    private static final int BADGE_UPDATE_INTERVAL = 30000;
+    private static final int BADGE_UPDATE_INTERVAL = 15000;
 
     public static void updateCurrentTab(WebView view) {
         // Get the currently open tab and check on the navigation menu
@@ -16,24 +16,12 @@ class JavaScriptHelpers {
         view.loadUrl("javascript:(function()%7Bdocument.querySelector(%22._59e9%22)%7C%7C(document.querySelector(%22._181j%22).innerHTML%3D'%3Cdiv%20class%3D%22_59e9%20_55wr%20_4g33%20_400s%22%3E%3Cdiv%20class%3D%22_52jh%20_4g34%22%3E%3Ca%20href%3D%22%2Fhome.php%3Fsk%3Dh_chr%26amp%3Brefid%3D7%22%20class%3D%22sub%22%3E'%2Bdocument.querySelector(%22span%5Bdata-sigil%3Dmost_recent_bookmark%5D%22).innerHTML%2B%22%3C%2Fa%3E%3C%2Fdiv%3E%3C%2Fdiv%3E%22%2Bdocument.querySelector(%22._181j%22).innerHTML)%7D)()");
     }
 
-    public static void updateNotificationsService(WebView view) {
-        // Start the notification service");
-        view.loadUrl("javascript:(function()%7Bfunction%20notification_service()%7Bandroid.getNotifications(document.querySelector('%23notifications_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D').innerHTML)%2CsetTimeout(notification_service%2C" + BADGE_UPDATE_INTERVAL + ")%7Dtry%7Bnotification_service()%7Dcatch(_)%7B%7D%7D)()");
+    public static void updateNums(WebView view) {
+        view.loadUrl("javascript:(function()%7Bvar%20nums%3D%7B%7D%3Bnums.n%3Ddocument.querySelector(%22%23notifications_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D%22).innerHTML%2Cnums.m%3Ddocument.querySelector(%22%23messages_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D%22).innerHTML%2Cnums.r%3Ddocument.querySelector(%22%23requests_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D%22).innerHTML%2Candroid.getNums(JSON.stringify(nums))%7D)()");
     }
 
-    public static void updateNotifications(WebView view) {
-        // Run the notification check once
-        view.loadUrl("javascript:(function()%7Btry%7Bandroid.getNotifications(document.querySelector('%23notifications_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D').innerHTML)%7Dcatch(_)%7B%7D%7D)()");
-    }
-
-    public static void updateMessagesService(WebView view) {
-        // Start the message service
-        view.loadUrl("javascript:(function()%7Bfunction%20message_service()%7Bandroid.getMessages(document.querySelector('%23messages_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D').innerHTML)%2CsetTimeout(message_service%2C" + BADGE_UPDATE_INTERVAL + ")%7Dtry%7Bmessage_service()%7Dcatch(_)%7B%7D%7D)()");
-    }
-
-    public static void updateMessages(WebView view) {
-        // Run the message check once
-        view.loadUrl("javascript:(function()%7Btry%7Bandroid.getMessages(document.querySelector('%23messages_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D').innerHTML)%7Dcatch(_)%7B%7D%7D)()");
+    public static void updateNumsService(WebView view) {
+        view.loadUrl("javascript:(function()%7Bfunction%20nums_serv()%7Bvar%20e%3D%7B%7D%3Be.n%3Ddocument.querySelector(%22%23notifications_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D%22).innerHTML%2Ce.m%3Ddocument.querySelector(%22%23messages_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D%22).innerHTML%2Ce.r%3Ddocument.querySelector(%22%23requests_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D%22).innerHTML%2Candroid.getNums(JSON.stringify(e))%2CsetTimeout(nums_serv%2C" + BADGE_UPDATE_INTERVAL + ")%7Dtry%7Bnums_serv()%7Dcatch(_)%7B%7D%7D)()");
     }
 
     public static void paramLoader(WebView view, String url) {

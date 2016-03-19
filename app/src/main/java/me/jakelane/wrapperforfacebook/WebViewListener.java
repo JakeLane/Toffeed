@@ -111,12 +111,7 @@ class WebViewListener implements AdvancedWebView.Listener {
             JavaScriptHelpers.updateCurrentTab(mWebView);
 
             // Get the notification number
-            JavaScriptHelpers.updateNotificationsService(mWebView);
-
-            // Get the messages number
-            if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false)) {
-                JavaScriptHelpers.updateMessagesService(mWebView);
-            }
+            JavaScriptHelpers.updateNumsService(mWebView);
         }
     }
 

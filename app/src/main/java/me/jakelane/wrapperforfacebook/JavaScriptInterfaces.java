@@ -3,6 +3,9 @@ package me.jakelane.wrapperforfacebook;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 @SuppressWarnings("unused")
 class JavaScriptInterfaces {
     private final MainActivity mContext;
@@ -55,46 +58,23 @@ class JavaScriptInterfaces {
     }
 
     @JavascriptInterface
-    public void getNotifications(final String number) {
+    public void getNums(final String json) {
         try {
-            final int num = Integer.parseInt(number);
+            final JSONObject nums = new JSONObject(json);
+            final int notifications = nums.getInt("n");
+            final int messages = nums.getInt("m");
+            final int requests = nums.getInt("r");
             mContext.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mContext.setNotificationNum(num);
+                    mContext.setNotificationNum(notifications);
+                    mContext.setMessagesNum(messages);
+                    mContext.setRequestsNum(requests);
                 }
             });
-            Log.v(Helpers.LogTag, number + " notifications");
-        } catch (NumberFormatException e) {
-            mContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mContext.setNotificationNum(0);
-                }
-            });
-            Log.v(Helpers.LogTag, 0 + " notifications");
-        }
-    }
-
-    @JavascriptInterface
-    public void getMessages(final String number) {
-        try {
-            final int num = Integer.parseInt(number);
-            mContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mContext.setMessagesNum(num);
-                }
-            });
-            Log.v(Helpers.LogTag, number + " messages");
-        } catch (NumberFormatException e) {
-            mContext.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mContext.setMessagesNum(0);
-                }
-            });
-            Log.v(Helpers.LogTag, 0 + " messages");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(Helpers.LogTag, "Getting numbers threw JSON Exception");
         }
     }
 }

@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
     private static final String FACEBOOK_URL_BASE_ENCODED = "https%3A%2F%2Fm.facebook.com%2F";
     private static final List<String> HOSTNAMES = Arrays.asList("facebook.com", "*.facebook.com", "*.fbcdn.net");
-    private final BadgeStyle BADGE_GRAY_FULL = new BadgeStyle(BadgeStyle.Style.LARGE, R.layout.menu_badge_full, Color.parseColor("#8A000000"), Color.parseColor("#8A000000"), Color.WHITE);
+    private final BadgeStyle BADGE_SIDE_FULL = new BadgeStyle(BadgeStyle.Style.LARGE, R.layout.menu_badge_full, R.color.colorAccent, R.color.colorAccent, Color.WHITE);
 
     // Members
     SwipeRefreshLayout swipeView;
@@ -155,7 +155,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mNavigationView.setNavigationItemSelectedListener(this);
 
         // Create the badge for messages
-        ActionItemBadge.update(this, mNavigationView.getMenu().findItem(R.id.nav_messages), (Drawable) null, BADGE_GRAY_FULL, Integer.MIN_VALUE);
+        ActionItemBadge.update(this, mNavigationView.getMenu().findItem(R.id.nav_messages), (Drawable) null, BADGE_SIDE_FULL, Integer.MIN_VALUE);
+        ActionItemBadge.update(this, mNavigationView.getMenu().findItem(R.id.nav_friendreq), (Drawable) null, BADGE_SIDE_FULL, Integer.MIN_VALUE);
 
         // Hide buttons if they are disabled
         if (!mPreferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false)) {
@@ -336,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         // Update the notifications
-        JavaScriptHelpers.updateNotifications(mWebView);
+        JavaScriptHelpers.updateNums(mWebView);
         return super.onOptionsItemSelected(item);
     }
 
@@ -354,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_messages:
                 mWebView.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('%23messages_jewel%20%3E%20a').click()%7Dcatch(_)%7Bwindow.location.href%3D'" + FACEBOOK_URL_BASE_ENCODED + "messages%2F'%7D%7D)()");
-                JavaScriptHelpers.updateMessages(mWebView);
+                JavaScriptHelpers.updateNums(mWebView);
                 item.setChecked(true);
                 break;
             case R.id.nav_search:
@@ -496,11 +497,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void setMessagesNum(int num) {
+        // Only update message count if enabled
+        if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_MESSAGING, false)) {
+            if (num > 0) {
+                ActionItemBadge.update(mNavigationView.getMenu().findItem(R.id.nav_messages), num);
+            } else {
+                // Hide the badge and show the washed-out button
+                ActionItemBadge.update(mNavigationView.getMenu().findItem(R.id.nav_messages), Integer.MIN_VALUE);
+            }
+        }
+    }
+
+    public void setRequestsNum(int num) {
         if (num > 0) {
             ActionItemBadge.update(mNavigationView.getMenu().findItem(R.id.nav_messages), num);
         } else {
             // Hide the badge and show the washed-out button
-            ActionItemBadge.update(mNavigationView.getMenu().findItem(R.id.nav_messages), Integer.MIN_VALUE);
+            ActionItemBadge.update(mNavigationView.getMenu().findItem(R.id.nav_friendreq), Integer.MIN_VALUE);
         }
     }
 
