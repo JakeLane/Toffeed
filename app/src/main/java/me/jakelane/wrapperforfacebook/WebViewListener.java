@@ -100,11 +100,6 @@ class WebViewListener implements AdvancedWebView.Listener {
                 mWebView.loadUrl("javascript:(function()%7Bdocument.querySelector('%23composerInput').innerHTML%3D'" + param + "'%7D)()");
             }
 
-
-            if (uri.getPath().equals("/") || uri.getPath().equals("/home.php")) {
-                JavaScriptHelpers.mostRecentButton(mWebView);
-            }
-
             // Hide the status editor on the News Feed if setting is enabled
             if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_HIDE_EDITOR, true)) {
                 css += HIDE_COMPOSER_CSS;
@@ -123,6 +118,9 @@ class WebViewListener implements AdvancedWebView.Listener {
 
             // Get the notification number
             JavaScriptHelpers.updateNumsService(mWebView);
+
+            // Stop loading
+            mActivity.setLoading(false);
         }
     }
 

@@ -11,11 +11,6 @@ class JavaScriptHelpers {
         view.loadUrl("javascript:(function()%7Btry%7Bandroid.getCurrent(document.querySelector('.popoverOpen').id)%7Dcatch(_)%7Bandroid.getCurrent('null')%7D%7D)()");
     }
 
-    public static void mostRecentButton(WebView view) {
-        // Show a Most Recent button on the News Feed
-        view.loadUrl("javascript:(function()%7Bdocument.querySelector(%22._59e9%22)%7C%7C(document.querySelector(%22._181j%22).innerHTML%3D'%3Cdiv%20class%3D%22_59e9%20_55wr%20_4g33%20_400s%22%3E%3Cdiv%20class%3D%22_52jh%20_4g34%22%3E%3Ca%20href%3D%22%2Fhome.php%3Fsk%3Dh_chr%26amp%3Brefid%3D7%22%20class%3D%22sub%22%3E'%2Bdocument.querySelector(%22span%5Bdata-sigil%3Dmost_recent_bookmark%5D%22).innerHTML%2B%22%3C%2Fa%3E%3C%2Fdiv%3E%3C%2Fdiv%3E%22%2Bdocument.querySelector(%22._181j%22).innerHTML)%7D)()");
-    }
-
     public static void updateNums(WebView view) {
         view.loadUrl("javascript:(function()%7Bandroid.getNums(document.querySelector(%22%23notifications_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D%22).innerHTML%2Cdocument.querySelector(%22%23messages_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D%22).innerHTML%2Cdocument.querySelector(%22%23requests_jewel%20%3E%20a%20%3E%20div%20%3E%20span%5Bdata-sigil%3Dcount%5D%22).innerHTML)%7D)()");
     }
