@@ -51,7 +51,7 @@ import java.util.List;
 
 import im.delight.android.webview.AdvancedWebView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnLongClickListener {
     static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
     private static final String FACEBOOK_URL_BASE_ENCODED = "https%3A%2F%2Fm.facebook.com%2F";
     private static final List<String> HOSTNAMES = Arrays.asList("facebook.com", "*.facebook.com", "*.fbcdn.net");
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem mNotificationButton;
     private CallbackManager callbackManager;
     private Snackbar loginSnackbar = null;
-    private View mCoordinatorLayoutView;
+    View mCoordinatorLayoutView;
     @SuppressWarnings("FieldCanBeLocal") // Will be garbage collected as a local variable
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
     private boolean requiresReload = false;
@@ -210,11 +210,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mWebView.setListener(this, new WebViewListener(this, mWebView));
         mWebView.addJavascriptInterface(new JavaScriptInterfaces(this), "android");
+        registerForContextMenu(mWebView);
 
         mWebView.getSettings().setBlockNetworkImage(mPreferences.getBoolean(SettingsActivity.KEY_PREF_STOP_IMAGES, false));
         mWebView.getSettings().setAppCacheEnabled(true);
         mWebView.getSettings().setSupportZoom(true);
         mWebView.getSettings().setBuiltInZoomControls(true);
+        mWebView.getSettings().setLoadWithOverviewMode(true);
+        mWebView.getSettings().setUseWideViewPort(true);
+
+        // Long press
+        registerForContextMenu(mWebView);
+        mWebView.setLongClickable(true);
+        mWebView.setOnLongClickListener(this);
 
         mWebView.setWebChromeClient(new CustomWebChromeClient(this, mWebView, (FrameLayout) findViewById(R.id.fullscreen_custom_content)));
 
@@ -507,5 +515,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // If nothing has happened at this point, we want the default url
         return FACEBOOK_URL_BASE;
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        openContextMenu(v);
+        return true;
     }
 }

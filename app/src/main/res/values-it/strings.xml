@@ -32,7 +32,7 @@
     <string name="notifications_enabled_summary">Quando attiva, riceverai notifiche in background da Toffeed.</string>
 
     <string name="notification_interval_title">Intervallo di notifiche in background</string>
-    <string name="notification_interval_summary">Specifica l'intervallo di aggiornamento per il servizio di notifiche in background.</string>
+    <string name="notification_interval_summary">Specifica l\'intervallo di aggiornamento per il servizio di notifiche in background.</string>
     <string-array name="notification_interval">
         <item>5 minuti</item>
         <item>10 minuti</item>
@@ -55,8 +55,8 @@
     <string name="location_enabled_title">Accesso alla posizione</string>
     <string name="location_enabled_summary">Attivala per permettere a Toffeed di ottenere la tua posizione.</string>
 
-    <string name="hide_editor_newsfeed_title">Nascondi l'editor di stato nel News Feed</string>
-    <string name="hide_editor_newsfeed_summary">Quando attiva, l'editor di stato sarà nascosto dal News Feed.</string>
+    <string name="hide_editor_newsfeed_title">Nascondi l\'editor di stato nel News Feed</string>
+    <string name="hide_editor_newsfeed_summary">Quando attiva, l\'editor di stato sarà nascosto dal News Feed.</string>
     <string name="hide_editor_newsfeed_snackbar">Ricarica per applicare le modifiche</string>
 
     <string name="stop_images_title">Non visualizzare le immagini</string>
@@ -71,7 +71,7 @@
     <string name="hide_fab_on_scroll_summary">Quando attiva, nasconde il FAB quando scrolli in basso</string>
 
     <string name="messaging_enabled_title">Messaggistica</string>
-    <string name="messaging_enabled_summary">Quando attiva, permetterà di accedere ai Messaggi di Facebook. Disattiva questa opzione se hai un'app di messaggistica (Facebook Messenger).</string>
+    <string name="messaging_enabled_summary">Quando attiva, permetterà di accedere ai Messaggi di Facebook. Disattiva questa opzione se hai un\'app di messaggistica (Facebook Messenger).</string>
 
     <string name="back_button_enabled_title">Tasto "Indietro"</string>
     <string name="back_button_enabled_summary">Quando attiva, il tasto "Indietro" sarà visibile nel menu laterale.</string>
@@ -82,8 +82,8 @@
     <string name="login_button">Entra</string>
     <string name="share_text">Condividi</string>
 
-    <string name="not_logged_in">Non hai effettuato l'accesso</string>
-    <string name="error_login">Qualcosa è andato storto, prova a eseguire di nuovo l'accesso</string>
+    <string name="not_logged_in">Non hai effettuato l\'accesso</string>
+    <string name="error_login">Qualcosa è andato storto, prova a eseguire di nuovo l\'accesso</string>
     <string name="error_super_wrong">Qualcosa è andato molto storto</string>
     <string name="error_facebook_noconnection">Impossibile accedere a Facebook</string>
     <string name="error_facebook_error">Qualcosa è andato storto alla fine di Facebook</string>
