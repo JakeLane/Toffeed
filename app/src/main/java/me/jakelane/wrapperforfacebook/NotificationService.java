@@ -168,6 +168,7 @@ public class NotificationService extends IntentService {
 
             // Set the url to the notification centre
             resultIntent = new Intent(this, MainActivity.class);
+            resultIntent.setAction(Intent.ACTION_VIEW);
             resultIntent.setData(Uri.parse(MainActivity.FACEBOOK_URL_BASE + "notifications/"));
         } else {
             // Set the title
