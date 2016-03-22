@@ -22,72 +22,85 @@
     <string name="menu_forward">向前</string>
     <string name="menu_settings">设置</string>
 
-    <string name="fab_text">近况更新</string>
-    <string name="fab_photo">新增相片</string>
-    <string name="fab_checkin">打卡</string>
+    <string name="fab_text">近况更新</string>
+    <string name="fab_photo">新增相片</string>
+    <string name="fab_checkin">打卡</string>
 
-    <string name="notifications_setting_title">通知</string>
+    <string name="context_save_image">下载图片</string>
+    <string name="context_share_image">分享图片</string>
+    <string name="context_copy_image_link">复制图片网址</string>
+    <string name="context_share_link">分享连结</string>
+    <string name="context_copy_link">复制连结网址</string>
 
-    <string name="notifications_enabled_title">后台通知</string>
-    <string name="notifications_enabled_summary">开启后，你将可以收到Facebook的后台通知。</string>
+    <string name="context_share_image_progress">图片下载中…</string>
+    <string name="content_copy_link_done">网址已复制到剪贴簿</string>
 
-    <string name="notification_interval_title">后台通知时间间隔</string>
-    <string name="notification_interval_summary">设定「后台通知」的更新频率。</string>
-    <string-array name="notification_interval">
-        <item>5 分钟</item>
-        <item>10 分钟</item>
-        <item>15 分钟</item>
-        <item>30 分钟</item>
-        <item>1 小时</item>
-        <item>2 小时</item>
-    </string-array>
-    <string-array name="notification_interval_values">
-        <item>300000</item>
-        <item>600000</item>
-        <item>900000</item>
-        <item>1800000</item>
-        <item>3600000</item>
-        <item>7200000</item>
-    </string-array>
+    <string name="notifications_setting_title">通知</string>
 
-    <string name="content_setting_title">内容</string>
+    <string name="notifications_enabled_title">后台通知</string>
+    <string name="notifications_enabled_summary">开启后，你将可以收到Facebook的后台通知。</string>
 
-    <string name="location_enabled_title">GPS定位</string>
-    <string name="location_enabled_summary">开启后，将允许Facebook使用GPS定位功能。（打卡很方便）</string>
+    <string name="notification_interval_title">后台通知时间间隔</string>
+    <string name="notification_interval_summary">设定「后台通知」的更新频率。</string>
+    <string-array name="notification_interval">
+        <item>5 分钟</item>
+        <item>10 分钟</item>
+        <item>15 分钟</item>
+        <item>30 分钟</item>
+        <item>1 小时</item>
+        <item>2 小时</item>
+    </string-array>
+    <string-array name="notification_interval_values">
+        <item>300000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>3600000</item>
+        <item>7200000</item>
+    </string-array>
 
-    <string name="hide_editor_newsfeed_title">隐藏Facebook预设的文字编辑区。</string>
-    <string name="hide_editor_newsfeed_summary">这项功能开启后，Facebook预设的文字编辑区将会被隐藏，但是请放心，Toffeed内建的更好用。</string>
-    <string name="hide_editor_newsfeed_snackbar">重新载入让刚刚的设定生效</string>
+    <string name="notifications_vibration_title">震动提醒</string>
+    <string name="notifications_vibration_summary">开启后，收到后台通知手机会发出震动提醒。</string>
 
-    <string name="stop_images_title">不要显示任何图片</string>
-    <string name="stop_images_summary">这项功能开启后，系统将不会下载任何图片。（部分图片有可能会留存在快取当中，这是正常现象。）</string>
+    <string name="content_setting_title">内容</string>
 
-    <string name="hide_sponsored_title">隐藏「赞助」的内容。 </string>
-    <string name="hide_sponsored_summary">这项功能开启后，系统将会隐藏你涂鸦墙上显示「赞助」的内容（也就是俗称的挡广告）。</string>
+    <string name="location_enabled_title">GPS定位</string>
+    <string name="location_enabled_summary">开启后，将允许Facebook使用GPS定位功能。（打卡很方便）</string>
 
-    <string name="navigation_setting_title">导航</string>
+    <string name="hide_editor_newsfeed_title">隐藏Facebook预设的文字编辑区。</string>
+    <string name="hide_editor_newsfeed_summary">这项功能开启后，Facebook预设的文字编辑区将会被隐藏，但是请放心，Toffeed内建的更好用。</string>
+    <string name="hide_editor_newsfeed_snackbar">重新整理让刚刚的设定生效</string>
 
-    <string name="hide_fab_on_scroll_title">滑动时，隐藏右下角的悬浮操作按钮。</string>
-    <string name="hide_fab_on_scroll_summary">当你往下滑动阅读时，隐藏右下角的悬浮操作按钮，避免挡到部分内容。</string>
+    <string name="stop_images_title">不要载入任何图片</string>
+    <string name="stop_images_summary">这项功能开启后，系统将不会下载任何图片。（部分图片有可能会留存在快取中，这是正常现象。）</string>
 
-    <string name="messaging_enabled_title">讯息功能</string>
-    <string name="messaging_enabled_summary">启动这项功能后，「讯息」按钮将会出现在左侧选单当中，方便你直接阅读讯息。如果你想继续使用脸书的「Messenger」软体，可以不要启动这项功能。</string>
+    <string name="hide_sponsored_title">隐藏「赞助」的内容。</string>
+    <string name="hide_sponsored_summary">这项功能开启后，系统将会隐藏你涂鸦墙上显示「赞助」的内容（也就是俗称的挡广告）。</string>
 
-    <string name="back_button_enabled_title">返回按钮</string>
-    <string name="back_button_enabled_summary">启动这项功能后，「返回」按钮将会出现在左侧选单当中。</string>
+    <string name="navigation_setting_title">导航</string>
 
-    <string name="jump_top_enabled_title">回到顶部按钮</string>
-    <string name="jump_top_enabled_summary">启动这项功能后，「回到顶部」按钮将会出现在左侧选单当中。</string>
+    <string name="hide_fab_on_scroll_title">滑动时，隐藏右下角的悬浮操作按钮。</string>
+    <string name="hide_fab_on_scroll_summary">当你往下滑动阅读时，隐藏右下角的悬浮操作按钮，避免挡到部分内容。</string>
 
-    <string name="login_button">登入</string>
-    <string name="share_text">分享</string>
+    <string name="messaging_enabled_title">讯息功能</string>
+    <string name="messaging_enabled_summary">启动这项功能后，「讯息」按钮将会出现在左侧选单当中，方便你直接阅读讯息。如果你想继续使用脸书的「Messenger」软体，可以不要启动这项功能。</string>
 
-    <string name="not_logged_in">您尚未登入</string>
-    <string name="error_login">出了点状况，请您再尝试登入一次</string>
-    <string name="error_super_wrong">哎呀，出了大麻烦</string>
-    <string name="error_facebook_noconnection">目前无法连线到Facebook</string>
-    <string name="error_facebook_error">脸书那边的伺服器出了些问题</string>
+    <string name="back_button_enabled_title">返回按钮</string>
+    <string name="back_button_enabled_summary">启动这项功能后，「返回」按钮将会出现在左侧选单当中。</string>
 
-    <string name="loading">读取中</string>
-    <string name="notification_multiple_text">%s 新通知</string>
+    <string name="jump_top_enabled_title">回到顶部按钮</string>
+    <string name="jump_top_enabled_summary">启动这项功能后，「回到顶部」按钮将会出现在左侧选单当中。</string>
+
+    <string name="login_button">登入</string>
+    <string name="share_text">分享</string>
+
+    <string name="not_logged_in">您尚未登入</string>
+    <string name="error_login">出了点状况，请您重新登入一次</string>
+    <string name="error_super_wrong">哎呀，出了大麻烦</string>
+    <string name="error_facebook_noconnection">目前无法连线到Facebook</string>
+    <string name="error_facebook_error">脸书的伺服器出了些问题</string>
+        
+    <string name="loading">读取中</string>
+    <string name="notification_multiple_text">%s 新通知</string>
+    <string name="notification_viewall">查看全部通知</string>
 </resources>

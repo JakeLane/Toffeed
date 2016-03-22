@@ -177,12 +177,14 @@ public class NotificationService extends IntentService {
 
             // View all Notifications button
             Intent viewNotificationsIntent = new Intent(this, MainActivity.class);
+            viewNotificationsIntent.setAction(Intent.ACTION_VIEW);
             viewNotificationsIntent.setData(Uri.parse(MainActivity.FACEBOOK_URL_BASE + "notifications/"));
             PendingIntent pendingViewNotifications = PendingIntent.getActivity(getApplicationContext(), 0, viewNotificationsIntent, 0);
             mBuilder.addAction(R.drawable.ic_menu_notifications_active, getString(R.string.notification_viewall), pendingViewNotifications);
 
             // Creates an explicit intent for an Activity in your app
             resultIntent = new Intent(this, MainActivity.class);
+            resultIntent.setAction(Intent.ACTION_VIEW);
             resultIntent.setData(notification.getLink());
         }
 
@@ -193,9 +195,9 @@ public class NotificationService extends IntentService {
 
         // Vibration
         if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_NOTIFICATION_VIBRATE, true)) {
-            mBuilder.setVibrate(new long[] {500, 500});
+            mBuilder.setVibrate(new long[]{500, 500});
         } else {
-            mBuilder.setVibrate(new long[]{0l});
+            mBuilder.setVibrate(null);
         }
 
         // Create TaskStack to ensure correct back button behaviour
