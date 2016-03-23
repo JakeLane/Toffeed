@@ -103,4 +103,6 @@
     <string name="loading">Cargando</string>
     <string name="notification_multiple_text">%s nuevas notificaciones.</string>
     <string name="notification_viewall">Ver todas las notificaciones</string>
+
+    <string name="permission_denied">Permiso denegado</string>
 </resources>

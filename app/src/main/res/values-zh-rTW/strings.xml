@@ -67,19 +67,19 @@
     <string name="location_enabled_title">GPS定位</string>
     <string name="location_enabled_summary">開啟後，將允許Facebook使用GPS定位功能。（打卡很方便）</string>
 
-    <string name="hide_editor_newsfeed_title">隱藏Facebook預設的文字編輯區。</string>
+    <string name="hide_editor_newsfeed_title">隱藏Facebook預設的文字編輯區</string>
     <string name="hide_editor_newsfeed_summary">這項功能開啟後，Facebook預設的文字編輯區將會被隱藏，但是請放心，Toffeed內建的更好用。</string>
     <string name="hide_editor_newsfeed_snackbar">重新整理讓剛剛的設定生效</string>
 
     <string name="stop_images_title">不要載入任何圖片</string>
     <string name="stop_images_summary">這項功能開啟後，系統將不會下載任何圖片。（部分圖片有可能會留存在快取中，這是正常現象。）</string>
 
-    <string name="hide_sponsored_title">隱藏「贊助」的內容。</string>
+    <string name="hide_sponsored_title">隱藏「贊助」的內容</string>
     <string name="hide_sponsored_summary">這項功能開啟後，系統將會隱藏你塗鴉牆上顯示「贊助」的內容（也就是俗稱的擋廣告）。</string>
 
     <string name="navigation_setting_title">導航</string>
 
-    <string name="hide_fab_on_scroll_title">滑動時，隱藏右下角的懸浮操作按鈕。</string>
+    <string name="hide_fab_on_scroll_title">滑動時，隱藏懸浮操作按鈕</string>
     <string name="hide_fab_on_scroll_summary">當你往下滑動閱讀時，隱藏右下角的懸浮操作按鈕，避免擋到部分內容。</string>
 
     <string name="messaging_enabled_title">訊息功能</string>
@@ -103,4 +103,6 @@
     <string name="loading">讀取中</string>
     <string name="notification_multiple_text">%s 新通知</string>
     <string name="notification_viewall">查看全部通知</string>
+
+    <string name="permission_denied">沒有權限</string>
 </resources>
