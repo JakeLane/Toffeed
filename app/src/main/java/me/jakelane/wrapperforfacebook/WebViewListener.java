@@ -1,5 +1,6 @@
 package me.jakelane.wrapperforfacebook;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.app.PendingIntent;
 import android.content.ClipData;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.webkit.WebView;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.greysonparrelli.permiso.Permiso;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -74,7 +76,6 @@ class WebViewListener implements AdvancedWebView.Listener {
 
     @Override
     public void onPageFinished(String url) {
-        Uri uri = Uri.parse(url);
         // Only do things if logged in
         if (mActivity.checkLoggedInState()) {
             // Load a certain page if there is a parameter
@@ -174,26 +175,41 @@ class WebViewListener implements AdvancedWebView.Listener {
             public boolean onMenuItemClick(MenuItem item) {
                 int i = item.getItemId();
                 if (i == ID_SAVE_IMAGE) {
-                    // Save the image
-                    Uri uri = Uri.parse(result.getExtra());
-                    DownloadManager.Request request = new DownloadManager.Request(uri);
+                    Permiso.getInstance().requestPermissions(new Permiso.IOnPermissionResult() {
+                        @Override
+                        public void onPermissionResult(Permiso.ResultSet resultSet) {
+                            if (resultSet.areAllPermissionsGranted()) {
+                                // Save the image
+                                Uri uri = Uri.parse(result.getExtra());
+                                DownloadManager.Request request = new DownloadManager.Request(uri);
 
-                    // Set the download directory
-                    File downloads_dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                    if (!downloads_dir.exists()) {
-                        if (!downloads_dir.mkdirs()) {
-                            return false;
+                                // Set the download directory
+                                File downloads_dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                                if (!downloads_dir.exists()) {
+                                    if (!downloads_dir.mkdirs()) {
+                                        return;
+                                    }
+                                }
+                                File destinationFile = new File(downloads_dir, uri.getLastPathSegment());
+                                request.setDestinationUri(Uri.fromFile(destinationFile));
+
+                                // Make notification stay after download
+                                request.setVisibleInDownloadsUi(true);
+                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+                                // Start the download
+                                mDownloadManager.enqueue(request);
+                            } else {
+                                Snackbar.make(mCoordinatorLayoutView, R.string.permission_denied, Snackbar.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                    File destinationFile = new File(downloads_dir, uri.getLastPathSegment());
-                    request.setDestinationUri(Uri.fromFile(destinationFile));
 
-                    // Make notification stay after download
-                    request.setVisibleInDownloadsUi(true);
-                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
-                    // Start the download
-                    mDownloadManager.enqueue(request);
+                        @Override
+                        public void onRationaleRequested(Permiso.IOnRationaleProvided callback, String... permissions) {
+                            // TODO Permiso.getInstance().showRationaleInDialog("Title", "Message", null, callback);
+                            callback.onRationaleProvided();
+                        }
+                    }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     return true;
                 } else if (i == ID_SHARE_IMAGE) {
                     final Uri uri = Uri.parse(result.getExtra());

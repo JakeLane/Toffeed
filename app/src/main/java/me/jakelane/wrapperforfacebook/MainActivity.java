@@ -1,5 +1,6 @@
 package me.jakelane.wrapperforfacebook;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.res.ResourcesCompat;
@@ -38,6 +40,7 @@ import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.github.clans.fab.FloatingActionMenu;
+import com.greysonparrelli.permiso.Permiso;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
 import com.squareup.picasso.Picasso;
@@ -56,12 +59,13 @@ import im.delight.android.webview.AdvancedWebView;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnLongClickListener {
     static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
     private static final String FACEBOOK_URL_BASE_ENCODED = "https%3A%2F%2Fm.facebook.com%2F";
-    private static final List<String> HOSTNAMES = Arrays.asList("facebook.com", "*.facebook.com", "*.fbcdn.net");
+    private static final List<String> HOSTNAMES = Arrays.asList("facebook.com", "*.facebook.com", "*.fbcdn.net", "*.akamaihd.net");
     private final BadgeStyle BADGE_SIDE_FULL = new BadgeStyle(BadgeStyle.Style.LARGE, R.layout.menu_badge_full, R.color.colorAccent, R.color.colorAccent, Color.WHITE);
 
     // Members
     SwipeRefreshLayout swipeView;
     NavigationView mNavigationView;
+    View mCoordinatorLayoutView;
     private FloatingActionMenu mMenuFAB;
     private AdvancedWebView mWebView;
     private final View.OnClickListener mFABClickListener = new View.OnClickListener() {
@@ -86,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem mNotificationButton;
     private CallbackManager callbackManager;
     private Snackbar loginSnackbar = null;
-    View mCoordinatorLayoutView;
     @SuppressWarnings("FieldCanBeLocal") // Will be garbage collected as a local variable
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
     private boolean requiresReload = false;
@@ -98,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_main);
+        Permiso.getInstance().setActivity(this);
 
         // Preferences
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
@@ -119,7 +123,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         mNavigationView.getMenu().findItem(R.id.nav_messages).setVisible(prefs.getBoolean(key, false));
                         break;
                     case SettingsActivity.KEY_PREF_LOCATION:
-                        mWebView.setGeolocationEnabled(prefs.getBoolean(key, false));
+                        if (prefs.getBoolean(key, false)) {
+                            Permiso.getInstance().requestPermissions(new Permiso.IOnPermissionResult() {
+                                @Override
+                                public void onPermissionResult(Permiso.ResultSet resultSet) {
+                                    if (resultSet.areAllPermissionsGranted()) {
+                                        mWebView.setGeolocationEnabled(true);
+                                    } else {
+                                        Snackbar.make(mCoordinatorLayoutView, R.string.permission_denied, Snackbar.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onRationaleRequested(Permiso.IOnRationaleProvided callback, String... permissions) {
+                                    // TODO Permiso.getInstance().showRationaleInDialog("Title", "Message", null, callback);
+                                    callback.onRationaleProvided();
+                                }
+                            }, Manifest.permission.ACCESS_FINE_LOCATION);
+                        }
                         break;
                     case SettingsActivity.KEY_PREF_FAB_SCROLL:
                         mMenuFAB.showMenuButton(true);
@@ -278,6 +299,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         mWebView.onResume();
+        Permiso.getInstance().setActivity(this);
 
         // Check if we need to show a page reload snackbar
         if (requiresReload) {
@@ -304,6 +326,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
         mWebView.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Permiso.getInstance().onRequestPermissionResult(requestCode, permissions, grantResults);
     }
 
     @Override

@@ -4,6 +4,10 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
     defaultConfig {
         applicationId "me.jakelane.wrapperforfacebook"
         minSdkVersion 17
@@ -34,4 +38,5 @@ dependencies {
     compile 'com.android.support:customtabs:23.2.0'
     compile 'com.github.ahorn:android-rss:master'
     compile 'org.jsoup:jsoup:1.8.3'
+    compile 'com.greysonparrelli.permiso:permiso:0.1.3'
 }
