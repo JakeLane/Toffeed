@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Toffeed</string>
+
+    <string name="navigation_drawer_open">Abrir gaveta de navegação</string>
+    <string name="navigation_drawer_close">Fechar gaveta de navegação</string>
+
+    <string name="default_user">Usuário desconhecido</string>
+    <string name="header_profile_pic">Foto do perfil</string>
+
+    <string name="nav_notifications">Notificações</string>
+    <string name="menu_news">Feed de Notícias</string>
+    <string name="menu_friendreq">Solicitações de Amizade</string>
+    <string name="menu_messages">Mensagens</string>
+    <string name="menu_search">Pesquisar</string>
+    <string name="menu_mainmenu">Menu Principal</string>
+
+    <string name="menu_fblogin">Login no Facebook</string>
+    <string name="menu_jump_top">Ir para o Topo</string>
+    <string name="menu_refresh">Recarregar</string>
+    <string name="menu_back">Voltar</string>
+    <string name="menu_forward">Avançar</string>
+    <string name="menu_settings">Configurações</string>
+
+    <string name="fab_text">Postar um status</string>
+    <string name="fab_photo">Postar uma foto</string>
+    <string name="fab_checkin">Check-in</string>
+
+    <string name="context_save_image">Salvar imagem</string>
+    <string name="context_share_image">Compartilhar imagem</string>
+    <string name="context_copy_image_link">Copiar link da imagem</string>
+    <string name="context_share_link">Compartilhar link</string>
+    <string name="context_copy_link">Copiar link</string>
+
+    <string name="context_share_image_progress">Compartilhando imagem…</string>
+    <string name="content_copy_link_done">Link copiado para área de transferência</string>
+
+    <string name="notifications_setting_title">Notificações</string>
+
+    <string name="notifications_enabled_title">Notificações em segundo plano</string>
+    <string name="notifications_enabled_summary">Quando ativado, você receberá notificações em segundo plano do Facebook.</string>
+
+    <string name="notification_interval_title">Intervalo de Notificações em segundo plano</string>
+    <string name="notification_interval_summary">Especifique o intervalo de atualização para o serviço de notificação.</string>
+    <string-array name="notification_interval">
+        <item>5 minutos</item>
+        <item>10 minutos</item>
+        <item>15 minutos</item>
+        <item>30 minutos</item>
+        <item>1 hora</item>
+        <item>2 horas</item>
+    </string-array>
+    <string-array name="notification_interval_values">
+        <item>300000</item>
+        <item>600000</item>
+        <item>900000</item>
+        <item>1800000</item>
+        <item>3600000</item>
+        <item>7200000</item>
+    </string-array>
+
+    <string name="notifications_vibration_title">Vibrar</string>
+    <string name="notifications_vibration_summary">Quando ativado, as notificações farão com que o seu dispositivo vibre.</string>
+
+    <string name="content_setting_title">Conteúdo</string>
+
+    <string name="location_enabled_title">Acesso à localização</string>
+    <string name="location_enabled_summary">Ative isso para permitir que o Facebook obtenha a sua localização.</string>
+
+    <string name="hide_editor_newsfeed_title">Esconder o editor de Status no Feed de Notícias</string>
+    <string name="hide_editor_newsfeed_summary">Quando ativado, o editor de Status será escondido no Feed de Notícias.</string>
+    <string name="hide_editor_newsfeed_snackbar">Atualizar para que as alterações entrem em vigor</string>
+
+    <string name="stop_images_title">Não carregar imagens</string>
+    <string name="stop_images_summary">Quando ativado, não vai baixar imagens. Algumas imagens podem permanecer no cache.</string>
+
+    <string name="hide_sponsored_title">Esconder Conteúdo Patrocinado</string>
+    <string name="hide_sponsored_summary">Quando ativado, irá esconder Conteúdo "Patrocinado" (anúncios) do Feed de notícias.</string>
+
+    <string name="navigation_setting_title">Navegação</string>
+
+    <string name="hide_fab_on_scroll_title">Esconder Botão de Ação Flutuante (FAB) durante a navegação</string>
+    <string name="hide_fab_on_scroll_summary">Esconder o FAB quando estiver navegando para baixo</string>
+
+    <string name="messaging_enabled_title">Mensagens</string>
+    <string name="messaging_enabled_summary">Quando ativado, irá proporcionar o acesso as Mensagens do Facebook. Desative se você tiver um aplicativo de mensagens.</string>
+
+    <string name="back_button_enabled_title">Botão "Voltar"</string>
+    <string name="back_button_enabled_summary">Quando ativado, o botão de voltar ficará visível.</string>
+
+    <string name="jump_top_enabled_title">Botão "Ir para o Topo"</string>
+    <string name="jump_top_enabled_summary">Quando ativado, o botão "Ir para o Topo" ficará visível.</string>
+
+    <string name="login_button">Login</string>
+    <string name="share_text">Compartilhar</string>
+
+    <string name="not_logged_in">Você não está logado</string>
+    <string name="error_login">Algo deu errado, por favor tente fazer login novamente</string>
+    <string name="error_super_wrong">Algo deu muito errado</string>
+    <string name="error_facebook_noconnection">Não foi possível acessar o Facebook</string>
+    <string name="error_facebook_error">Algo deu errado no fim do Facebook</string>
+
+    <string name="loading">Carregando</string>
+    <string name="notification_multiple_text">%s novas notificações.</string>
+    <string name="notification_viewall">Ver todas as Notificações</string>
+
+    <string name="permission_denied">Permissão negada, ação não pode ser completada</string>
+</resources>
