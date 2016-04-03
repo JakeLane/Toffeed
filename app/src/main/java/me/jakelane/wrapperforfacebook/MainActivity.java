@@ -56,7 +56,7 @@ import java.util.List;
 
 import im.delight.android.webview.AdvancedWebView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnLongClickListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
     private static final String FACEBOOK_URL_BASE_ENCODED = "https%3A%2F%2Fm.facebook.com%2F";
     private static final List<String> HOSTNAMES = Arrays.asList("facebook.com", "*.facebook.com", "*.fbcdn.net", "*.akamaihd.net");
@@ -243,13 +243,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mWebView.getSettings().setBuiltInZoomControls(true);
         mWebView.getSettings().setLoadWithOverviewMode(true);
         mWebView.getSettings().setUseWideViewPort(true);
-       mWebView.getSettings().setUserAgentString(USERAGENT);
+        mWebView.getSettings().setUserAgentString(USERAGENT);
 
         // Long press
         registerForContextMenu(mWebView);
         mWebView.setLongClickable(true);
-        mWebView.setOnLongClickListener(this);
-
         mWebView.setWebChromeClient(new CustomWebChromeClient(this, mWebView, (FrameLayout) findViewById(R.id.fullscreen_custom_content)));
 
         // Add OnClick listener to Profile picture
@@ -315,6 +313,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             reloadSnackbar.show();
             requiresReload = false;
         }
+        registerForContextMenu(mWebView);
     }
 
     @Override
@@ -572,11 +571,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // If nothing has happened at this point, we want the default url
         return FACEBOOK_URL_BASE;
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        openContextMenu(v);
-        return true;
     }
 }
