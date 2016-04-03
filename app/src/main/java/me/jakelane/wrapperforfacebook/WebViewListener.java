@@ -136,19 +136,9 @@ class WebViewListener implements AdvancedWebView.Listener {
 
     @Override
     public void onExternalPageRequest(String url) {
-        Log.v(Helpers.LogTag, "External page: " + url);
-
-        // Kill messenger promos
-        if (url.startsWith("fb-messenger://")) {
-            // Click close for messenger promo
-            mWebView.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('a%5Bdata-sigil%7C%3D%22m-promo-interstitial%22%5D').click()%7Dcatch(_)%7B%7D%7D)()");
-
-            // Don't try to launch messenger
-            return;
-        }
+        Log.i(Helpers.LogTag, "External page: " + url);
 
         // Launch another Activity that handles URLs
-
         CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
         intentBuilder.setShowTitle(true);
         intentBuilder.setToolbarColor(ContextCompat.getColor(mActivity, R.color.colorPrimary));
