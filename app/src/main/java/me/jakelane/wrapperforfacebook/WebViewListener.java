@@ -137,7 +137,17 @@ class WebViewListener implements AdvancedWebView.Listener {
     @Override
     public void onExternalPageRequest(String url) {
         Log.v(Helpers.LogTag, "External page: " + url);
-        // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
+
+        // Kill messenger promos
+        if (url.startsWith("fb-messenger://")) {
+            // Click close for messenger promo
+            mWebView.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('a%5Bdata-sigil%7C%3D%22m-promo-interstitial%22%5D').click()%7Dcatch(_)%7B%7D%7D)()");
+
+            // Don't try to launch messenger
+            return;
+        }
+
+        // Launch another Activity that handles URLs
 
         CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
         intentBuilder.setShowTitle(true);
@@ -149,8 +159,11 @@ class WebViewListener implements AdvancedWebView.Listener {
 
         PendingIntent menuItemPendingIntent = PendingIntent.getActivity(mActivity, 0, actionIntent, 0);
         intentBuilder.addMenuItem(mActivity.getString(R.string.share_text), menuItemPendingIntent);
-
-        intentBuilder.build().launchUrl(mActivity, Uri.parse(url));
+        try {
+            intentBuilder.build().launchUrl(mActivity, Uri.parse(url));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Log.e(Helpers.LogTag, "Could not launch url, activity was not found");
+        }
     }
 
     @Override
