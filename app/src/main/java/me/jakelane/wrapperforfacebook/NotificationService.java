@@ -185,7 +185,8 @@ public class NotificationService extends IntentService {
             // Creates an explicit intent for an Activity in your app
             resultIntent = new Intent(this, MainActivity.class);
             resultIntent.setAction(Intent.ACTION_VIEW);
-            resultIntent.setData(notification.getLink());
+            String notificationLink = notification.getLink().toString();
+            resultIntent.setData(Uri.parse(notificationLink.replace("www.facebook.com", "m.facebook.com")));
         }
 
         // Notification Priority (make LED blink)
