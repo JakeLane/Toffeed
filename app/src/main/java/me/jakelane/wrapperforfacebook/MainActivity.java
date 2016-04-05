@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     static final String FACEBOOK_URL_BASE = "https://m.facebook.com/";
     private static final String FACEBOOK_URL_BASE_ENCODED = "https%3A%2F%2Fm.facebook.com%2F";
     private static final List<String> HOSTNAMES = Arrays.asList("facebook.com", "*.facebook.com", "*.fbcdn.net", "*.akamaihd.net");
-    private static final String USERAGENT = "Mozilla/5.0 (Linux; Linux x86_64; LG-H815 Build/MRA58K; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/49.0.2623.105 Safari/537.36";
     private final BadgeStyle BADGE_SIDE_FULL = new BadgeStyle(BadgeStyle.Style.LARGE, R.layout.menu_badge_full, R.color.colorAccent, R.color.colorAccent, Color.WHITE);
 
     // Members
@@ -243,7 +242,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mWebView.getSettings().setBuiltInZoomControls(true);
         mWebView.getSettings().setLoadWithOverviewMode(true);
         mWebView.getSettings().setUseWideViewPort(true);
-        mWebView.getSettings().setUserAgentString(USERAGENT);
+        String defaultUserAgent = mWebView.getSettings().getUserAgentString();
+        mWebView.getSettings().setUserAgentString(defaultUserAgent.replaceFirst("Android ([0-9]+(\\.[0-9]+)*)", "Android"));
 
         // Long press
         registerForContextMenu(mWebView);
