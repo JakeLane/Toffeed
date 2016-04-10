@@ -151,6 +151,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case SettingsActivity.KEY_PREF_HIDE_SPONSORED:
                         requiresReload = true;
                         break;
+                    case SettingsActivity.KEY_PREF_HIDE_BIRTHDAYS:
+                        requiresReload = true;
+                        break;
                     case SettingsActivity.KEY_PREF_NOTIFICATIONS_ENABLED:
                         PollReceiver.scheduleAlarms(getApplicationContext(), false);
                         break;

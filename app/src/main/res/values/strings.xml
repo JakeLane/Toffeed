@@ -79,6 +79,9 @@
     <string name="hide_sponsored_title">Hide "Sponsored" Content</string>
     <string name="hide_sponsored_summary">When enabled, will hide "Sponsored" Content (ads) from the News Feed.</string>
 
+    <string name="hide_birthdays_title">Hide Birthdays</string>
+    <string name="hide_birthdays_summary">When enabled, will hide birthdays from the News Feed.</string>
+
     <string name="navigation_setting_title">Navigation</string>
 
     <string name="hide_fab_on_scroll_title">Hide Floating Action Button on scroll</string>
