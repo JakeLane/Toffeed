@@ -12,8 +12,8 @@ android {
         applicationId "me.jakelane.wrapperforfacebook"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 13
-        versionName "1.5.4"
+        versionCode 14
+        versionName "1.5.5"
     }
     buildTypes {
         release {
