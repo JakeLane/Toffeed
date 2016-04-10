@@ -40,6 +40,11 @@
             android:key="hide_sponsored"
             android:summary="@string/hide_sponsored_summary"
             android:title="@string/hide_sponsored_title" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="hide_birthdays"
+            android:summary="@string/hide_birthdays_summary"
+            android:title="@string/hide_birthdays_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/navigation_setting_title">
         <CheckBoxPreference
