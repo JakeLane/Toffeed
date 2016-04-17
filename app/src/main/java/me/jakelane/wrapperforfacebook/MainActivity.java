@@ -487,22 +487,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     // Set the cover photo with resizing
                     final View header = findViewById(R.id.header_layout);
-                    Picasso.with(getApplicationContext()).load(object.getJSONObject("cover").getString("source")).resize(header.getWidth(), header.getHeight()).centerCrop().error(R.drawable.side_nav_bar).into(new Target() {
-                        @Override
-                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            header.setBackground(new BitmapDrawable(getResources(), bitmap));
-                        }
-
-                        @Override
-                        public void onBitmapFailed(Drawable errorDrawable) {
-                        }
-
-                        @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-                        }
-                    });
-
-                    Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + userID + "/picture?type=large").error(R.drawable.side_profile).into((ImageView) findViewById(R.id.profile_picture));
+                    Picasso.with(getApplicationContext()).load(object.getJSONObject("cover").getString("source")).into((ImageView) findViewById(R.id.back_color));
+                    Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + userID + "/picture?type=large").into((ImageView) findViewById(R.id.profile_pic));
                 } catch (NullPointerException e) {
                     Snackbar.make(mCoordinatorLayoutView, R.string.error_facebook_noconnection, Snackbar.LENGTH_LONG).show();
                 } catch (JSONException e) {
