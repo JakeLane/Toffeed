@@ -7,6 +7,14 @@
             android:icon="@drawable/ic_menu_news"
             android:title="@string/menu_news" />
         <item
+            android:id="@+id/nav_top_stories"
+            android:icon="@drawable/ic_menu_top_stories"
+            android:title="@string/menu_top_stories" />
+        <item
+            android:id="@+id/nav_most_recent"
+            android:icon="@drawable/ic_menu_most_recent"
+            android:title="@string/menu_most_recent" />
+        <item
             android:id="@+id/nav_friendreq"
             android:icon="@drawable/ic_menu_friendreq"
             android:title="@string/menu_friendreq" />

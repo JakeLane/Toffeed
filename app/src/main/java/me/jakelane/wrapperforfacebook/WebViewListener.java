@@ -50,6 +50,8 @@ class WebViewListener implements AdvancedWebView.Listener {
     private static final String HIDE_SPONSORED = "article%5Bdata-ft*%3Dei%5D%7Bdisplay%3Anone%7D";
     // article#u_1j_4{display:none;}
     private static final String HIDE_BIRTHDAYS = "article%23u_1j_4%7Bdisplay%3Anone%3B%7D";
+    // ._59e9._55wr._4g33._400s{display:none}
+    private static final String HIDE_TOP_STORIES_BUTTON = "._59e9._55wr._4g33._400s%7Bdisplay%3Anone%7D";
 
     private final MainActivity mActivity;
     private final SharedPreferences mPreferences;
@@ -116,6 +118,11 @@ class WebViewListener implements AdvancedWebView.Listener {
             // Hide birthday content from News Feed
             if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_HIDE_BIRTHDAYS, true)) {
                 css += HIDE_BIRTHDAYS;
+            }
+
+            // Hide Top Stories button on News Feed
+            if (mPreferences.getBoolean(SettingsActivity.KEY_PREF_MOST_RECENT_MENU, true)) {
+                css += HIDE_TOP_STORIES_BUTTON;
             }
 
             // Inject the css

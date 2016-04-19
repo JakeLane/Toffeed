@@ -8,7 +8,7 @@ class JavaScriptHelpers {
 
     public static void updateCurrentTab(WebView view) {
         // Get the currently open tab and check on the navigation menu
-        view.loadUrl("javascript:(function()%7Btry%7Bandroid.getCurrent(document.querySelector('.popoverOpen').id)%7Dcatch(_)%7Bandroid.getCurrent('null')%7D%7D)()");
+        view.loadUrl("javascript:(function()%7Btry%7Bvar%20jewel%3Ddocument.querySelector(%22.popoverOpen%22).id%3B%22feed_jewel%22%3D%3Djewel%3Fdocument.querySelector('a%5Bhref*%3D%22%2Fhome.php%3Fsk%3Dh_nor%22%5D')%3Fandroid.getCurrent(%22most_recent%22)%3Aandroid.getCurrent(%22top_stories%22)%3Aandroid.getCurrent(jewel)%7Dcatch(_)%7Bandroid.getCurrent(%22null%22)%7D%7D)()");
     }
 
     public static void updateNums(WebView view) {

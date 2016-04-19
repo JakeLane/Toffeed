@@ -142,6 +142,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             }, Manifest.permission.ACCESS_FINE_LOCATION);
                         }
                         break;
+                    case SettingsActivity.KEY_PREF_MOST_RECENT_MENU:
+                        boolean most_recent = prefs.getBoolean(key, true);
+                        mNavigationView.getMenu().findItem(R.id.nav_news).setVisible(!most_recent);
+                        mNavigationView.getMenu().findItem(R.id.nav_top_stories).setVisible(most_recent);
+                        mNavigationView.getMenu().findItem(R.id.nav_most_recent).setVisible(most_recent);
+                        requiresReload = true;
+                        break;
                     case SettingsActivity.KEY_PREF_FAB_SCROLL:
                         mMenuFAB.showMenuButton(true);
                         break;
@@ -194,6 +201,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (!mPreferences.getBoolean(SettingsActivity.KEY_PREF_BACK_BUTTON, false)) {
             mNavigationView.getMenu().findItem(R.id.nav_back).setVisible(false);
         }
+        boolean most_recent = mPreferences.getBoolean(SettingsActivity.KEY_PREF_MOST_RECENT_MENU, true);
+        mNavigationView.getMenu().findItem(R.id.nav_news).setVisible(!most_recent);
+        mNavigationView.getMenu().findItem(R.id.nav_top_stories).setVisible(most_recent);
+        mNavigationView.getMenu().findItem(R.id.nav_most_recent).setVisible(most_recent);
 
         // Bind the Coordinator to member
         mCoordinatorLayoutView = findViewById(R.id.coordinatorLayout);
@@ -381,6 +392,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_news:
                 mWebView.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('%23feed_jewel%20%3E%20a').click()%7Dcatch(_)%7Bwindow.location.href%3D'" + FACEBOOK_URL_BASE_ENCODED + "home.php'%7D%7D)()");
+                item.setChecked(true);
+            case R.id.nav_top_stories:
+                mWebView.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('a%5Bhref*%3D%22%2Fhome.php%3Fsk%3Dh_nor%22%5D').click()%7Dcatch(_)%7Bwindow.location.href%3D%22" + FACEBOOK_URL_BASE_ENCODED + "home.php%3Fsk%3Dh_nor%22%7D%7D)()");
+                item.setChecked(true);
+                break;
+            case R.id.nav_most_recent:
+                mWebView.loadUrl("javascript:(function()%7Btry%7Bdocument.querySelector('a%5Bhref*%3D%22%2Fhome.php%3Fsk%3Dh_chr%22%5D').click()%7Dcatch(_)%7Bwindow.location.href%3D%22" + FACEBOOK_URL_BASE_ENCODED + "home.php%3Fsk%3Dh_chr%22%7D%7D)()");
                 item.setChecked(true);
                 break;
             case R.id.nav_friendreq:

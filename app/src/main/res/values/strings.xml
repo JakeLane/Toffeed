@@ -12,6 +12,8 @@
 
     <string name="nav_notifications">Notifications</string>
     <string name="menu_news">News Feed</string>
+    <string name="menu_top_stories">Top stories</string>
+    <string name="menu_most_recent">Most Recent</string>
     <string name="menu_friendreq">Friend Requests</string>
     <string name="menu_messages">Messages</string>
     <string name="menu_search">Search</string>
@@ -68,6 +70,9 @@
 
     <string name="location_enabled_title">Location access</string>
     <string name="location_enabled_summary">Enable this to allow Facebook to obtain your location.</string>
+
+    <string name="most_recent_menu_title">Most Recent in Navigation Menu</string>
+    <string name="most_recent_menu_summary">Enable this to show the Most Recent button in the Navigation Menu.</string>
 
     <string name="hide_editor_newsfeed_title">Hide Status editor in News Feed</string>
     <string name="hide_editor_newsfeed_summary">When enabled, the status editor will be hidden on the News Feed.</string>

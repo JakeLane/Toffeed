@@ -27,6 +27,11 @@
             android:title="@string/location_enabled_title" />
         <CheckBoxPreference
             android:defaultValue="true"
+            android:key="most_recent_menu"
+            android:summary="@string/most_recent_menu_summary"
+            android:title="@string/most_recent_menu_title" />
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="hide_editor_newsfeed"
             android:summary="@string/hide_editor_newsfeed_summary"
             android:title="@string/hide_editor_newsfeed_title" />
