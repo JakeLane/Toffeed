@@ -505,8 +505,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     // Set the cover photo with resizing
                     final View header = findViewById(R.id.header_layout);
-                    Picasso.with(getApplicationContext()).load(object.getJSONObject("cover").getString("source")).into((ImageView) findViewById(R.id.back_color));
-                    Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + userID + "/picture?type=large").into((ImageView) findViewById(R.id.profile_pic));
+                    //Picasso.with(getApplicationContext()).load(object.getJSONObject("cover").getString("source")).into((ImageView) findViewById(R.id.back_color));//this needs to be edited for an imageView. I don't want to mess up your layout.
+                    Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + userID + "/picture?type=large").into((ImageView) findViewById(R.id.profile_picture));
                 } catch (NullPointerException e) {
                     Snackbar.make(mCoordinatorLayoutView, R.string.error_facebook_noconnection, Snackbar.LENGTH_LONG).show();
                 } catch (JSONException e) {
