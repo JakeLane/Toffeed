@@ -504,9 +504,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     ((TextView) findViewById(R.id.profile_name)).setText(object.getString("name"));
 
                     // Set the cover photo with resizing
+                    Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + userID + "/picture?type=large").into((ImageView) findViewById(R.id.profile_picture));
+
                     final View header = findViewById(R.id.header_layout);
-                    Picasso.with(getApplicationContext()).load(object.getJSONObject("cover").getString("source")).into((ImageView) findViewById(R.id.back_color));
-                    Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + userID + "/picture?type=large").into((ImageView) findViewById(R.id.profile_pic));
+                    Picasso.with(getApplicationContext()).load(object.getJSONObject("cover").getString("source")).resize(header.getWidth(), header.getHeight()).centerCrop().error(R.drawable.side_nav_bar).into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            Log.v(Helpers.LogTag, "Set cover photo");
+                            header.setBackground(new BitmapDrawable(getResources(), bitmap));
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Drawable errorDrawable) {}
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {}
+                    });
                 } catch (NullPointerException e) {
                     Snackbar.make(mCoordinatorLayoutView, R.string.error_facebook_noconnection, Snackbar.LENGTH_LONG).show();
                 } catch (JSONException e) {

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     lintOptions {
         checkReleaseBuilds false
@@ -25,8 +25,8 @@ android {
 
 dependencies {
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.android.support:design:23.2.0'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
     compile 'com.facebook.android:facebook-android-sdk:4.6.0'
     compile('com.mikepenz:actionitembadge:3.1.9@aar') {
         transitive = true
@@ -35,7 +35,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.github.JakeLane:Android-AdvancedWebView:-SNAPSHOT'
     compile 'com.github.clans:fab:1.6.2'
-    compile 'com.android.support:customtabs:23.2.0'
+    compile 'com.android.support:customtabs:23.4.0'
     compile 'com.github.ahorn:android-rss:master'
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'com.greysonparrelli.permiso:permiso:0.1.3'
