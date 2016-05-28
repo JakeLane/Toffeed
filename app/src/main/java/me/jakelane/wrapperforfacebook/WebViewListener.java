@@ -89,7 +89,7 @@ class WebViewListener implements AdvancedWebView.Listener {
             String css = HIDE_ORANGE_FOCUS;
 
             // Hide the menu bar (but not on the composer)
-            if (!url.contains("/composer/")) {
+            if (!url.contains("/composer/") && !url.contains("/friends/")) {
                 css += HIDE_MENU_BAR_CSS;
                 mActivity.swipeView.setEnabled(true);
             } else {
