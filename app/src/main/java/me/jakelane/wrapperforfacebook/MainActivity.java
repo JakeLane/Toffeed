@@ -256,8 +256,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mWebView.getSettings().setBuiltInZoomControls(true);
         mWebView.getSettings().setLoadWithOverviewMode(true);
         mWebView.getSettings().setUseWideViewPort(true);
-        String defaultUserAgent = mWebView.getSettings().getUserAgentString();
-        mWebView.getSettings().setUserAgentString(defaultUserAgent.replaceFirst("Android ([0-9]+(\\.[0-9]+)*)", "Android"));
+        // Impersonate iPhone to prevent advertising garbage
+        mWebView.getSettings().setUserAgentString("Mozilla/5.0 (BB10; Touch) AppleWebKit/537.1+ (KHTML, like Gecko) Version/10.0.0.1337 Mobile Safari/537.1+");
 
         // Long press
         registerForContextMenu(mWebView);
