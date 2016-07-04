@@ -89,6 +89,9 @@
 
     <string name="navigation_setting_title">Navigation</string>
 
+    <string name="hide_menu_bar_title">Hide Menu bar</string>
+    <string name="hide_menu_bar_summary">When enabled, the Facebook Menu bar will be hidden.</string>
+
     <string name="hide_fab_on_scroll_title">Hide Floating Action Button on scroll</string>
     <string name="hide_fab_on_scroll_summary">Hide the FAB when scrolling down</string>
 

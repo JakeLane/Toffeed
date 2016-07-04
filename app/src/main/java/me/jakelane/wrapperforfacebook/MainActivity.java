@@ -243,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Load the WebView
         mWebView = (AdvancedWebView) findViewById(R.id.webview);
+        assert mWebView != null;
         mWebView.addPermittedHostnames(HOSTNAMES);
         mWebView.setGeolocationEnabled(mPreferences.getBoolean(SettingsActivity.KEY_PREF_LOCATION, false));
 
@@ -253,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mWebView.getSettings().setBlockNetworkImage(mPreferences.getBoolean(SettingsActivity.KEY_PREF_STOP_IMAGES, false));
         mWebView.getSettings().setAppCacheEnabled(true);
         mWebView.getSettings().setSupportZoom(true);
-        mWebView.getSettings().setBuiltInZoomControls(true);
+        mWebView.getSettings().setBuiltInZoomControls(false);
         mWebView.getSettings().setLoadWithOverviewMode(true);
         mWebView.getSettings().setUseWideViewPort(true);
         // Impersonate iPhone to prevent advertising garbage
